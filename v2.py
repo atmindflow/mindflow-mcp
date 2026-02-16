@@ -1,63 +1,71 @@
-"""
-Agentic Automation Engine - v1.1.0
-Added Task Scheduler
-"""
-
 import time
-import threading
-from datetime import datetime
+import logging
+from threading import Thread
+from typing import List, Callable
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-class TaskScheduler:
-    """
-    Simple scheduler that triggers agent tasks at intervals.
-    """
-
-    def __init__(self, interval_seconds: int):
-        self.interval = interval_seconds
-        self.running = False
-
-    def start(self, task_callable):
-        self.running = True
-        while self.running:
-            task_callable()
-            time.sleep(self.interval)
-
-    def stop(self):
-        self.running = False
-
-
-class AutonomousAgent:
-    def __init__(self, name: str, goal: str):
+class Task:
+    def __init__(self, name: str, action: Callable):
         self.name = name
-        self.goal = goal
+        self.action = action
+        self.completed = False
 
-    def log(self, message: str):
-        timestamp = datetime.utcnow().isoformat()
-        print(f"[{timestamp}] [{self.name}] {message}")
+    def execute(self):
+        logging.info(f"Executing task: {self.name}")
+        try:
+            self.action()
+            self.completed = True
+            logging.info(f"Task {self.name} completed")
+        except Exception as e:
+            logging.error(f"Task {self.name} failed: {str(e)}")
 
-    def execute_cycle(self):
-        self.log("Analyzing state...")
-        self.log("Planning task...")
-        self.log("Executing workflow optimization...")
+class Agent:
+    def __init__(self, name: str):
+        self.name = name
+        self.tasks: List[Task] = []
 
+    def add_task(self, task: Task):
+        logging.info(f"Agent {self.name} adding task: {task.name}")
+        self.tasks.append(task)
 
+    def run(self):
+        logging.info(f"Agent {self.name} starting...")
+        for task in self.tasks:
+            task.execute()
+        logging.info(f"Agent {self.name} finished all tasks")
+
+class Scheduler:
+    def __init__(self):
+        self.agents: List[Agent] = []
+
+    def add_agent(self, agent: Agent):
+        self.agents.append(agent)
+
+    def start(self):
+        threads = []
+        for agent in self.agents:
+            thread = Thread(target=agent.run)
+            threads.append(thread)
+            thread.start()
+        for t in threads:
+            t.join()
+
+# Example usage
 if __name__ == "__main__":
-    agent = AutonomousAgent(
-        name="ScheduledAgent",
-        goal="Continuous process optimization"
-    )
+    def task_a():
+        print("Running Task A...")
 
-    scheduler = TaskScheduler(interval_seconds=3)
+    def task_b():
+        print("Running Task B...")
 
-    try:
-        scheduler_thread = threading.Thread(
-            target=scheduler.start,
-            args=(agent.execute_cycle,)
-        )
-        scheduler_thread.start()
+    agent1 = Agent("AgentOne")
+    agent2 = Agent("AgentTwo")
 
-        time.sleep(10)
+    agent1.add_task(Task("TaskA", task_a))
+    agent2.add_task(Task("TaskB", task_b))
 
-    finally:
-        scheduler.stop()
+    scheduler = Scheduler()
+    scheduler.add_agent(agent1)
+    scheduler.add_agent(agent2)
+    scheduler.start()
