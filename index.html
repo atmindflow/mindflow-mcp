@@ -1,68 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Task Manager</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mindflow MCP v3 – Next-Gen Multi-Agent Python Scheduler</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="header">
-    <div class="container">
-      <h1 class="logo">Agentic Task Manager</h1>
-      <nav>
-        <ul>
-          <li><a href="#agents">Agents</a></li>
-          <li><a href="#tasks">Tasks</a></li>
-          <li><a href="#about">About</a></li>
-        </ul>
-      </nav>
+  <header class="hero">
+    <img src="agentic.svg" alt="Mindflow MCP logo" class="logo"/>
+    <h1 class="title">Mindflow MCP <span class="version">v3</span></h1>
+    <p class="subtitle">Next-Level Python Multi-Agent Control Platform</p>
+    <div class="cta-group">
+      <a class="cta primary" href="https://github.com/atmindflow/mindflow-mcp" target="_blank">View on GitHub</a>
+      <button class="cta secondary" id="clone-btn" aria-label="Copy repository URL">Clone repo</button>
     </div>
+    <span id="clone-tooltip" role="status" aria-live="polite" hidden>Copied!</span>
   </header>
-
-  <main class="main-content">
-    <section class="highlight-section">
-      <div class="highlight-card">
-        <h2>Automate, Schedule and Control Your Agents</h2>
-        <p>
-          Manage intelligent agents and schedule tasks easily. Monitor execution logs in real time, and never lose track of automation again.
-        </p>
-        <a class="cta-button" href="#agents">Get Started</a>
+  <section class="whats-new">
+    <h2>🚀 What's New in v3</h2>
+    <ul>
+      <li><strong>Multi-agent scheduler:</strong> Orchestrate multiple agents running tasks in parallel</li>
+      <li><strong>Threaded execution:</strong> Run agents concurrently for max efficiency</li>
+      <li><strong>Task abstraction with parameters:</strong> Reusable, dynamic task definitions</li>
+      <li><strong>Structured logging:</strong> Built-in, color-coded logs for clarity and debugging</li>
+      <li><strong>Clear API and examples:</strong> Quick-start and extensible out of the box</li>
+    </ul>
+  </section>
+  <section class="how-it-works">
+    <h2>How it Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <h3>Define Agents & Tasks</h3>
+        <p>Create agents and assign them reusable tasks with parameters.</p>
       </div>
-      <img src="agentic.svg" alt="Agentic Illustration" class="highlight-img">
-    </section>
-
-    <section id="agents" class="agents-section">
-      <h2 class="section-title">Your Agents</h2>
-      <div id="agents-list" class="cards-grid"></div>
-      <button class="add-btn" id="add-agent-btn">+ Add Agent</button>
-    </section>
-
-    <section id="tasks" class="tasks-section">
-      <h2 class="section-title">Task Queue</h2>
-      <div id="tasks-list" class="cards-grid"></div>
-      <button class="add-btn" id="add-task-btn">+ Add Task</button>
-    </section>
-
-    <section id="about" class="about-section">
-      <h2 class="section-title">About</h2>
-      <p>Agentic Task Manager allows you to define agents, assign tasks, and monitor their execution with a beautiful interface.</p>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div>© 2026 Agentic, Inc.</div>
-  </footer>
-
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close" id="close-modal">&times;</span>
-      <form id="modal-form">
-        <!-- Dynamic Form Content -->
-      </form>
+      <div class="arrow" aria-hidden="true">&#8594;</div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <h3>Configure Scheduler</h3>
+        <p>Add your agents to the scheduler — agents run in separate threads.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">&#8594;</div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <h3>Start & Observe</h3>
+        <p>Run the scheduler and watch <span class="highlight">logging</span> in realtime as agents complete their work!</p>
+      </div>
     </div>
-  </div>
-
-  <script src="app.js"></script>
+  </section>
+  <section class="code-section">
+    <h2>Usage Example</h2>
+    <div class="code-container">
+      <pre><code class="pseudo"># Pseudocode
+Task = Task(name, action, params)
+Agent = Agent(name)
+Agent.add_task(Task)
+Scheduler = Scheduler()
+Scheduler.add_agent(Agent)
+Scheduler.start()</code></pre>
+      <pre><code class="python"># Real Python snippet
+def hello(params):
+    print(f"Hello, {params['user']}!")
+agent = Agent("Greeter")
+agent.add_task(Task("HiTask", hello, {"user": "world"}))
+scheduler = Scheduler()
+scheduler.add_agent(agent)
+scheduler.start()</code></pre>
+    </div>
+  </section>
+  <footer>
+    <p class="footer-txt">&copy; 2026 Mindflow · Released under MIT</p>
+  </footer>
+  <script src="script.js"></script>
 </body>
 </html>
