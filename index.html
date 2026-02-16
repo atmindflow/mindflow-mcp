@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mindflow MCP v3 – Next-Gen Multi-Agent Python Scheduler</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="hero">
@@ -14,9 +15,31 @@
     <div class="cta-group">
       <a class="cta primary" href="https://github.com/atmindflow/mindflow-mcp" target="_blank">View on GitHub</a>
       <button class="cta secondary" id="clone-btn" aria-label="Copy repository URL">Clone repo</button>
+      <button class="cta tertiary" id="try-live-demo">🌐 Live Demo</button>
     </div>
     <span id="clone-tooltip" role="status" aria-live="polite" hidden>Copied!</span>
   </header>
+
+  <section class="interactive-update">
+    <h2><span class="sparkle">✨</span> Try It Now: Visual Scheduler <span class="sparkle">✨</span></h2>
+    <div class="tryit-panel">
+      <form id="agent-form">
+        <div class="tryit-group">
+          <input type="text" placeholder="Agent name" id="agent-name" required />
+          <input type="text" placeholder="Task description" id="task-desc" required />
+          <button type="submit" class="cta mini">Add agent+task</button>
+        </div>
+      </form>
+
+      <div id="agents-list">
+        <!-- Dynamic content: agents and their tasks listed here -->
+      </div>
+
+      <button id="run-sim" class="cta accent" disabled>▶️ Run Scheduler</button>
+      <div id="log-container" aria-live="polite"></div>
+    </div>
+  </section>
+
   <section class="whats-new">
     <h2>🚀 What's New in v3</h2>
     <ul>
@@ -27,6 +50,7 @@
       <li><strong>Clear API and examples:</strong> Quick-start and extensible out of the box</li>
     </ul>
   </section>
+
   <section class="how-it-works">
     <h2>How it Works</h2>
     <div class="steps">
@@ -49,6 +73,7 @@
       </div>
     </div>
   </section>
+
   <section class="code-section">
     <h2>Usage Example</h2>
     <div class="code-container">
@@ -59,6 +84,7 @@ Agent.add_task(Task)
 Scheduler = Scheduler()
 Scheduler.add_agent(Agent)
 Scheduler.start()</code></pre>
+
       <pre><code class="python"># Real Python snippet
 def hello(params):
     print(f"Hello, {params['user']}!")
@@ -69,9 +95,11 @@ scheduler.add_agent(agent)
 scheduler.start()</code></pre>
     </div>
   </section>
+
   <footer>
     <p class="footer-txt">&copy; 2026 Mindflow · Released under MIT</p>
   </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
