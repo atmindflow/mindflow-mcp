@@ -1,154 +1,108 @@
-// Interactive demo for Mindflow MCP v3 (frontend simulation)
-
-const AGENTS = [
-  {
-    name: 'LoggerAgent',
-    tasks: [
-      { name: 'PrintTask', action: 'print_message', params: { message: 'Agentic is live!', times: 3 }, completed: false }
-    ]
-  },
-  {
-    name: 'ComputeAgent',
-    tasks: [
-      { name: 'SumTask', action: 'compute_sum', params: { a: 7, b: 5 }, completed: false }
-    ]
-  }
+// Demo in-memory store
+const agents = [
+  { name: 'LoggerAgent', tasks: ['PrintTask'] },
+  { name: 'ComputeAgent', tasks: ['SumTask'] },
+];
+const tasks = [
+  { title: 'PrintTask', desc: 'Prints a message 3 times.', agent: 'LoggerAgent', completed: true },
+  { title: 'SumTask', desc: 'Computes 7 + 5.', agent: 'ComputeAgent', completed: false },
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderAgents();
-  populateAgentSelect();
-  setupTaskForm();
-  document.getElementById('run-scheduler').addEventListener('click', runScheduler);
-});
-
-function renderAgents(){
-  const list = document.getElementById('agents-list');
-  list.innerHTML = '';
-  AGENTS.forEach(agent => {
+function renderAgents() {
+  const container = document.getElementById('agents-list');
+  container.innerHTML = '';
+  for (const agent of agents) {
     const card = document.createElement('div');
     card.className = 'agent-card';
-    card.innerHTML = `<h3>${escapeHtml(agent.name)}</h3>`;
-
-    const tasksDiv = document.createElement('div');
-    agent.tasks.forEach(t => {
-      const taskEl = document.createElement('div');
-      taskEl.className = 'task-item' + (t.completed ? ' task-completed' : '');
-      taskEl.textContent = `${t.name} (${t.action})${t.completed ? ' ✓' : ''}`;
-      tasksDiv.appendChild(taskEl);
-    });
-
-    card.appendChild(tasksDiv);
-    list.appendChild(card);
-  });
-}
-
-function populateAgentSelect(){
-  const select = document.getElementById('agent-select');
-  select.innerHTML = '';
-  AGENTS.forEach((agent, idx) => {
-    const opt = document.createElement('option');
-    opt.value = String(idx);
-    opt.textContent = agent.name;
-    select.appendChild(opt);
-  });
-}
-
-function setupTaskForm(){
-  const actionSel = document.getElementById('task-action');
-  actionSel.addEventListener('change', updateParamsFields);
-  updateParamsFields();
-  document.getElementById('task-form').addEventListener('submit', handleAddTask);
-}
-
-function updateParamsFields(){
-  const action = document.getElementById('task-action').value;
-  const fields = document.getElementById('params-fields');
-  fields.innerHTML = '';
-
-  if(action === 'print_message') {
-    fields.innerHTML = `
-      <label for="param-message">Message:</label>
-      <input id="param-message" type="text" value="Hello from Mindflow MCP v3!">
-      <label for="param-times">Times:</label>
-      <input id="param-times" type="number" value="1" min="1" style="width: 90px;">
+    card.innerHTML = `
+      <div class="agent-title">${agent.name}</div>
+      <div class="card-desc">${agent.tasks.length} task(s)</div>
+      <div>
+        ${agent.tasks.map(t => `<span class="card-chip">${t}</span>`).join(' ')}
+      </div>
     `;
-  } else {
-    fields.innerHTML = `
-      <label for="param-a">A:</label>
-      <input id="param-a" type="number" value="7">
-      <label for="param-b">B:</label>
-      <input id="param-b" type="number" value="5">
-    `;
+    container.appendChild(card);
   }
 }
 
-function handleAddTask(e){
-  e.preventDefault();
-  const agentIdx = parseInt(document.getElementById('agent-select').value, 10);
-  const name = document.getElementById('task-name').value.trim();
-  const action = document.getElementById('task-action').value;
-
-  let params = {};
-  if(action === 'print_message') {
-    params.message = document.getElementById('param-message').value;
-    params.times = Math.max(1, parseInt(document.getElementById('param-times').value, 10) || 1);
-  } else {
-    params.a = parseInt(document.getElementById('param-a').value, 10) || 0;
-    params.b = parseInt(document.getElementById('param-b').value, 10) || 0;
+function renderTasks() {
+  const container = document.getElementById('tasks-list');
+  container.innerHTML = '';
+  for (const task of tasks) {
+    const card = document.createElement('div');
+    card.className = 'task-card';
+    card.innerHTML = `
+      <div class="task-title">${task.title}</div>
+      <div class="card-desc">${task.desc}</div>
+      <span class="card-chip ${task.completed ? 'completed-chip' : ''}">${task.completed ? 'Completed' : 'Pending'}</span>
+      <span class="card-chip" style="background: #88ebf4; color:#166896">${task.agent}</span>
+    `;
+    container.appendChild(card);
   }
-
-  AGENTS[agentIdx].tasks.push({ name, action, params, completed: false });
-  renderAgents();
-  e.target.reset();
-  updateParamsFields();
-  setStatus('Task added!');
 }
 
-function runScheduler(){
-  setStatus('Running tasks... (check console output)');
+// Modal logic
+const modal = document.getElementById('modal');
+const closeModalBtn = document.getElementById('close-modal');
+const modalForm = document.getElementById('modal-form');
 
-  const pending = [];
-  AGENTS.forEach(a => a.tasks.forEach(t => { if(!t.completed) pending.push(t); }));
-  if(pending.length === 0) return setStatus('All tasks are completed!');
-
-  let done = 0;
-  let delay = 0;
-  pending.forEach(task => {
-    setTimeout(() => {
-      executeTask(task);
-      task.completed = true;
-      done++;
+function openModal(type) {
+  modal.classList.remove('hidden');
+  modalForm.innerHTML = '';
+  if (type === 'agent') {
+    modalForm.innerHTML = `
+      <h3 style="color:#21b5eb">Add Agent</h3>
+      <label>Name</label>
+      <input name="name" type="text" required placeholder="Agent name...">
+      <button type="submit">Add Agent</button>
+    `;
+    modalForm.onsubmit = (e) => {
+      e.preventDefault();
+      const name = modalForm.elements['name'].value.trim();
+      if (name && !agents.find(a => a.name === name)) {
+        agents.push({ name, tasks: [] });
+        renderAgents();
+      }
+      closeModal();
+    };
+  } else if (type === 'task') {
+    modalForm.innerHTML = `<h3 style="color:#21b5eb">Add Task</h3>
+      <label>Title</label>
+      <input name="title" type="text" required>
+      <label>Description</label>
+      <input name="desc" type="text" required>
+      <label>Agent</label>
+      <select name="agent">
+          ${agents.map(a => `<option>${a.name}</option>`).join('')}
+      </select>
+      <button type="submit">Add Task</button>
+    `;
+    modalForm.onsubmit = (e) => {
+      e.preventDefault();
+      const title = modalForm.elements['title'].value.trim();
+      const desc = modalForm.elements['desc'].value.trim();
+      const agent = modalForm.elements['agent'].value;
+      tasks.push({ title, desc, agent, completed: false });
+      const agentObj = agents.find(a => a.name === agent);
+      if (agentObj) agentObj.tasks.push(title);
+      renderTasks();
       renderAgents();
-      if(done === pending.length) setStatus('All tasks completed!');
-    }, delay);
-    delay += 700;
-  });
-}
-
-function executeTask(task){
-  if(task.action === 'print_message') {
-    const times = Math.max(1, parseInt(task.params.times, 10) || 1);
-    for(let i=0;i<times;i++) console.log(task.params.message);
-  } else {
-    const a = parseInt(task.params.a, 10) || 0;
-    const b = parseInt(task.params.b, 10) || 0;
-    console.log(`Sum of ${a} + ${b} = ${a+b}`);
+      closeModal();
+    };
   }
 }
-
-function setStatus(msg){
-  const el = document.getElementById('status-bar');
-  el.textContent = msg;
-  clearTimeout(setStatus._t);
-  setStatus._t = setTimeout(() => el.textContent = '', 2000);
+function closeModal() {
+  modal.classList.add('hidden');
+  modalForm.innerHTML = '';
+  modalForm.onsubmit = null;
 }
+closeModalBtn.onclick = closeModal;
+window.onclick = function(event) {
+  if (event.target === modal) closeModal();
+};
+document.getElementById('add-agent-btn').onclick = () => openModal('agent');
+document.getElementById('add-task-btn').onclick = () => openModal('task');
 
-function escapeHtml(str){
-  return String(str)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#039;');
-}
+// Initial render
+renderAgents();
+renderTasks();

@@ -1,88 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Mindflow MCP v3 release landing page"/>
-  <title>Mindflow MCP v3</title>
-  <link rel="stylesheet" href="styles.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Mindflow MCP</h1>
-    <p class="subtitle">v3 release — Agent scheduler & task orchestration made simple</p>
-    <div class="cta">
-      <a class="btn primary" href="https://github.com/atmindflow/mindflow-mcp" target="_blank" rel="noopener">View on GitHub</a>
-      <a class="btn" href="#demo">Try the Demo</a>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">Agentic Task Manager</h1>
+      <nav>
+        <ul>
+          <li><a href="#agents">Agents</a></li>
+          <li><a href="#tasks">Tasks</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <main>
-    <section class="grid">
-      <div class="card">
-        <h2>What’s new in v3</h2>
-        <ul>
-          <li><b>Task</b> abstraction with completion status</li>
-          <li><b>Agent</b> pipeline: add tasks, run sequentially</li>
-          <li><b>Scheduler</b> runs agents concurrently via threads</li>
-          <li>Examples included: <code>print_message</code>, <code>compute_sum</code></li>
-        </ul>
+  <main class="main-content">
+    <section class="highlight-section">
+      <div class="highlight-card">
+        <h2>Automate, Schedule and Control Your Agents</h2>
+        <p>
+          Manage intelligent agents and schedule tasks easily. Monitor execution logs in real time, and never lose track of automation again.
+        </p>
+        <a class="cta-button" href="#agents">Get Started</a>
       </div>
-      <div class="card">
-        <h2>Why it matters</h2>
-        <ul>
-          <li>Fast to understand, easy to extend</li>
-          <li>Great starting point for agentic workflows</li>
-          <li>Clear logging and predictable execution</li>
-          <li>Includes a browser demo to visualize flow</li>
-        </ul>
-      </div>
+      <img src="agentic.svg" alt="Agentic Illustration" class="highlight-img">
     </section>
 
-    <section id="demo" class="demo">
-      <h2>Interactive Demo</h2>
-      <p class="muted">Add tasks to agents and run the scheduler. Output is also logged to your browser console.</p>
-
-      <section id="agents-section">
-        <h3>Agents Overview</h3>
-        <div id="agents-list"></div>
-      </section>
-
-      <section id="task-form-section">
-        <h3>Add New Task</h3>
-        <form id="task-form">
-          <label for="agent-select">Agent:</label>
-          <select id="agent-select" required></select>
-
-          <label for="task-name">Task Name:</label>
-          <input id="task-name" type="text" placeholder="Enter task name" required />
-
-          <label for="task-action">Task Action:</label>
-          <select id="task-action" required>
-            <option value="print_message">Print Message</option>
-            <option value="compute_sum">Compute Sum</option>
-          </select>
-
-          <div id="params-fields"></div>
-          <button type="submit">Add Task</button>
-        </form>
-      </section>
-
-      <section id="scheduler-controls">
-        <button id="run-scheduler">Run Scheduler</button>
-        <div id="status-bar"></div>
-      </section>
+    <section id="agents" class="agents-section">
+      <h2 class="section-title">Your Agents</h2>
+      <div id="agents-list" class="cards-grid"></div>
+      <button class="add-btn" id="add-agent-btn">+ Add Agent</button>
     </section>
 
-    <section class="card">
-      <h2>Get started</h2>
-      <p>Clone the repo and run <code>python v3.py</code> to see threaded agents in action.</p>
+    <section id="tasks" class="tasks-section">
+      <h2 class="section-title">Task Queue</h2>
+      <div id="tasks-list" class="cards-grid"></div>
+      <button class="add-btn" id="add-task-btn">+ Add Task</button>
+    </section>
+
+    <section id="about" class="about-section">
+      <h2 class="section-title">About</h2>
+      <p>Agentic Task Manager allows you to define agents, assign tasks, and monitor their execution with a beautiful interface.</p>
     </section>
   </main>
 
-  <footer>
-    <p>Mindflow MCP &copy; 2026</p>
+  <footer class="footer">
+    <div>© 2026 Agentic, Inc.</div>
   </footer>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="close-modal">&times;</span>
+      <form id="modal-form">
+        <!-- Dynamic Form Content -->
+      </form>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
