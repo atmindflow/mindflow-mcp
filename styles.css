@@ -15,7 +15,8 @@
 html,body{height:100%}
 body{
   margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+  "Apple Color Emoji", "Segoe UI Emoji";
   background: radial-gradient(1100px 650px at 20% 12%, rgba(255,59,245,.22), transparent 55%),
               radial-gradient(900px 600px at 80% 22%, rgba(55,243,255,.20), transparent 55%),
               radial-gradient(900px 650px at 50% 85%, rgba(198,255,77,.12), transparent 55%),
@@ -33,11 +34,12 @@ a{color:inherit; text-decoration:none}
   filter: blur(38px) saturate(140%);
   opacity:.55;
   border-radius: 35% 65% 55% 45% / 50% 35% 65% 50%;
-  animation: float 14s ease-in-out infinite;
+  transform: translate3d(var(--x,0px), var(--y,0px), 0);
+  transition: transform .12s linear;
 }
 .b1{left:-120px; top:-120px; background:linear-gradient(135deg, var(--pink), var(--aqua))}
-.b2{right:-140px; bottom:-160px; background:linear-gradient(135deg, var(--lime), var(--orange))
-; animation-duration: 18s}
+.b2{right:-160px; bottom:-170px; background:linear-gradient(135deg, var(--lime), var(--orange))}
+.b3{left:50%; top:55%; margin-left:-260px; background:linear-gradient(135deg, rgba(55,243,255,.65), rgba(255,59,245,.55)); opacity:.25}
 .grid{
   position:absolute; inset:-2px;
   background-image: linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
@@ -45,11 +47,6 @@ a{color:inherit; text-decoration:none}
   background-size: 54px 54px;
   mask-image: radial-gradient(closest-side at 50% 45%, rgba(0,0,0,.9), transparent 70%);
   opacity:.5;
-}
-
-@keyframes float{
-  0%,100%{transform: translate(0,0) rotate(0deg)}
-  50%{transform: translate(40px, 30px) rotate(10deg)}
 }
 
 .top{
@@ -67,12 +64,13 @@ a{color:inherit; text-decoration:none}
   background: conic-gradient(from 210deg, var(--aqua), var(--pink), var(--lime), var(--orange), var(--aqua));
   box-shadow: 0 0 0 2px rgba(255,255,255,.12) inset;
 }
-.wordmark{font-weight:800; letter-spacing:.4px}
+.wordmark{font-weight:900; letter-spacing:.4px}
 .pill{
   font-size:12px; padding:6px 10px; border-radius:999px;
-  background: rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.16);
-  color: rgba(245,247,255,.88);
+  background: linear-gradient(135deg, rgba(255,59,245,.22), rgba(55,243,255,.18));
+  border:1px solid rgba(255,255,255,.18);
+  color: rgba(245,247,255,.92);
+  font-weight:900;
 }
 
 .nav{display:flex; gap:16px; align-items:center}
@@ -97,12 +95,41 @@ a{color:inherit; text-decoration:none}
   padding: 34px 0 10px;
 }
 
-h1{
-  margin:0;
+.release{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.badge{
+  display:inline-flex; align-items:center;
+  font-size:12px; padding:6px 10px; border-radius:999px;
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color: rgba(245,247,255,.90);
+  font-weight:800;
+}
+.badge.strong{
+  background: linear-gradient(135deg, rgba(198,255,77,.18), rgba(255,184,77,.16));
+  border-color: rgba(255,255,255,.18);
+}
+.badge.subtle{color: rgba(245,247,255,.78)}
+
+.headline{
+  margin:12px 0 0;
   font-size: clamp(2.35rem, 4vw, 3.35rem);
   line-height:1.03;
   letter-spacing: -0.02em;
 }
+.shine{
+  background: linear-gradient(90deg, var(--aqua), var(--pink), var(--lime), var(--orange), var(--aqua));
+  background-size: 250% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color: transparent;
+  animation: glow 6s ease-in-out infinite;
+}
+
+@keyframes glow{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
 .sub{
   margin:14px 0 22px;
   color: var(--muted);
@@ -115,7 +142,7 @@ h1{
   display:inline-flex; align-items:center; justify-content:center;
   padding: 12px 16px;
   border-radius: 14px;
-  font-weight: 700;
+  font-weight: 800;
   border:1px solid rgba(255,255,255,.16);
   transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
 }
@@ -138,7 +165,7 @@ h1{
   border:1px solid rgba(255,255,255,.12);
 }
 .k{font-size:12px; color: rgba(245,247,255,.72)}
-.v{font-size:14px; font-weight:800; margin-top:2px}
+.v{font-size:14px; font-weight:900; margin-top:2px}
 
 .card{
   border-radius: 18px;
@@ -157,12 +184,13 @@ h1{
 .dot.red{background:#ff4d6d}
 .dot.yellow{background:#ffd166}
 .dot.green{background:#2ee59d}
-.card-top .title{margin-left:auto; font-size:12px; color: rgba(245,247,255,.75)}
+.card-top .title{margin-left:auto; font-size:12px; color: rgba(245,247,255,.78); font-weight:800}
 
 .code{
   margin:0;
   padding: 16px 16px 10px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+  "Liberation Mono", "Courier New", monospace;
   font-size: 12.8px;
   line-height: 1.55;
   white-space: pre-wrap;
@@ -176,13 +204,15 @@ h1{
 }
 .chip{
   cursor:pointer;
-  font-weight:800;
+  font-weight:900;
   border-radius: 999px;
   padding: 10px 12px;
   border:1px solid rgba(255,255,255,.18);
   background: linear-gradient(135deg, rgba(198,255,77,.16), rgba(255,184,77,.14));
   color: rgba(245,247,255,.94);
+  display:inline-flex; align-items:center; justify-content:center;
 }
+.chip.ghost{background: rgba(255,255,255,.06)}
 .chip:active{transform: translateY(1px)}
 .hint{font-size:12px; color: rgba(245,247,255,.70)}
 
@@ -200,7 +230,7 @@ h1{
               linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,0));
   box-shadow: 0 12px 30px rgba(55,243,255,.14);
 }
-.mini-title{font-weight:900}
+.mini-title{font-weight:950}
 .mini-sub{color: rgba(245,247,255,.72); font-size:13px; margin-top:2px}
 
 .section{padding: 38px 0 0}
@@ -217,7 +247,7 @@ h1{
   border:1px solid rgba(255,255,255,.12);
 }
 .panel h3{margin:0 0 8px 0}
-.panel p{margin:0; color: rgba(245,247,255,.74); line-height:1.6}
+.panel p{margin:0; color: rgba(245,247,255,.78); line-height:1.6}
 
 .linkcard{
   display:block;
@@ -235,10 +265,11 @@ h1{
   border-radius: 999px;
   background: rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.12);
-  color: rgba(245,247,255,.78);
+  color: rgba(245,247,255,.80);
+  font-weight:900;
 }
-.lc-title{margin-top: 10px; font-weight: 900; font-size: 1.05rem}
-.lc-sub{margin-top: 4px; color: rgba(245,247,255,.72)}
+.lc-title{margin-top: 10px; font-weight: 950; font-size: 1.05rem}
+.lc-sub{margin-top: 4px; color: rgba(245,247,255,.74); line-height:1.5}
 
 .runbox{
   display:grid;
@@ -252,9 +283,11 @@ h1{
   border-radius: 18px;
   background: rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.12);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+  "Liberation Mono", "Courier New", monospace;
   font-size: 12.8px;
   line-height:1.6;
+  white-space: pre-wrap;
 }
 .aside{
   padding: 16px;
@@ -269,10 +302,10 @@ h1{
   font-size:12px;
   background: rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.14);
-  font-weight:900;
+  font-weight:950;
   margin-bottom:10px;
 }
-.aside p{margin:0; color: rgba(245,247,255,.78); line-height:1.6}
+.aside p{margin:0; color: rgba(245,247,255,.80); line-height:1.6}
 
 .foot{
   margin-top: 46px;
@@ -293,4 +326,11 @@ h1{
   .grid2{grid-template-columns: 1fr}
   .runbox{grid-template-columns: 1fr}
   .nav{display:none}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .shine{animation:none}
+  .btn, .nav a, .linkcard{transition:none}
+  .btn:hover, .nav a:hover, .linkcard:hover{transform:none}
+  .blob{transition:none}
 }
