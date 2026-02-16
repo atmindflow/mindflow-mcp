@@ -1,24 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mindflow MCP v3 – Next-Gen Multi-Agent Python Scheduler</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mindflow MCP v3 – Multi-Agent Python Scheduler</title>
+  <meta name="description" content="Mindflow MCP v3: a lightweight multi-agent task scheduler in Python with threaded execution and structured logging." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="hero">
-    <img src="agentic.svg" alt="Mindflow MCP logo" class="logo"/>
+    <img src="agentic.svg" alt="Mindflow MCP" class="logo" />
     <h1 class="title">Mindflow MCP <span class="version">v3</span></h1>
-    <p class="subtitle">Next-Level Python Multi-Agent Control Platform</p>
+    <p class="subtitle">A lightweight, extensible, multi-agent task scheduler in Python (threaded + structured logging).</p>
+
     <div class="cta-group">
-      <a class="cta primary" href="https://github.com/atmindflow/mindflow-mcp" target="_blank">View on GitHub</a>
-      <button class="cta secondary" id="clone-btn" aria-label="Copy repository URL">Clone repo</button>
-      <button class="cta tertiary" id="try-live-demo">🌐 Live Demo</button>
+      <a class="cta primary" href="https://github.com/atmindflow/mindflow-mcp" target="_blank" rel="noreferrer">View on GitHub</a>
+      <button class="cta secondary" id="clone-btn" aria-label="Copy git clone command">Copy clone command</button>
+      <button class="cta tertiary" id="try-live-demo">Live demo</button>
     </div>
+
     <span id="clone-tooltip" role="status" aria-live="polite" hidden>Copied!</span>
   </header>
+
+  <section class="whats-new">
+    <h2>🚀 What’s New in v3</h2>
+    <ul>
+      <li><strong>Multi-agent scheduler:</strong> orchestrate multiple agents running tasks in parallel</li>
+      <li><strong>Threaded execution:</strong> each agent runs concurrently in its own thread</li>
+      <li><strong>Task abstraction with parameters:</strong> reusable, dynamic task definitions</li>
+      <li><strong>Structured logging:</strong> built-in logs for clarity and debugging</li>
+    </ul>
+  </section>
+
+  <section class="how-it-works">
+    <h2>How it Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <h3>Define Agents &amp; Tasks</h3>
+        <p>Create agents and assign them reusable tasks with parameters.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <h3>Configure Scheduler</h3>
+        <p>Add your agents to the scheduler — agents run in separate threads.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <h3>Start &amp; Observe</h3>
+        <p>Run the scheduler and watch logging in realtime as agents complete their work.</p>
+      </div>
+    </div>
+  </section>
 
   <section class="interactive-update">
     <h2><span class="sparkle">✨</span> Try It Now: Visual Scheduler <span class="sparkle">✨</span></h2>
@@ -31,73 +69,17 @@
         </div>
       </form>
 
-      <div id="agents-list">
-        <!-- Dynamic content: agents and their tasks listed here -->
-      </div>
+      <div id="agents-list"></div>
 
-      <button id="run-sim" class="cta accent" disabled>▶️ Run Scheduler</button>
+      <button id="run-sim" class="cta accent" disabled>▶ Run Scheduler</button>
       <div id="log-container" aria-live="polite"></div>
-    </div>
-  </section>
 
-  <section class="whats-new">
-    <h2>🚀 What's New in v3</h2>
-    <ul>
-      <li><strong>Multi-agent scheduler:</strong> Orchestrate multiple agents running tasks in parallel</li>
-      <li><strong>Threaded execution:</strong> Run agents concurrently for max efficiency</li>
-      <li><strong>Task abstraction with parameters:</strong> Reusable, dynamic task definitions</li>
-      <li><strong>Structured logging:</strong> Built-in, color-coded logs for clarity and debugging</li>
-      <li><strong>Clear API and examples:</strong> Quick-start and extensible out of the box</li>
-    </ul>
-  </section>
-
-  <section class="how-it-works">
-    <h2>How it Works</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-circle">1</div>
-        <h3>Define Agents & Tasks</h3>
-        <p>Create agents and assign them reusable tasks with parameters.</p>
-      </div>
-      <div class="arrow" aria-hidden="true">&#8594;</div>
-      <div class="step">
-        <div class="step-circle">2</div>
-        <h3>Configure Scheduler</h3>
-        <p>Add your agents to the scheduler — agents run in separate threads.</p>
-      </div>
-      <div class="arrow" aria-hidden="true">&#8594;</div>
-      <div class="step">
-        <div class="step-circle">3</div>
-        <h3>Start & Observe</h3>
-        <p>Run the scheduler and watch <span class="highlight">logging</span> in realtime as agents complete their work!</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="code-section">
-    <h2>Usage Example</h2>
-    <div class="code-container">
-      <pre><code class="pseudo"># Pseudocode
-Task = Task(name, action, params)
-Agent = Agent(name)
-Agent.add_task(Task)
-Scheduler = Scheduler()
-Scheduler.add_agent(Agent)
-Scheduler.start()</code></pre>
-
-      <pre><code class="python"># Real Python snippet
-def hello(params):
-    print(f"Hello, {params['user']}!")
-agent = Agent("Greeter")
-agent.add_task(Task("HiTask", hello, {"user": "world"}))
-scheduler = Scheduler()
-scheduler.add_agent(agent)
-scheduler.start()</code></pre>
+      <p class="footer-txt" style="margin-top: 1rem">Real implementation: <code>v3.py</code> (run <code>python v3.py</code>)</p>
     </div>
   </section>
 
   <footer>
-    <p class="footer-txt">&copy; 2026 Mindflow · Released under MIT</p>
+    <p class="footer-txt">© 2026 Mindflow · Released under MIT</p>
   </footer>
 
   <script src="script.js"></script>
