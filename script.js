@@ -1,193 +1,228 @@
-// Three.js WebGL Background - Nested Node Network
-let scene, camera, renderer, nodes = [], connections = [];
-let mouseX = 0, mouseY = 0;
+// WebGL 3D Cube Animation
+const canvas = document.getElementById('webgl-canvas');
+const gl = canvas.getContext('webgl');
 
-function init() {
-    scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0f0c29, 0.0008);
-
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 50;
-
-    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    document.getElementById('webgl-container').appendChild(renderer.domElement);
-
-    // Create hierarchical node network representing nested components
-    createNodeNetwork();
-    createConnections();
-
-    // Add ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-    scene.add(ambientLight);
-
-    // Add point lights
-    const light1 = new THREE.PointLight(0x667eea, 1, 100);
-    light1.position.set(20, 20, 20);
-    scene.add(light1);
-
-    const light2 = new THREE.PointLight(0x764ba2, 1, 100);
-    light2.position.set(-20, -20, 20);
-    scene.add(light2);
-
-    // Mouse move interaction
-    document.addEventListener('mousemove', onMouseMove, false);
-    window.addEventListener('resize', onWindowResize, false);
-
-    animate();
+if (!gl) {
+    console.error('WebGL not supported');
 }
 
-function createNodeNetwork() {
-    const nodeGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-    const materials = [
-        new THREE.MeshPhongMaterial({ color: 0x667eea, emissive: 0x667eea, emissiveIntensity: 0.5 }),
-        new THREE.MeshPhongMaterial({ color: 0x764ba2, emissive: 0x764ba2, emissiveIntensity: 0.5 }),
-        new THREE.MeshPhongMaterial({ color: 0xf093fb, emissive: 0xf093fb, emissiveIntensity: 0.5 })
-    ];
+// Resize canvas
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+}
 
-    // Create hierarchical structure - parent nodes with children
-    for (let i = 0; i < 8; i++) {
-        const parentNode = new THREE.Mesh(nodeGeometry, materials[0]);
-        const angle = (i / 8) * Math.PI * 2;
-        const radius = 25;
-        parentNode.position.set(
-            Math.cos(angle) * radius,
-            Math.sin(angle * 0.5) * 10,
-            Math.sin(angle) * radius
-        );
-        parentNode.userData = { 
-            baseX: parentNode.position.x,
-            baseY: parentNode.position.y,
-            baseZ: parentNode.position.z,
-            speed: Math.random() * 0.02 + 0.01,
-            children: []
-        };
-        scene.add(parentNode);
-        nodes.push(parentNode);
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-        // Add child nodes (nested components)
-        for (let j = 0; j < 3; j++) {
-            const childNode = new THREE.Mesh(nodeGeometry.clone(), materials[1]);
-            const childAngle = (j / 3) * Math.PI * 2;
-            const childRadius = 5;
-            childNode.position.set(
-                parentNode.position.x + Math.cos(childAngle) * childRadius,
-                parentNode.position.y + Math.sin(childAngle) * childRadius,
-                parentNode.position.z
-            );
-            childNode.userData = {
-                parent: parentNode,
-                baseX: childNode.position.x,
-                baseY: childNode.position.y,
-                baseZ: childNode.position.z,
-                speed: Math.random() * 0.03 + 0.02,
-                offset: j
-            };
-            scene.add(childNode);
-            nodes.push(childNode);
-            parentNode.userData.children.push(childNode);
-
-            // Add grandchild nodes (deeply nested)
-            if (j === 0) {
-                const grandchildNode = new THREE.Mesh(nodeGeometry.clone(), materials[2]);
-                grandchildNode.position.set(
-                    childNode.position.x + 3,
-                    childNode.position.y,
-                    childNode.position.z + 3
-                );
-                grandchildNode.userData = {
-                    parent: childNode,
-                    baseX: grandchildNode.position.x,
-                    baseY: grandchildNode.position.y,
-                    baseZ: grandchildNode.position.z,
-                    speed: Math.random() * 0.04 + 0.03
-                };
-                scene.add(grandchildNode);
-                nodes.push(grandchildNode);
-            }
-        }
+// Vertex shader
+const vertexShaderSource = `
+    attribute vec3 aPosition;
+    attribute vec3 aColor;
+    varying vec3 vColor;
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uProjectionMatrix;
+    
+    void main() {
+        gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aPosition, 1.0);
+        vColor = aColor;
     }
+`;
+
+// Fragment shader
+const fragmentShaderSource = `
+    precision mediump float;
+    varying vec3 vColor;
+    
+    void main() {
+        gl_FragColor = vec4(vColor, 0.8);
+    }
+`;
+
+// Compile shader
+function compileShader(source, type) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+    }
+    
+    return shader;
 }
 
-function createConnections() {
-    const lineMaterial = new THREE.LineBasicMaterial({ 
-        color: 0x667eea, 
-        transparent: true, 
-        opacity: 0.2 
-    });
+// Create program
+const vertexShader = compileShader(vertexShaderSource, gl.VERTEX_SHADER);
+const fragmentShader = compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
 
-    nodes.forEach(node => {
-        if (node.userData.children) {
-            node.userData.children.forEach(child => {
-                const points = [node.position, child.position];
-                const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const line = new THREE.Line(geometry, lineMaterial);
-                scene.add(line);
-                connections.push({ line, from: node, to: child });
-            });
+const program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.error('Program link error:', gl.getProgramInfoLog(program));
+}
+
+gl.useProgram(program);
+
+// Cube vertices with colors
+const vertices = new Float32Array([
+    // Front face (purple)
+    -0.5, -0.5,  0.5,  0.39, 0.40, 0.95,
+     0.5, -0.5,  0.5,  0.39, 0.40, 0.95,
+     0.5,  0.5,  0.5,  0.39, 0.40, 0.95,
+    -0.5,  0.5,  0.5,  0.39, 0.40, 0.95,
+    
+    // Back face (violet)
+    -0.5, -0.5, -0.5,  0.55, 0.36, 0.96,
+     0.5, -0.5, -0.5,  0.55, 0.36, 0.96,
+     0.5,  0.5, -0.5,  0.55, 0.36, 0.96,
+    -0.5,  0.5, -0.5,  0.55, 0.36, 0.96,
+    
+    // Top face (pink)
+    -0.5,  0.5, -0.5,  0.93, 0.28, 0.60,
+     0.5,  0.5, -0.5,  0.93, 0.28, 0.60,
+     0.5,  0.5,  0.5,  0.93, 0.28, 0.60,
+    -0.5,  0.5,  0.5,  0.93, 0.28, 0.60,
+    
+    // Bottom face (darker purple)
+    -0.5, -0.5, -0.5,  0.30, 0.30, 0.70,
+     0.5, -0.5, -0.5,  0.30, 0.30, 0.70,
+     0.5, -0.5,  0.5,  0.30, 0.30, 0.70,
+    -0.5, -0.5,  0.5,  0.30, 0.30, 0.70,
+    
+    // Right face (light purple)
+     0.5, -0.5, -0.5,  0.65, 0.50, 0.98,
+     0.5,  0.5, -0.5,  0.65, 0.50, 0.98,
+     0.5,  0.5,  0.5,  0.65, 0.50, 0.98,
+     0.5, -0.5,  0.5,  0.65, 0.50, 0.98,
+    
+    // Left face (medium purple)
+    -0.5, -0.5, -0.5,  0.50, 0.40, 0.85,
+    -0.5,  0.5, -0.5,  0.50, 0.40, 0.85,
+    -0.5,  0.5,  0.5,  0.50, 0.40, 0.85,
+    -0.5, -0.5,  0.5,  0.50, 0.40, 0.85
+]);
+
+const indices = new Uint16Array([
+    0, 1, 2,  0, 2, 3,    // Front
+    4, 5, 6,  4, 6, 7,    // Back
+    8, 9, 10, 8, 10, 11,  // Top
+    12, 13, 14, 12, 14, 15, // Bottom
+    16, 17, 18, 16, 18, 19, // Right
+    20, 21, 22, 20, 22, 23  // Left
+]);
+
+const vertexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+const indexBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+const aPosition = gl.getAttribLocation(program, 'aPosition');
+const aColor = gl.getAttribLocation(program, 'aColor');
+
+gl.enableVertexAttribArray(aPosition);
+gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 24, 0);
+
+gl.enableVertexAttribArray(aColor);
+gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 24, 12);
+
+const uModelViewMatrix = gl.getUniformLocation(program, 'uModelViewMatrix');
+const uProjectionMatrix = gl.getUniformLocation(program, 'uProjectionMatrix');
+
+// Matrix operations
+function createPerspective(fov, aspect, near, far) {
+    const f = 1.0 / Math.tan(fov / 2);
+    const nf = 1 / (near - far);
+    return new Float32Array([
+        f / aspect, 0, 0, 0,
+        0, f, 0, 0,
+        0, 0, (far + near) * nf, -1,
+        0, 0, 2 * far * near * nf, 0
+    ]);
+}
+
+function createRotation(angleX, angleY, angleZ) {
+    const cx = Math.cos(angleX), sx = Math.sin(angleX);
+    const cy = Math.cos(angleY), sy = Math.sin(angleY);
+    const cz = Math.cos(angleZ), sz = Math.sin(angleZ);
+    
+    return new Float32Array([
+        cy * cz, -cy * sz, sy, 0,
+        cx * sz + sx * sy * cz, cx * cz - sx * sy * sz, -sx * cy, 0,
+        sx * sz - cx * sy * cz, sx * cz + cx * sy * sz, cx * cy, 0,
+        0, 0, -3, 1
+    ]);
+}
+
+let rotation = 0;
+
+// Animation loop
+function render() {
+    rotation += 0.01;
+    
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    
+    const projectionMatrix = createPerspective(
+        Math.PI / 4,
+        canvas.width / canvas.height,
+        0.1,
+        100
+    );
+    
+    const modelViewMatrix = createRotation(rotation * 0.7, rotation, rotation * 0.5);
+    
+    gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
+    gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
+    
+    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    
+    requestAnimationFrame(render);
+}
+
+render();
+
+// Scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
         }
-        if (node.userData.parent) {
-            const points = [node.userData.parent.position, node.position];
-            const geometry = new THREE.BufferGeometry().setFromPoints(points);
-            const line = new THREE.Line(geometry, lineMaterial.clone());
-            scene.add(line);
-            connections.push({ line, from: node.userData.parent, to: node });
+    });
+}, observerOptions);
+
+document.querySelectorAll('.feature-card, .download-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'all 0.6s ease';
+    observer.observe(card);
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
         }
     });
-}
-
-function onMouseMove(event) {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-}
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-
-    const time = Date.now() * 0.001;
-
-    // Animate nodes
-    nodes.forEach((node, i) => {
-        node.position.x = node.userData.baseX + Math.sin(time * node.userData.speed + i) * 2;
-        node.position.y = node.userData.baseY + Math.cos(time * node.userData.speed + i) * 2;
-        node.rotation.x += 0.01;
-        node.rotation.y += 0.01;
-    });
-
-    // Update connections
-    connections.forEach(conn => {
-        const points = [conn.from.position, conn.to.position];
-        conn.line.geometry.setFromPoints(points);
-    });
-
-    // Camera movement based on mouse
-    camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
-    camera.position.y += (mouseY * 10 - camera.position.y) * 0.05;
-    camera.lookAt(scene.position);
-
-    renderer.render(scene, camera);
-}
-
-// Small helper for copy buttons (used by index.html)
-function copyCode(ev, elementId) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-
-    const text = el.textContent;
-    navigator.clipboard.writeText(text).then(() => {
-        const btn = ev?.target;
-        if (!btn) return;
-        const original = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => (btn.textContent = original), 1400);
-    });
-}
-
-init();
+});
