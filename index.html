@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw - Personal AI Assistant</title>
+    <title>Luanti 5.16.0 - The Ultimate Open-Source Voxel Game Engine</title>
     <style>
         * {
             margin: 0;
@@ -11,145 +11,158 @@
             box-sizing: border-box;
         }
         
-        :root {
-            --primary-blue: #A8D5E2;
-            --secondary-blue: #B8E6F0;
-            --accent-lavender: #C5B9E0;
-            --soft-purple: #D4C5F9;
-            --light-pink: #F0C9E7;
-            --cream: #FDF6F0;
-            --dark-text: #2C3E50;
-            --card-bg: rgba(255, 255, 255, 0.85);
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: var(--dark-text);
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 25%, var(--accent-lavender) 50%, var(--soft-purple) 75%, var(--light-pink) 100%);
-            background-attachment: fixed;
+            color: #333;
+            background: linear-gradient(135deg, #A8D8EA 0%, #87CEEB 50%, #B4E7F5 100%);
             overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(135, 206, 235, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #4DD0E1 0%, #26C6DA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoGlow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(77, 208, 225, 0.5)); }
+            50% { filter: drop-shadow(0 0 15px rgba(77, 208, 225, 0.8)); }
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s;
             position: relative;
         }
         
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4DD0E1, #26C6DA);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: #26C6DA;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
         .particles {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
         }
         
         .particle {
             position: absolute;
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            animation: float 20s infinite ease-in-out;
+            animation: float 15s infinite;
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
-            25% { transform: translateY(-100px) translateX(50px) rotate(90deg); }
-            50% { transform: translateY(-200px) translateX(-50px) rotate(180deg); }
-            75% { transform: translateY(-100px) translateX(100px) rotate(270deg); }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        
-        .hero {
-            position: relative;
-            text-align: center;
-            padding: 120px 20px 100px;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 3;
-            animation: fadeInUp 1s ease-out;
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
         }
         
         .hero h1 {
-            font-size: 4.5rem;
+            font-size: 56px;
             margin-bottom: 20px;
-            font-weight: 800;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, #ffffff, #e0f7ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s infinite linear;
-            background-size: 1000px 100%;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .version-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.25);
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            animation: pulse 2s infinite;
-            transition: all 0.3s ease;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 24px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            animation: floating 3s ease-in-out infinite;
         }
         
-        .version-badge:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.35);
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
         
-        .tagline {
-            font-size: 1.8rem;
-            margin-bottom: 50px;
-            opacity: 0.95;
-            font-weight: 300;
-            letter-spacing: 0.5px;
+        .hero p {
+            font-size: 22px;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            animation: fadeIn 1.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .cta-buttons {
@@ -157,107 +170,92 @@
             gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            animation: fadeInUp 2s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .btn {
-            padding: 18px 45px;
-            font-size: 1.15rem;
-            border: none;
+            padding: 15px 40px;
             border-radius: 50px;
-            cursor: pointer;
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s;
             display: inline-block;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
+            cursor: pointer;
         }
         
         .btn-primary {
             background: white;
-            color: var(--accent-lavender);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            color: #26C6DA;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(38, 198, 218, 0.4);
         }
         
         .btn-secondary {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border: 3px solid white;
+            border: 2px solid white;
             backdrop-filter: blur(10px);
         }
         
-        .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        .btn-secondary:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
         }
         
         .features {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 100px 20px;
-            position: relative;
-            backdrop-filter: blur(10px);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            background: white;
+            padding: 80px 20px;
         }
         
         .section-title {
             text-align: center;
-            font-size: 3rem;
-            margin-bottom: 70px;
-            color: var(--dark-text);
-            font-weight: 700;
+            font-size: 42px;
+            margin-bottom: 60px;
+            color: #333;
             position: relative;
-            display: inline-block;
-            width: 100%;
+            animation: fadeIn 1s ease;
         }
         
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 100px;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--accent-lavender), var(--soft-purple));
+            background: linear-gradient(90deg, #4DD0E1, #26C6DA);
             border-radius: 2px;
         }
         
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
+            margin-bottom: 60px;
         }
         
         .feature-card {
+            background: linear-gradient(135deg, #B4E7F5 0%, #87CEEB 100%);
             padding: 40px;
             border-radius: 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            color: white;
+            box-shadow: 0 10px 30px rgba(135, 206, 235, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transform: translateY(50px);
+            cursor: pointer;
             position: relative;
             overflow: hidden;
         }
@@ -265,136 +263,218 @@
         .feature-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(168, 213, 226, 0.3), transparent);
-            transition: left 0.5s;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s;
         }
         
         .feature-card:hover::before {
-            left: 100%;
+            transform: scale(1);
+        }
+        
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(168, 213, 226, 0.3);
-            border-color: var(--primary-blue);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(77, 208, 225, 0.5);
         }
         
         .feature-icon {
-            font-size: 3.5rem;
+            font-size: 48px;
             margin-bottom: 20px;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
         
         .feature-card h3 {
-            font-size: 1.6rem;
+            font-size: 24px;
             margin-bottom: 15px;
-            color: var(--accent-lavender);
-            font-weight: 700;
         }
         
         .feature-card p {
-            color: #555;
+            font-size: 16px;
             line-height: 1.8;
-            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.95);
         }
         
-        .highlights {
-            background: linear-gradient(135deg, rgba(168, 213, 226, 0.3) 0%, rgba(197, 185, 224, 0.3) 100%);
-            padding: 100px 20px;
-            position: relative;
-            backdrop-filter: blur(10px);
+        .whats-new {
+            background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
+            padding: 80px 20px;
         }
         
-        .highlight-list {
+        .whats-new-list {
             max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(135, 206, 235, 0.3);
+        }
+        
+        .whats-new-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #26C6DA;
+            background: linear-gradient(90deg, #E0F7FA 0%, #ffffff 100%);
+            border-radius: 5px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .whats-new-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(38, 198, 218, 0.3);
+        }
+        
+        .whats-new-item h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #26C6DA;
+        }
+        
+        .how-it-works {
+            background: white;
+            padding: 80px 20px;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
-        .highlight-item {
-            background: rgba(255, 255, 255, 0.9);
+        .step {
+            text-align: center;
             padding: 30px;
-            margin-bottom: 25px;
-            border-radius: 15px;
-            border-left: 6px solid var(--accent-lavender);
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateX(-30px);
+            transition: all 0.3s;
         }
         
-        .highlight-item.visible {
-            opacity: 1;
-            transform: translateX(0);
+        .step:hover {
+            transform: translateY(-10px);
         }
         
-        .highlight-item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 8px 35px rgba(168, 213, 226, 0.3);
-            border-left-width: 8px;
-        }
-        
-        .highlight-item h4 {
-            color: var(--accent-lavender);
-            margin-bottom: 12px;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        
-        .install-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4DD0E1 0%, #26C6DA 100%);
             color: white;
-            padding: 100px 20px;
-            position: relative;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(77, 208, 225, 0.4);
+            transition: all 0.3s;
         }
         
-        .code-block {
-            background: rgba(26, 32, 44, 0.95);
-            padding: 35px;
-            border-radius: 15px;
-            margin: 40px auto;
-            max-width: 800px;
-            overflow-x: auto;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
-            border: 2px solid rgba(168, 213, 226, 0.3);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+        .step:hover .step-number {
+            transform: rotate(360deg) scale(1.1);
         }
         
-        .code-block:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 60px rgba(0,0,0,0.4);
+        .step h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
         }
         
-        .code-block code {
-            color: var(--primary-blue);
-            font-family: 'Fira Code', 'Courier New', monospace;
-            font-size: 1.1rem;
+        .step p {
+            color: #666;
             line-height: 1.8;
         }
         
-        .footer {
-            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+        .cta-section {
+            background: linear-gradient(135deg, #A8D8EA 0%, #87CEEB 50%, #4DD0E1 100%);
+            padding: 80px 20px;
+            text-align: center;
             color: white;
-            padding: 50px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5f8d 100%);
+            color: white;
+            padding: 40px 20px;
             text-align: center;
         }
         
-        .footer a {
-            color: var(--primary-blue);
+        footer a {
+            color: #87CEEB;
             text-decoration: none;
-            margin: 0 15px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+        }
+        
+        footer a:hover {
+            color: #4DD0E1;
+            text-decoration: underline;
+        }
+        
+        .powered-by {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
             display: inline-block;
         }
         
-        .footer a:hover {
-            color: var(--secondary-blue);
-            transform: translateY(-2px);
+        .powered-by strong {
+            background: linear-gradient(90deg, #4DD0E1, #26C6DA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 18px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
         
         .scroll-indicator {
@@ -403,276 +483,308 @@
             left: 50%;
             transform: translateX(-50%);
             animation: bounce 2s infinite;
-            cursor: pointer;
-            z-index: 10;
         }
         
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-20px); }
-            60% { transform: translateX(-50%) translateY(-10px); }
-        }
-        
-        .scroll-indicator::before {
-            content: '↓';
-            font-size: 2.5rem;
-            color: white;
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .tagline {
-                font-size: 1.3rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .section-title {
-                font-size: 2.2rem;
-            }
-            
-            .btn {
-                padding: 15px 35px;
-                font-size: 1rem;
-            }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
+    <header>
+        <nav class="container">
+            <div class="logo">🎮 Luanti</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#whats-new">What's New</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="https://github.com/luanti-org/luanti" target="_blank">GitHub</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <section class="hero">
-        <div class="hero-content">
-            <h1>🦞 OpenClaw</h1>
-            <div class="version-badge">v2026.2.16 Latest Release</div>
-            <p class="tagline">Your Personal AI Assistant - Run on Your Own Devices</p>
+        <div class="particles" id="particles"></div>
+        <div class="container">
+            <div class="version-badge">✨ Version 5.16.0 Released!</div>
+            <h1>Luanti</h1>
+            <p id="subtitle"></p>
             <div class="cta-buttons">
-                <a href="https://github.com/openclaw/openclaw" class="btn btn-primary">Get Started</a>
-                <a href="https://docs.openclaw.ai" class="btn btn-secondary">Documentation</a>
+                <a href="https://github.com/luanti-org/luanti/releases" class="btn btn-primary">Download Now</a>
+                <a href="https://docs.luanti.org/" class="btn btn-secondary">Documentation</a>
             </div>
         </div>
-        <div class="scroll-indicator"></div>
+        <div class="scroll-indicator">⬇️</div>
     </section>
 
-    <section class="features">
+    <section id="features" class="features">
         <div class="container">
-            <h2 class="section-title">Why Choose OpenClaw?</h2>
+            <h2 class="section-title">Why Choose Luanti 5.16.0?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🔐</div>
-                    <h3>Local-First & Private</h3>
-                    <p>Run completely on your own devices. Your data stays yours - no cloud dependencies, full control over your AI assistant.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">💬</div>
-                    <h3>Multi-Channel Support</h3>
-                    <p>Connect via WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, Microsoft Teams, and more - all from one gateway.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Intelligent Routing</h3>
-                    <p>Multi-agent routing system isolates channels and accounts to dedicated agents with independent workspaces and sessions.</p>
-                </div>
-                
-                <div class="feature-card">
                     <div class="feature-icon">🎨</div>
-                    <h3>Live Canvas & Voice</h3>
-                    <p>Agent-driven visual workspace with A2UI, always-on speech for macOS/iOS/Android with ElevenLabs integration.</p>
+                    <h3>Easy Modding</h3>
+                    <p>Create your own games and mods with powerful Lua scripting. The engine provides comprehensive APIs for both client and server-side modding, making it easy to bring your creative vision to life.</p>
                 </div>
-                
                 <div class="feature-card">
-                    <div class="feature-icon">🛠️</div>
-                    <h3>Powerful Tools</h3>
-                    <p>Browser control, canvas manipulation, nodes, cron jobs, sessions management, and Discord/Slack actions built-in.</p>
+                    <div class="feature-icon">🚀</div>
+                    <h3>High Performance</h3>
+                    <p>Optimized voxel rendering engine built in C++. Experience smooth gameplay even with massive worlds, complex mods, and hundreds of active entities.</p>
                 </div>
-                
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Cross-Platform Apps</h3>
-                    <p>macOS menu bar app, iOS/Android nodes with camera, screen recording, and location services integration.</p>
+                    <div class="feature-icon">🌍</div>
+                    <h3>Multiplayer Ready</h3>
+                    <p>Built-in networking support for multiplayer experiences. Host your own server, connect with friends, and explore infinite procedurally generated worlds together.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔓</div>
+                    <h3>100% Free & Open Source</h3>
+                    <p>Licensed under LGPLv2.1+, completely free with no hidden costs. Access the source code, contribute to development, and customize every aspect of the engine.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Cross-Platform</h3>
+                    <p>Available for Windows, Linux, and macOS. Compile and run on any platform with consistent performance and features across all operating systems.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Flexible Controls</h3>
+                    <p>Fully customizable controls and keybindings. Support for keyboard, mouse, and game controllers with re-bindable actions for the perfect gaming experience.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="highlights">
+    <section id="whats-new" class="whats-new">
         <div class="container">
-            <h2 class="section-title">What's New in v2026.2.16</h2>
-            <div class="highlight-list">
-                <div class="highlight-item">
-                    <h4>🚀 Enhanced Gateway Control Plane</h4>
-                    <p>Single WebSocket control plane for sessions, channels, tools, and events with improved performance and reliability.</p>
+            <h2 class="section-title">What's New in 5.16.0</h2>
+            <div class="whats-new-list">
+                <div class="whats-new-item">
+                    <h4>🎯 Enhanced Client-Side Modding API</h4>
+                    <p>Improved Lua client modding capabilities with new APIs for particle systems, HUD elements, and camera controls. Build more interactive and immersive client-side experiences.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>🔧 Advanced Tool Platform</h4>
-                    <p>Bundled, managed, and workspace skills with install gating + UI. First-class browser, canvas, and automation tools.</p>
+                <div class="whats-new-item">
+                    <h4>🔧 Core Namespace Transition</h4>
+                    <p>The engine now uses the 'core' namespace instead of 'minetest', reflecting the rebranding to Luanti. Legacy 'minetest' namespace remains supported for backward compatibility.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>🌐 Extended Channel Support</h4>
-                    <p>Now supporting Matrix, Zalo, Zalo Personal extensions alongside WhatsApp, Telegram, Slack, Discord, and more.</p>
+                <div class="whats-new-item">
+                    <h4>📊 Advanced Node Definitions</h4>
+                    <p>Extended node definition system with more parameters for visual effects, physics properties, and interaction behaviors. Create more realistic and dynamic game worlds.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>🎤 Voice Wake & Talk Mode</h4>
-                    <p>Always-on speech capabilities for macOS/iOS/Android with seamless ElevenLabs integration for natural conversations.</p>
+                <div class="whats-new-item">
+                    <h4>🎵 Improved Audio System</h4>
+                    <p>Enhanced positional audio with better 3D sound effects and Ogg Vorbis support. Create immersive soundscapes with location-based audio and smooth fade transitions.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>🔒 Security Enhancements</h4>
-                    <p>DM pairing policy by default, improved session isolation, and comprehensive security defaults for all messaging surfaces.</p>
+                <div class="whats-new-item">
+                    <h4>🖼️ Minimap Enhancements</h4>
+                    <p>New minimap customization options including shape controls, angle adjustments, and mode settings. Better navigation tools for both game developers and players.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>📊 Control UI & WebChat</h4>
-                    <p>Served directly from the Gateway with Tailscale Serve/Funnel support for remote access and management.</p>
+                <div class="whats-new-item">
+                    <h4>⚡ Performance Optimizations</h4>
+                    <p>Significant improvements in rendering performance, reduced memory footprint, and faster world generation. Enjoy smoother gameplay on a wider range of hardware.</p>
+                </div>
+                <div class="whats-new-item">
+                    <h4>🔐 Security Improvements</h4>
+                    <p>Enhanced CSM (Client-Side Modding) restriction flags for server administrators. Better control over client capabilities while maintaining security.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="install-section">
-        <div class="container">
-            <h2 class="section-title">Quick Installation</h2>
-            <p style="text-align: center; font-size: 1.3rem; margin-bottom: 30px; opacity: 0.95;">
-                Get started in minutes with npm, pnpm, or bun
-            </p>
-            
-            <div class="code-block">
-                <code>
-# Install globally<br>
-npm install -g openclaw@latest<br><br>
-
-# Run onboarding wizard<br>
-openclaw onboard --install-daemon<br><br>
-
-# Start the gateway<br>
-openclaw gateway --port 18789 --verbose
-                </code>
-            </div>
-            
-            <p style="text-align: center; margin-top: 40px; font-size: 1.2rem; opacity: 0.9;">
-                Runtime: Node ≥22.12.0
-            </p>
-        </div>
-    </section>
-
-    <section class="features" style="background: rgba(253, 246, 240, 0.95);">
+    <section id="how-it-works" class="how-it-works">
         <div class="container">
             <h2 class="section-title">How It Works</h2>
-            <div style="max-width: 900px; margin: 0 auto;">
-                <div class="highlight-item">
-                    <h4>1. Local Gateway</h4>
-                    <p>The Gateway runs on your machine (ws://127.0.0.1:18789) as a control plane managing all channels, tools, and agent interactions.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Download & Install</h3>
+                    <p>Get the latest version from GitHub releases. Available for Windows, Linux, and macOS with easy installation.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>2. Multi-Channel Integration</h4>
-                    <p>Connect your preferred messaging platforms - WhatsApp, Telegram, Slack, Discord, and more - all routed through the gateway.</p>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Choose Your Game</h3>
+                    <p>Select from hundreds of community-created games or start with the default game to explore Luanti's capabilities.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>3. Pi Agent Runtime</h4>
-                    <p>Powered by Pi agent in RPC mode with tool streaming and block streaming for responsive, intelligent interactions.</p>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Add Mods</h3>
+                    <p>Enhance your experience with mods. Browse the content database or create your own using Lua scripting.</p>
                 </div>
-                
-                <div class="highlight-item">
-                    <h4>4. Optional Companion Apps</h4>
-                    <p>Enhance with macOS menu bar app, iOS/Android nodes, CLI tools, and WebChat UI for complete control.</p>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Play & Create</h3>
+                    <p>Start playing or begin developing your own game. The engine provides all the tools you need to bring your ideas to life.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer">
+    <section class="cta-section">
         <div class="container">
-            <p style="font-size: 1.3rem; margin-bottom: 25px; font-weight: 600;">
-                <strong>OpenClaw</strong> - Built for Molty 🦞 by Peter Steinberger and the community
-            </p>
-            <div>
-                <a href="https://github.com/openclaw/openclaw">GitHub</a>
-                <a href="https://docs.openclaw.ai">Documentation</a>
-                <a href="https://discord.gg/clawd">Discord</a>
-                <a href="https://openclaw.ai">Website</a>
-                <a href="https://github.com/openclaw/openclaw/releases">Releases</a>
+            <h2>Ready to Experience Luanti 5.16.0?</h2>
+            <p>Join thousands of developers and players in the open-source voxel game revolution. Start creating today!</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/luanti-org/luanti/releases" class="btn btn-primary">Download Now</a>
+                <a href="https://forum.luanti.org/" class="btn btn-secondary">Join Community</a>
             </div>
-            <p style="margin-top: 35px; opacity: 0.8; font-size: 0.95rem;">
-                © 2026 OpenClaw - MIT License
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2010-2026 Luanti Contributors | Licensed under LGPLv2.1+</p>
+            <p>
+                <a href="https://www.luanti.org/" target="_blank">Official Website</a> | 
+                <a href="https://github.com/luanti-org/luanti" target="_blank">GitHub</a> | 
+                <a href="https://docs.luanti.org/" target="_blank">Documentation</a> | 
+                <a href="https://forum.luanti.org/" target="_blank">Forum</a>
             </p>
+            <p style="margin-top: 20px;">Promotional page created for version 5.16.0</p>
+            <div class="powered-by">
+                <p>🤖 <strong>Powered by Mindflow</strong> 🚀</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Particle system
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Particle animation in hero section
         function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 60 + 20;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
-                container.appendChild(particle);
+                particle.style.width = (Math.random() * 5 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
             }
         }
+        createParticles();
+
+        // Typing effect for subtitle
+        const subtitle = "The Ultimate Free Open-Source Voxel Game Engine\nFormerly Known as Minetest";
+        let index = 0;
+        const subtitleElement = document.getElementById('subtitle');
         
-        // Scroll animations
+        function typeWriter() {
+            if (index < subtitle.length) {
+                if (subtitle.charAt(index) === '\n') {
+                    subtitleElement.innerHTML += '<br>';
+                } else {
+                    subtitleElement.innerHTML += subtitle.charAt(index);
+                }
+                index++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+        setTimeout(typeWriter, 500);
+
+        // Animate feature cards on scroll
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -100px 0px'
         };
-        
+
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
                 }
             });
         }, observerOptions);
-        
-        // Smooth scroll for scroll indicator
-        document.querySelector('.scroll-indicator')?.addEventListener('click', () => {
-            document.querySelector('.features').scrollIntoView({ behavior: 'smooth' });
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            observer.observe(card);
         });
-        
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            
-            // Observe highlight items for animation
-            document.querySelectorAll('.highlight-item').forEach(item => {
-                observer.observe(item);
+
+        // Interactive tilt effect for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px) scale(1.03)`;
             });
             
-            // Add stagger delay to highlight items
-            document.querySelectorAll('.highlight-item').forEach((item, index) => {
-                item.style.transitionDelay = (index * 0.1) + 's';
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
             });
         });
-        
-        // Parallax effect for hero section
+
+        // Header background change on scroll
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(135, 206, 235, 0.5)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(135, 206, 235, 0.3)';
             }
         });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add CSS animation for ripple
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
