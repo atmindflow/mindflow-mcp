@@ -3,158 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw - Multi-channel AI Gateway</title>
+    <title>OpenClaw v2026.2.16 - Latest Release</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="stars2"></div>
-    <div class="stars3"></div>
+    <canvas id="webgl-canvas"></canvas>
     
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">
-                <span class="logo-icon">⚡</span>
-                <span class="logo-text">OpenClaw</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="https://docs.openclaw.ai">Docs</a></li>
-                <li><a href="https://github.com/openclaw/openclaw">GitHub</a></li>
-                <li><a href="#get-started" class="btn-primary">Get Started</a></li>
-            </ul>
-        </div>
-    </nav>
+    <div class="container">
+        <header>
+            <div class="logo" data-aos="fade-down">🦞</div>
+            <h1 data-aos="fade-up">OpenClaw</h1>
+            <div class="version" data-aos="zoom-in">Version 2026.2.16</div>
+            <p class="tagline" data-aos="fade-up" data-aos-delay="100">Your Personal AI Assistant - Multi-Channel, Local-First, Always-On</p>
+            <a href="https://github.com/openclaw/openclaw" class="cta-button" data-aos="zoom-in" data-aos-delay="200">Get Started Now</a>
+        </header>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Multi-channel AI Gateway
-                    <span class="gradient-text">with Extensible Integrations</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Connect, manage, and scale your AI messaging across platforms with OpenClaw - the intelligent gateway for modern communication.
-                </p>
-                <div class="hero-buttons">
-                    <a href="https://github.com/openclaw/openclaw" class="btn btn-large btn-gradient">Start Building</a>
-                    <a href="https://docs.openclaw.ai" class="btn btn-large btn-outline">View Documentation</a>
+        <section class="features" data-aos="fade-up">
+            <h2>🚀 What's New in v2026.2.16</h2>
+            <div class="feature-grid">
+                <div class="feature-card" data-aos="flip-left" data-aos-delay="0">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Multi-Channel Gateway</h3>
+                    <p>Connect seamlessly across WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, Microsoft Teams, Matrix, and more. One assistant, all your channels.</p>
                 </div>
-                <div class="version-badge">
-                    <span class="pulse"></span>
-                    <span>v2026.2.16 - Latest Release</span>
+                <div class="feature-card" data-aos="flip-left" data-aos-delay="100">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>Local-First Architecture</h3>
+                    <p>Run entirely on your own devices. Your data stays private and secure. Full control with local Gateway control plane for sessions, channels, and tools.</p>
                 </div>
-            </div>
-            <div class="hero-visual">
-                <div class="floating-card card-1">
-                    <div class="card-icon">💬</div>
-                    <div class="card-text">Telegram</div>
+                <div class="feature-card" data-aos="flip-left" data-aos-delay="200">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice Wake & Talk Mode</h3>
+                    <p>Always-on speech capabilities for macOS, iOS, and Android. Natural voice interactions with ElevenLabs integration. Hands-free productivity redefined.</p>
                 </div>
-                <div class="floating-card card-2">
-                    <div class="card-icon">🤖</div>
-                    <div class="card-text">AI Gateway</div>
+                <div class="feature-card" data-aos="flip-left" data-aos-delay="300">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Live Canvas</h3>
+                    <p>Agent-driven visual workspace with A2UI. Create, manipulate, and control visual content directly through your AI assistant.</p>
                 </div>
-                <div class="floating-card card-3">
-                    <div class="card-icon">🔗</div>
-                    <div class="card-text">Multi-Channel</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <div class="container">
-            <h2 class="section-title">Latest Features in v2026.2.16</h2>
-            <p class="section-subtitle">Cutting-edge capabilities to power your AI integrations</p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📡</div>
-                    <h3>Telegram Channel Posts</h3>
-                    <p>Bot-to-bot communication support with enhanced channel_post handling for seamless automation workflows.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Searchable Model Picker</h3>
-                    <p>Intuitive model selection interface in configuration panel for faster setup and deployment.</p>
-                </div>
-                
-                <div class="feature-card">
+                <div class="feature-card" data-aos="flip-left" data-aos-delay="400">
                     <div class="feature-icon">🔧</div>
-                    <h3>Stream Mode Fix</h3>
-                    <p>Resolved Telegram duplicate preview bubbles in partial stream mode for cleaner user experience.</p>
+                    <h3>First-Class Tools</h3>
+                    <p>Browser automation, canvas control, cron jobs, sessions management, and Discord/Slack actions. Extensible with workspace skills.</p>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Hook Optimization</h3>
-                    <p>Fixed before_tool_call hook double-fires with proper abort signal handling for better performance.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">💬</div>
-                    <h3>Thread Routing</h3>
-                    <p>Enhanced Telegram DM thread routing improvements for better conversation management.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Extensible Integration</h3>
-                    <p>Build custom messaging integrations with our flexible, developer-friendly architecture.</p>
+                <div class="feature-card" data-aos="flip-left" data-aos-delay="500">
+                    <div class="feature-icon">📱</div>
+                    <h3>Cross-Platform Apps</h3>
+                    <p>macOS menu bar app, iOS and Android nodes. Control your gateway remotely with Tailscale Serve/Funnel or SSH tunnels.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Transform Your AI Communication?</h2>
-                <p>Join developers building the future of multi-channel AI messaging</p>
-                <a href="https://github.com/openclaw/openclaw" class="btn btn-large btn-gradient">Get Started Now</a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-left">
-                    <div class="logo">
-                        <span class="logo-icon">⚡</span>
-                        <span class="logo-text">OpenClaw</span>
-                    </div>
-                    <p>Multi-channel AI gateway with extensible messaging integrations</p>
+        <section class="how-it-works" data-aos="fade-up">
+            <h2>⚡ How It Works</h2>
+            <div class="steps">
+                <div class="step" data-aos="fade-right">
+                    <h3>Step 1: Install</h3>
+                    <p>Install OpenClaw globally with npm, pnpm, or bun. Requires Node ≥22.</p>
+                    <code>npm install -g openclaw@latest</code>
                 </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Product</h4>
-                        <a href="#features">Features</a>
-                        <a href="https://docs.openclaw.ai">Documentation</a>
-                        <a href="https://github.com/openclaw/openclaw">GitHub</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Resources</h4>
-                        <a href="https://github.com/openclaw/openclaw">GitHub</a>
-                        <a href="https://discord.gg/clawd">Community</a>
-                        <a href="https://openclaw.ai">Website</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Company</h4>
-                        <a href="https://openclaw.ai">About</a>
-                        <a href="https://github.com/openclaw/openclaw/issues">Contact</a>
-                        <a href="https://github.com/openclaw/openclaw/blob/main/LICENSE">License</a>
-                    </div>
+                <div class="step" data-aos="fade-right" data-aos-delay="100">
+                    <h3>Step 2: Onboard</h3>
+                    <p>Run the guided wizard to set up your gateway, workspace, channels, and skills.</p>
+                    <code>openclaw onboard --install-daemon</code>
+                </div>
+                <div class="step" data-aos="fade-right" data-aos-delay="200">
+                    <h3>Step 3: Start Gateway</h3>
+                    <p>Launch the Gateway control plane on your local machine or remote server.</p>
+                    <code>openclaw gateway --port 18789 --verbose</code>
+                </div>
+                <div class="step" data-aos="fade-right" data-aos-delay="300">
+                    <h3>Step 4: Connect & Talk</h3>
+                    <p>Connect your messaging channels and start interacting with your AI assistant!</p>
+                    <code>openclaw agent --message "Hello OpenClaw!" --thinking high</code>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>© 2026 OpenClaw. All rights reserved.</p>
-                <p class="powered-by">Powered by <strong>Mindflow AI</strong></p>
-            </div>
-        </div>
-    </footer>
+        </section>
 
+        <section class="channels" data-aos="fade-up">
+            <h2>🔗 Supported Channels</h2>
+            <p>Connect your AI assistant to the platforms you already use every day</p>
+            <div class="channel-badges">
+                <span class="badge" data-aos="zoom-in" data-aos-delay="0">WhatsApp</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="50">Telegram</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="100">Slack</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="150">Discord</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="200">Google Chat</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="250">Signal</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="300">iMessage</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="350">BlueBubbles</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="400">Microsoft Teams</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="450">Matrix</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="500">Zalo</span>
+                <span class="badge" data-aos="zoom-in" data-aos-delay="550">WebChat</span>
+            </div>
+        </section>
+
+        <section class="highlights" data-aos="fade-up">
+            <h2>✨ Key Highlights</h2>
+            <div class="feature-grid">
+                <div class="highlight-card" data-aos="zoom-in">
+                    <h3>🎯 Model Support</h3>
+                    <p>Works with Anthropic Claude (Pro/Max), OpenAI, and any compatible model. Recommended: Anthropic Pro/Max with Opus 4.6.</p>
+                </div>
+                <div class="highlight-card" data-aos="zoom-in" data-aos-delay="100">
+                    <h3>🔒 Security First</h3>
+                    <p>DM pairing by default, pairing code approval system, and optional sandbox mode for group sessions with Docker isolation.</p>
+                </div>
+                <div class="highlight-card" data-aos="zoom-in" data-aos-delay="200">
+                    <h3>🤖 Agent-to-Agent</h3>
+                    <p>Coordinate work across sessions with sessions_list, sessions_history, and sessions_send tools.</p>
+                </div>
+                <div class="highlight-card" data-aos="zoom-in" data-aos-delay="300">
+                    <h3>📦 Skills Platform</h3>
+                    <p>Bundled, managed, and workspace skills. Auto-discover with ClawHub registry integration.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>OpenClaw v2026.2.16</strong> - Built for Molty 🦞</p>
+            <p style="margin-top: 20px;">
+                <a href="https://github.com/openclaw/openclaw">GitHub</a> | 
+                <a href="https://docs.openclaw.ai">Documentation</a> | 
+                <a href="https://discord.gg/clawd">Discord Community</a> | 
+                <a href="https://openclaw.ai">Website</a>
+            </p>
+            <p style="margin-top: 20px; opacity: 0.8;">
+                EXFOLIATE! EXFOLIATE! 🦞
+            </p>
+            <p style="margin-top: 30px; font-size: 0.9em; opacity: 0.7;">
+                Powered by <strong>Mindflow</strong>
+            </p>
+        </footer>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
