@@ -1,375 +1,343 @@
-import * as THREE from 'https://unpkg.com/three@0.161.0/build/three.module.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.161.0/examples/jsm/controls/OrbitControls.js';
+const canvas = document.getElementById('gl');
+const pulseBtn = document.getElementById('pulse');
+const toggleMotion = document.getElementById('toggleMotion');
+const toggleQuality = document.getElementById('toggleQuality');
+const motionStateEl = toggleMotion.querySelector('[data-state]');
+const qualityStateEl = toggleQuality.querySelector('[data-quality]');
 
-const $ = (sel, root=document) => root.querySelector(sel);
+let gl, dpr, width, height;
+let rafId = null;
+let motionEnabled = true;
+let highQuality = true;
 
-const canvas = $('#gl');
-const hudHint = $('#hudHint');
-const btnPulse = $('#pulse');
-const btnMotion = $('#toggleMotion');
-const btnQuality = $('#toggleQuality');
+// Scene state
+let nodes = [];
+let links = [];
+let focusIndex = -1;
+let time = 0;
+let cam = { r: 48, theta: 0.9, phi: 0.8, target: [0,0,0] };
+let mouse = { x:0, y:0, down:false, lastX:0, lastY:0 };
 
-// ---------- Utilities ----------
+// Utility
+const TAU = Math.PI * 2;
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-function now(){ return performance.now(); }
-
-async function copyBullets(listId){
-  const el = document.getElementById(listId);
-  if(!el) return;
-  const text = [...el.querySelectorAll('li')].map(li => `• ${li.innerText.replace(/\s+/g,' ').trim()}`).join('\n');
-  try{
-    await navigator.clipboard.writeText(text);
-  }catch{
-    // Fallback
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    ta.remove();
-  }
-}
-
-for (const btn of document.querySelectorAll('[data-copy]')){
-  btn.addEventListener('click', async () => {
-    const id = btn.getAttribute('data-copy');
-    const old = btn.textContent;
-    await copyBullets(id);
-    btn.textContent = 'Copied';
-    setTimeout(() => (btn.textContent = old), 900);
-  });
-}
-
-// ---------- WebGL Scene ----------
-const state = {
-  motion: true,
-  quality: 'high',
-  pinned: null,
-  pulseT: 0,
-  pulseAmp: 0,
-  dpr: Math.min(devicePixelRatio || 1, 2),
-};
-
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(state.dpr);
-renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-renderer.setClearColor(0x000000, 0);
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
-camera.position.set(0.8, 0.55, 2.6);
-
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.dampingFactor = 0.06;
-controls.minDistance = 1.25;
-controls.maxDistance = 5.0;
-controls.maxPolarAngle = Math.PI * 0.52;
-controls.target.set(0, 0, 0);
-
-// Lights
-const key = new THREE.DirectionalLight(0xbfe9ff, 1.1);
-key.position.set(3, 4, 2);
-scene.add(key);
-
-const fill = new THREE.DirectionalLight(0xc7ffd8, 0.65);
-fill.position.set(-3, 1.5, 3);
-scene.add(fill);
-
-const rim = new THREE.PointLight(0x6ac1ff, 1.0, 10, 2);
-rim.position.set(0, 1.8, -2.2);
-scene.add(rim);
-
-scene.add(new THREE.AmbientLight(0x223044, 0.85));
-
-// Subtle fog for depth
-scene.fog = new THREE.FogExp2(0x0b0f14, 0.22);
-
-// Backplate glow (fake volumetric)
-const glowGeo = new THREE.PlaneGeometry(8, 6, 1, 1);
-const glowMat = new THREE.ShaderMaterial({
-  transparent: true,
-  depthWrite: false,
-  uniforms: {
-    uA: { value: new THREE.Color('#6ac1ff') },
-    uB: { value: new THREE.Color('#9bffb9') },
-    uTime: { value: 0 },
-  },
-  vertexShader: `
-    varying vec2 vUv;
-    void main(){
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    varying vec2 vUv;
-    uniform vec3 uA;
-    uniform vec3 uB;
-    uniform float uTime;
-
-    float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
-
-    void main(){
-      vec2 p = vUv * 2.0 - 1.0;
-      float r = length(p);
-      float v = smoothstep(1.2, 0.1, r);
-
-      float sweep = 0.15 * sin(uTime * 0.7 + p.x * 3.0) * sin(uTime * 0.45 + p.y * 2.0);
-      float grain = (hash(vUv * 120.0 + uTime * 0.01) - 0.5) * 0.05;
-
-      vec3 col = mix(uA, uB, smoothstep(-0.7, 0.7, p.x + 0.15*sin(uTime*0.25)));
-      float a = (v + sweep) * 0.35 + grain;
-      a *= smoothstep(1.15, 0.0, r);
-
-      gl_FragColor = vec4(col, clamp(a, 0.0, 0.38));
-    }
-  `
-});
-const glow = new THREE.Mesh(glowGeo, glowMat);
-glow.position.set(0, 0.05, -1.4);
-scene.add(glow);
-
-// Agent Mesh group
-const group = new THREE.Group();
-scene.add(group);
-
-// Central "core" (represents orchestrator)
-const coreGeo = new THREE.IcosahedronGeometry(0.32, 3);
-const coreMat = new THREE.MeshPhysicalMaterial({
-  color: new THREE.Color('#0f1620'),
-  emissive: new THREE.Color('#0b2a3a'),
-  emissiveIntensity: 1.0,
-  metalness: 0.55,
-  roughness: 0.18,
-  clearcoat: 1.0,
-  clearcoatRoughness: 0.18,
-});
-const core = new THREE.Mesh(coreGeo, coreMat);
-core.castShadow = false;
-core.position.set(0, 0, 0);
-group.add(core);
-
-// Orbits: nodes connected by arcs
-const nodeCount = 18;
-const nodes = [];
-
-const nodeGeo = new THREE.SphereGeometry(0.06, 24, 18);
-
-function nodeMaterial(hex){
-  return new THREE.MeshStandardMaterial({
-    color: new THREE.Color(hex),
-    emissive: new THREE.Color(hex),
-    emissiveIntensity: 0.55,
-    metalness: 0.2,
-    roughness: 0.25,
-  });
-}
-
-const palette = ['#6ac1ff', '#9bffb9', '#ffd166', '#7bd88f'];
-
-for (let i=0; i<nodeCount; i++){
-  const t = i / nodeCount;
-  const r = 0.65 + 0.22 * Math.sin(i * 1.7);
-  const angle = t * Math.PI * 2;
-  const y = (Math.sin(i * 2.1) * 0.18);
-
-  const mat = nodeMaterial(palette[i % palette.length]);
-  const mesh = new THREE.Mesh(nodeGeo, mat);
-  mesh.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
-  mesh.userData = { index: i, base: mesh.position.clone(), phase: angle, r };
-  group.add(mesh);
-  nodes.push(mesh);
-}
-
-// Connections
-const lineMat = new THREE.LineBasicMaterial({ color: 0x6ac1ff, transparent: true, opacity: 0.22 });
-const lineGeom = new THREE.BufferGeometry();
-
-const pairs = [];
-for (let i=0; i<nodes.length; i++){
-  // connect each node to the core and to a neighbor
-  pairs.push([i, -1]);
-  pairs.push([i, (i+1) % nodes.length]);
-  if(i % 3 === 0) pairs.push([i, (i+5) % nodes.length]);
-}
-
-const positions = new Float32Array(pairs.length * 2 * 3);
-lineGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-const lines = new THREE.LineSegments(lineGeom, lineMat);
-group.add(lines);
-
-// A "security ring" torus
-const ring = new THREE.Mesh(
-  new THREE.TorusGeometry(0.88, 0.015, 10, 280),
-  new THREE.MeshStandardMaterial({ color: 0x9bffb9, emissive: 0x1a3a26, emissiveIntensity: 0.85, metalness: 0.3, roughness: 0.3 })
-);
-ring.rotation.x = Math.PI * 0.5;
-ring.position.y = -0.02;
-group.add(ring);
-
-// Raycaster for clicks
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-function setPinned(index){
-  state.pinned = index;
-  if(index == null){
-    hudHint.textContent = 'Tip: click a glowing node to pin focus';
-    return;
-  }
-  const label = ['Discord CV2', 'Sub‑agents', 'Plugin hooks', 'Hardening'][index % 4];
-  hudHint.textContent = `Pinned: ${label} (node ${index+1}/${nodeCount}) — click empty space to unpin`;
-}
-
-function onPointerDown(ev){
-  const rect = canvas.getBoundingClientRect();
-  const x = ( (ev.clientX - rect.left) / rect.width ) * 2 - 1;
-  const y = - ( (ev.clientY - rect.top) / rect.height ) * 2 + 1;
-  mouse.set(x,y);
-
-  raycaster.setFromCamera(mouse, camera);
-  const hits = raycaster.intersectObjects(nodes, false);
-  if(hits.length){
-    setPinned(hits[0].object.userData.index);
-    // small pulse on selection
-    state.pulseAmp = Math.max(state.pulseAmp, 0.8);
-    state.pulseT = 0;
-  } else {
-    setPinned(null);
-  }
-}
-canvas.addEventListener('pointerdown', onPointerDown, { passive: true });
-
-// Pulse button
-btnPulse?.addEventListener('click', () => {
-  state.pulseAmp = 1.25;
-  state.pulseT = 0;
-});
-
-// Motion toggle
-function setMotion(on){
-  state.motion = !!on;
-  const el = btnMotion?.querySelector('[data-state]');
-  if(el) el.textContent = state.motion ? 'On' : 'Off';
-  controls.enableDamping = state.motion;
-  if(!state.motion){
-    // settle immediately
-    controls.update();
-  }
-}
-btnMotion?.addEventListener('click', () => setMotion(!state.motion));
-
-// Quality toggle
-function setQuality(q){
-  state.quality = q;
-  const el = btnQuality?.querySelector('[data-quality]');
-  if(el) el.textContent = (q === 'high') ? 'High' : 'Low';
-  state.dpr = (q === 'high') ? Math.min(devicePixelRatio || 1, 2) : 1;
-  renderer.setPixelRatio(state.dpr);
-  resize();
-}
-btnQuality?.addEventListener('click', () => setQuality(state.quality === 'high' ? 'low' : 'high'));
-
-// Respect reduced motion preference by default
-const mediaReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-if(mediaReduced?.matches) setMotion(false);
 
 function resize(){
-  const w = canvas.clientWidth;
-  const h = canvas.clientHeight;
-  if(w === 0 || h === 0) return;
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  width = canvas.clientWidth; height = canvas.clientHeight;
+  canvas.width = Math.floor(width * dpr);
+  canvas.height = Math.floor(height * dpr);
+  gl.viewport(0,0,canvas.width,canvas.height);
 }
 
-const ro = new ResizeObserver(resize);
-ro.observe(canvas);
+function initGL(){
+  gl = canvas.getContext('webgl', { antialias: true, alpha: true, preserveDrawingBuffer:false });
+  if(!gl){ return alert('WebGL not supported'); }
+  gl.clearColor(0,0,0,0);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+}
+
+// Simple shader helpers
+function createShader(type, src){
+  const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+function createProgram(vsSrc, fsSrc){
+  const p = gl.createProgram();
+  gl.attachShader(p, createShader(gl.VERTEX_SHADER, vsSrc));
+  gl.attachShader(p, createShader(gl.FRAGMENT_SHADER, fsSrc));
+  gl.linkProgram(p);
+  if(!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  return p;
+}
+
+// Shaders: billboards for nodes, lines for links
+const vsPoints = `
+attribute vec3 position; // world pos
+attribute float size;
+attribute float hue;
+uniform mat4 proj, view;
+uniform float time;
+varying float vHue; varying float vPulse;
+void main(){
+  vHue = hue;
+  float pulse = 0.5 + 0.5 * sin(time*2.0 + hue*6.283);
+  vPulse = pulse;
+  vec4 wp = vec4(position,1.0);
+  gl_Position = proj * view * wp;
+  gl_PointSize = size * (300.0 / length(gl_Position.xyz));
+}
+`;
+const fsPoints = `
+precision mediump float;
+varying float vHue; varying float vPulse;
+void main(){
+  vec2 uv = gl_PointCoord*2.0-1.0; float r = length(uv);
+  float alpha = smoothstep(1.0, 0.0, r) * 0.9;
+  float h = vHue; float s = 0.7; float v = mix(0.6, 1.0, vPulse);
+  float c = v*s; float x = c*(1.0-abs(mod(h*6.0,2.0)-1.0)); float m = v-c;
+  vec3 rgb;
+  if(h<1.0/6.0) rgb=vec3(c,x,0.0);
+  else if(h<2.0/6.0) rgb=vec3(x,c,0.0);
+  else if(h<3.0/6.0) rgb=vec3(0.0,c,x);
+  else if(h<4.0/6.0) rgb=vec3(0.0,x,c);
+  else if(h<5.0/6.0) rgb=vec3(x,0.0,c);
+  else rgb=vec3(c,0.0,x);
+  rgb += m;
+  // soft core + bloom ring
+  float ring = smoothstep(0.9,0.3,r) * 0.6;
+  vec3 col = rgb*(1.0-ring) + vec3(0.5,0.9,1.0)*ring;
+  gl_FragColor = vec4(col, alpha);
+}
+`;
+
+const vsLines = `
+attribute vec3 position; // packed as pairs
+attribute float hue;
+uniform mat4 proj, view;
+uniform float time;
+varying float vHue; varying float vGlow;
+void main(){
+  vHue = hue;
+  vGlow = 0.5 + 0.5*sin(time*1.4 + hue*10.0);
+  gl_Position = proj * view * vec4(position,1.0);
+}
+`;
+const fsLines = `
+precision mediump float;
+varying float vHue; varying float vGlow;
+void main(){
+  float h=vHue; float s=0.6; float v=0.7+0.3*vGlow;
+  float c=v*s; float x=c*(1.0-abs(mod(h*6.0,2.0)-1.0)); float m=v-c; vec3 rgb;
+  if(h<1.0/6.0) rgb=vec3(c,x,0.0);
+  else if(h<2.0/6.0) rgb=vec3(x,c,0.0);
+  else if(h<3.0/6.0) rgb=vec3(0.0,c,x);
+  else if(h<4.0/6.0) rgb=vec3(0.0,x,c);
+  else if(h<5.0/6.0) rgb=vec3(x,0.0,c);
+  else rgb=vec3(c,0.0,x);
+  gl_FragColor = vec4(rgb, 0.25);
+}
+`;
+
+let progPoints, progLines, bufPoints, bufSizes, bufHues, bufLinePos, bufLineHue;
+let aPosP, aSize, aHueP, uProjP, uViewP, uTimeP;
+let aPosL, aHueL, uProjL, uViewL, uTimeL;
+
+function perspective(fov, aspect, near, far){
+  const f = 1/Math.tan(fov/2), nf = 1/(near-far);
+  return new Float32Array([
+    f/aspect,0,0,0,
+    0,f,0,0,
+    0,0,(far+near)*nf,-1,
+    0,0,(2*far*near)*nf,0
+  ]);
+}
+function lookAt(eye, target, up){
+  const z0=eye[0]-target[0], z1=eye[1]-target[1], z2=eye[2]-target[2];
+  let zl = Math.hypot(z0,z1,z2); const zx=z0/zl, zy=z1/zl, zz=z2/zl;
+  let xx = up[1]*zz - up[2]*zy;
+  let xy = up[2]*zx - up[0]*zz;
+  let xz = up[0]*zy - up[1]*zx;
+  let xl = Math.hypot(xx,xy,xz); xx/=xl; xy/=xl; xz/=xl;
+  const yx = zy*xz - zz*xy; const yy = zz*xx - zx*xz; const yz = zx*xy - zy*xx;
+  return new Float32Array([
+    xx, yx, zx, 0,
+    xy, yy, zy, 0,
+    xz, yz, zz, 0,
+    -(xx*eye[0] + xy*eye[1] + xz*eye[2]),
+    -(yx*eye[0] + yy*eye[1] + yz*eye[2]),
+    -(zx*eye[0] + zy*eye[1] + zz*eye[2]),
+    1
+  ]);
+}
+
+function generateGraph(count=120){
+  nodes = new Array(count).fill(0).map((_,i)=>{
+    const r = (Math.random()*0.6+0.4)*18;
+    const a = Math.random()*TAU; const h = (i/count)*0.9 + 0.05;
+    return {
+      x: Math.cos(a)*r + (Math.random()-0.5)*2.0,
+      y: (Math.random()-0.5)*10,
+      z: Math.sin(a)*r + (Math.random()-0.5)*2.0,
+      size: Math.random()*3+2,
+      hue: h,
+      vx:0, vy:0, vz:0
+    };
+  });
+  links = [];
+  for(let i=0;i<count;i++){
+    for(let k=0;k< (highQuality? 3:2); k++){
+      const j = Math.floor(Math.random()*count);
+      if(i!==j) links.push([i,j, (nodes[i].hue+nodes[j].hue)*0.5]);
+    }
+  }
+}
+
+function initBuffers(){
+  // Points
+  bufPoints = gl.createBuffer();
+  bufSizes = gl.createBuffer();
+  bufHues = gl.createBuffer();
+  // Lines
+  bufLinePos = gl.createBuffer();
+  bufLineHue = gl.createBuffer();
+}
+
+function buildPrograms(){
+  progPoints = createProgram(vsPoints, fsPoints);
+  aPosP = gl.getAttribLocation(progPoints, 'position');
+  aSize = gl.getAttribLocation(progPoints, 'size');
+  aHueP = gl.getAttribLocation(progPoints, 'hue');
+  uProjP = gl.getUniformLocation(progPoints, 'proj');
+  uViewP = gl.getUniformLocation(progPoints, 'view');
+  uTimeP = gl.getUniformLocation(progPoints, 'time');
+
+  progLines = createProgram(vsLines, fsLines);
+  aPosL = gl.getAttribLocation(progLines, 'position');
+  aHueL = gl.getAttribLocation(progLines, 'hue');
+  uProjL = gl.getUniformLocation(progLines, 'proj');
+  uViewL = gl.getUniformLocation(progLines, 'view');
+  uTimeL = gl.getUniformLocation(progLines, 'time');
+}
+
+function uploadData(){
+  const pos = new Float32Array(nodes.length*3);
+  const sizes = new Float32Array(nodes.length);
+  const hues = new Float32Array(nodes.length);
+  for(let i=0;i<nodes.length;i++){
+    const n = nodes[i];
+    pos[i*3+0]=n.x; pos[i*3+1]=n.y; pos[i*3+2]=n.z;
+    sizes[i]= n.size * (i===focusIndex? 2.2 : 1.0);
+    hues[i]= n.hue;
+  }
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufPoints); gl.bufferData(gl.ARRAY_BUFFER, pos, gl.DYNAMIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufSizes); gl.bufferData(gl.ARRAY_BUFFER, sizes, gl.DYNAMIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufHues); gl.bufferData(gl.ARRAY_BUFFER, hues, gl.DYNAMIC_DRAW);
+
+  const linePos = new Float32Array(links.length*2*3);
+  const lineHue = new Float32Array(links.length*2);
+  for(let i=0;i<links.length;i++){
+    const [a,b,h] = links[i];
+    const A = nodes[a], B = nodes[b];
+    linePos[i*6+0]=A.x; linePos[i*6+1]=A.y; linePos[i*6+2]=A.z;
+    linePos[i*6+3]=B.x; linePos[i*6+4]=B.y; linePos[i*6+5]=B.z;
+    lineHue[i*2+0]=h; lineHue[i*2+1]=h;
+  }
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufLinePos); gl.bufferData(gl.ARRAY_BUFFER, linePos, gl.DYNAMIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufLineHue); gl.bufferData(gl.ARRAY_BUFFER, lineHue, gl.DYNAMIC_DRAW);
+}
+
+function draw(){
+  const aspect = canvas.width/canvas.height;
+  const proj = perspective(0.9, aspect, 0.1, 1000);
+  const eye = [
+    cam.r*Math.sin(cam.theta)*Math.cos(cam.phi),
+    cam.r*Math.cos(cam.theta),
+    cam.r*Math.sin(cam.theta)*Math.sin(cam.phi)
+  ];
+  const view = lookAt(eye, cam.target, [0,1,0]);
+
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  // Lines
+  gl.useProgram(progLines);
+  gl.uniformMatrix4fv(uProjL, false, proj);
+  gl.uniformMatrix4fv(uViewL, false, view);
+  gl.uniform1f(uTimeL, time);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufLinePos);
+  gl.enableVertexAttribArray(aPosL);
+  gl.vertexAttribPointer(aPosL, 3, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufLineHue);
+  gl.enableVertexAttribArray(aHueL);
+  gl.vertexAttribPointer(aHueL, 1, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.LINES, 0, links.length*2);
+
+  // Points
+  gl.useProgram(progPoints);
+  gl.uniformMatrix4fv(uProjP, false, proj);
+  gl.uniformMatrix4fv(uViewP, false, view);
+  gl.uniform1f(uTimeP, time);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufPoints);
+  gl.enableVertexAttribArray(aPosP);
+  gl.vertexAttribPointer(aPosP, 3, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufSizes);
+  gl.enableVertexAttribArray(aSize);
+  gl.vertexAttribPointer(aSize, 1, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, bufHues);
+  gl.enableVertexAttribArray(aHueP);
+  gl.vertexAttribPointer(aHueP, 1, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.POINTS, 0, nodes.length);
+}
+
+function step(t){
+  if(!motionEnabled){ draw(); return; }
+  time = t*0.001;
+  // gentle float
+  for(let i=0;i<nodes.length;i++){
+    const n=nodes[i];
+    n.vx += (Math.sin(time*0.3 + i)*0.001);
+    n.vy += (Math.cos(time*0.25 + i*0.7)*0.001);
+    n.vz += (Math.sin(time*0.2 + i*1.3)*0.001);
+    n.x += n.vx; n.y += n.vy; n.z += n.vz;
+    n.vx *= 0.96; n.vy *= 0.96; n.vz *= 0.96;
+  }
+  uploadData();
+  draw();
+  rafId = requestAnimationFrame(step);
+}
+
+function start(){
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(step);
+}
+
+function stop(){
+  cancelAnimationFrame(rafId); rafId = null; draw();
+}
+
+// Interactions
+canvas.addEventListener('mousedown', (e)=>{ mouse.down=true; mouse.lastX=e.clientX; mouse.lastY=e.clientY;});
+window.addEventListener('mouseup', ()=>{ mouse.down=false; });
+window.addEventListener('mousemove', (e)=>{
+  if(!mouse.down) return;
+  const dx=(e.clientX-mouse.lastX)/200; const dy=(e.clientY-mouse.lastY)/200;
+  cam.phi += dx; cam.theta = clamp(cam.theta+dy, 0.1, Math.PI-0.1);
+  mouse.lastX=e.clientX; mouse.lastY=e.clientY; draw();
+});
+canvas.addEventListener('wheel', ()=>{
+  // keep simple: zoom handled in CSS layout; leaving wheel zoom disabled to avoid page scroll traps
+});
+
+pulseBtn.addEventListener('click', ()=>{
+  const startNode = focusIndex>=0 ? focusIndex : Math.floor(Math.random()*nodes.length);
+  for(let i=0;i<nodes.length;i++){
+    const dx=nodes[i].x-nodes[startNode].x;
+    const dy=nodes[i].y-nodes[startNode].y;
+    const dz=nodes[i].z-nodes[startNode].z;
+    const d = Math.max(0.001, Math.hypot(dx,dy,dz));
+    const f = 0.4/d; // inverse falloff
+    nodes[i].vx += dx/d * f; nodes[i].vy += dy/d * f; nodes[i].vz += dz/d * f;
+  }
+  uploadData(); draw();
+});
+
+toggleMotion.addEventListener('click', ()=>{
+  motionEnabled = !motionEnabled; motionStateEl.textContent = motionEnabled? 'On':'Off';
+  if(motionEnabled) start(); else stop();
+});
+
+toggleQuality.addEventListener('click', ()=>{
+  highQuality = !highQuality; qualityStateEl.textContent = highQuality? 'High':'Low';
+  generateGraph(highQuality? 140:90); uploadData(); draw();
+});
+
+// Boot
+initGL();
 resize();
-
-// Animate
-let t0 = now();
-function tick(){
-  const t = now();
-  const dt = (t - t0) / 1000;
-  t0 = t;
-
-  glowMat.uniforms.uTime.value = t * 0.001;
-
-  // Pulse envelope
-  state.pulseT += dt;
-  const pulse = state.pulseAmp * Math.exp(-state.pulseT * 1.7) * (0.5 + 0.5*Math.sin(state.pulseT * 10.0));
-  state.pulseAmp = Math.max(0, state.pulseAmp - dt * 0.45);
-
-  // Core shimmer
-  core.rotation.y += (state.motion ? dt * 0.55 : 0);
-  core.rotation.x += (state.motion ? dt * 0.25 : 0);
-  core.material.emissiveIntensity = 0.9 + 0.5 * pulse;
-
-  // Ring “security sweep”
-  ring.rotation.z += (state.motion ? dt * (0.35 + 0.35*pulse) : 0);
-  ring.material.emissiveIntensity = 0.75 + 0.55 * pulse;
-
-  // Node motion + pin highlight
-  for (const n of nodes){
-    const { base, phase, r, index } = n.userData;
-    const wob = state.motion ? (0.06 * Math.sin(t*0.0012 + phase*2.0) + 0.03 * Math.sin(t*0.0019 + phase*5.0)) : 0;
-    const lift = state.motion ? (0.055 * Math.sin(t*0.0015 + phase*3.0)) : 0;
-
-    const pin = (state.pinned === index) ? 1 : 0;
-    const focus = (state.pinned == null) ? 0 : pin;
-
-    n.position.set(
-      base.x + wob * (0.9 + pulse),
-      base.y + lift * (0.9 + pulse) + pin * 0.07,
-      base.z + wob * (0.9 + pulse)
-    );
-
-    const targetEm = 0.45 + 0.55*pulse + focus * 0.85;
-    n.material.emissiveIntensity = clamp(targetEm, 0.25, 1.65);
-    n.scale.setScalar(1 + pin * 0.35 + pulse * 0.18);
-  }
-
-  // Update lines
-  const pos = lineGeom.attributes.position.array;
-  let o = 0;
-  for (const [a,b] of pairs){
-    const A = nodes[a].position;
-    const B = (b === -1) ? core.position : nodes[b].position;
-    pos[o++] = A.x; pos[o++] = A.y; pos[o++] = A.z;
-    pos[o++] = B.x; pos[o++] = B.y; pos[o++] = B.z;
-  }
-  lineGeom.attributes.position.needsUpdate = true;
-  lineMat.opacity = 0.16 + 0.25 * pulse + (state.pinned == null ? 0 : 0.10);
-
-  // Subtle group float
-  if(state.motion){
-    group.rotation.y += dt * 0.15;
-    group.position.y = 0.02 * Math.sin(t * 0.0008);
-  }
-
-  controls.update();
-  renderer.render(scene, camera);
-  requestAnimationFrame(tick);
-}
-requestAnimationFrame(tick);
-
-// Safety: if context lost, show hint
-canvas.addEventListener('webglcontextlost', (e) => {
-  e.preventDefault();
-  hudHint.textContent = 'WebGL context lost. Reload to restore the 3D illustration.';
-});
-
-// Initial hint
-setPinned(null);
-
-// Keyboard convenience
-window.addEventListener('keydown', (e) => {
-  if(e.key.toLowerCase() === 'p') btnPulse?.click();
-  if(e.key.toLowerCase() === 'm') btnMotion?.click();
-  if(e.key.toLowerCase() === 'q') btnQuality?.click();
-});
+window.addEventListener('resize', ()=>{ resize(); draw(); });
+buildPrograms();
+initBuffers();
+generateGraph(140);
+uploadData();
+start();
