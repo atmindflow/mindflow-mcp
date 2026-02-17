@@ -1,221 +1,108 @@
-// Three.js WebGL Scene
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+// Initialize Three.js scene
+if (typeof THREE !== 'undefined') {
+  const container = document.getElementById('webgl-container');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x000000, 0);
-document.getElementById('webgl-container').appendChild(renderer.domElement);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
 
-// Create lobster-inspired 3D object
-const lobsterGroup = new THREE.Group();
+  camera.position.z = 50;
 
-// Main body (ellipsoid)
-const bodyGeometry = new THREE.SphereGeometry(1, 32, 32);
-bodyGeometry.scale(1.5, 0.8, 1);
-const bodyMaterial = new THREE.MeshPhongMaterial({
-    color: 0xff6b6b,
-    emissive: 0xff3333,
-    emissiveIntensity: 0.3,
-    shininess: 100,
-    transparent: true,
-    opacity: 0.9
-});
-const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-lobsterGroup.add(body);
+  // Particle system
+  const particlesGeometry = new THREE.BufferGeometry();
+  const particlesCount = 800;
+  const posArray = new Float32Array(particlesCount * 3);
+  for (let i = 0; i < particlesCount * 3; i++) {
+    posArray[i] = (Math.random() - 0.5) * 100;
+  }
+  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-// Tail segments
-for (let i = 0; i < 5; i++) {
-    const segmentGeometry = new THREE.SphereGeometry(0.6 - i * 0.08, 16, 16);
-    segmentGeometry.scale(1, 0.7, 0.8);
-    const segment = new THREE.Mesh(segmentGeometry, bodyMaterial);
-    segment.position.x = -1.8 - i * 0.8;
-    segment.rotation.z = Math.sin(i * 0.5) * 0.2;
-    lobsterGroup.add(segment);
-}
-
-// Claws
-const clawMaterial = new THREE.MeshPhongMaterial({
-    color: 0xff4757,
-    emissive: 0xff1744,
-    emissiveIntensity: 0.4,
-    shininess: 120
-});
-
-for (let side of [-1, 1]) {
-    // Upper claw
-    const clawGeometry = new THREE.BoxGeometry(1.2, 0.4, 0.4);
-    const claw = new THREE.Mesh(clawGeometry, clawMaterial);
-    claw.position.set(1.5, side * 0.8, 0.3);
-    claw.rotation.z = side * 0.3;
-    lobsterGroup.add(claw);
-    
-    // Pincer
-    const pincerGeometry = new THREE.ConeGeometry(0.3, 0.8, 8);
-    const pincer = new THREE.Mesh(pincerGeometry, clawMaterial);
-    pincer.position.set(2.3, side * 0.8, 0.3);
-    pincer.rotation.z = Math.PI / 2 + side * 0.2;
-    lobsterGroup.add(pincer);
-}
-
-// Antennae
-for (let side of [-1, 1]) {
-    const antennaGeometry = new THREE.CylinderGeometry(0.05, 0.02, 2.5, 8);
-    const antenna = new THREE.Mesh(antennaGeometry, clawMaterial);
-    antenna.position.set(1.2, side * 0.4, 0.5);
-    antenna.rotation.z = side * 0.6;
-    antenna.rotation.y = 0.3;
-    lobsterGroup.add(antenna);
-}
-
-// Eyes
-const eyeMaterial = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    emissive: 0x00ffff,
-    emissiveIntensity: 0.8,
-    shininess: 200
-});
-
-for (let side of [-1, 1]) {
-    const eyeGeometry = new THREE.SphereGeometry(0.15, 16, 16);
-    const eye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-    eye.position.set(1, side * 0.35, 0.6);
-    lobsterGroup.add(eye);
-}
-
-scene.add(lobsterGroup);
-
-// Particle system
-const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 1500;
-const posArray = new Float32Array(particlesCount * 3);
-
-for (let i = 0; i < particlesCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 50;
-}
-
-particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.08,
+  const particlesMaterial = new THREE.PointsMaterial({
+    size: 0.15,
     color: 0xffffff,
     transparent: true,
     opacity: 0.6,
     blending: THREE.AdditiveBlending
-});
+  });
+  const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+  scene.add(particlesMesh);
 
-const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-scene.add(particlesMesh);
+  // Floating wireframe shapes
+  const shapes = [];
+  const geometries = [
+    new THREE.OctahedronGeometry(0.8),
+    new THREE.TetrahedronGeometry(0.8),
+    new THREE.IcosahedronGeometry(0.8)
+  ];
 
-// Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(ambientLight);
+  for (let i = 0; i < 15; i++) {
+    const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.15
+    });
+    const mesh = new THREE.Mesh(geometry, material);
 
-const pointLight1 = new THREE.PointLight(0x667eea, 2, 100);
-pointLight1.position.set(10, 10, 10);
-scene.add(pointLight1);
+    mesh.position.x = (Math.random() - 0.5) * 80;
+    mesh.position.y = (Math.random() - 0.5) * 80;
+    mesh.position.z = (Math.random() - 0.5) * 80;
 
-const pointLight2 = new THREE.PointLight(0x764ba2, 2, 100);
-pointLight2.position.set(-10, -10, 10);
-scene.add(pointLight2);
+    mesh.rotation.x = Math.random() * Math.PI;
+    mesh.rotation.y = Math.random() * Math.PI;
 
-const spotLight = new THREE.SpotLight(0xff6b6b, 1.5);
-spotLight.position.set(0, 20, 20);
-spotLight.angle = Math.PI / 6;
-scene.add(spotLight);
+    mesh.userData = {
+      speedX: (Math.random() - 0.5) * 0.002,
+      speedY: (Math.random() - 0.5) * 0.002,
+      rotationSpeed: (Math.random() - 0.5) * 0.01
+    };
 
-camera.position.z = 8;
-camera.position.y = 2;
+    shapes.push(mesh);
+    scene.add(mesh);
+  }
 
-// Mouse interaction
-let mouseX = 0;
-let mouseY = 0;
-let targetX = 0;
-let targetY = 0;
-
-document.addEventListener('mousemove', (event) => {
+  // Mouse interaction
+  let mouseX = 0;
+  let mouseY = 0;
+  document.addEventListener('mousemove', (event) => {
     mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-});
+  });
 
-// Scroll animations
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.feature-card, .channels-section, .installation').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    observer.observe(el);
-});
-
-// Animation loop
-let time = 0;
-function animate() {
+  // Animate
+  let time = 0;
+  function animate() {
     requestAnimationFrame(animate);
-    time += 0.01;
-    
-    // Smooth mouse following
-    targetX = mouseX * 0.5;
-    targetY = mouseY * 0.5;
-    
-    // Lobster rotation and animation
-    lobsterGroup.rotation.y = time * 0.3 + targetX * 0.5;
-    lobsterGroup.rotation.x = targetY * 0.3;
-    lobsterGroup.position.y = Math.sin(time) * 0.3;
-    
-    // Animate claws
-    lobsterGroup.children.forEach((child, index) => {
-        if (index > 5 && index < 10) {
-            child.rotation.x = Math.sin(time * 2 + index) * 0.2;
-        }
+    time += 0.001;
+
+    particlesMesh.rotation.y = time * 0.3;
+    particlesMesh.rotation.x = time * 0.2;
+
+    shapes.forEach((shape) => {
+      shape.position.x += shape.userData.speedX;
+      shape.position.y += shape.userData.speedY;
+      if (Math.abs(shape.position.x) > 40) shape.position.x *= -0.9;
+      if (Math.abs(shape.position.y) > 40) shape.position.y *= -0.9;
+      shape.rotation.x += shape.userData.rotationSpeed;
+      shape.rotation.y += shape.userData.rotationSpeed;
     });
-    
-    // Rotate particles
-    particlesMesh.rotation.y = time * 0.05;
-    particlesMesh.rotation.x = time * 0.03;
-    
-    // Animate particle positions
-    const positions = particlesMesh.geometry.attributes.position.array;
-    for (let i = 0; i < positions.length; i += 3) {
-        positions[i + 1] += Math.sin(time + i) * 0.01;
-        if (positions[i + 1] > 25) positions[i + 1] = -25;
-    }
-    particlesMesh.geometry.attributes.position.needsUpdate = true;
-    
-    // Pulsing lights
-    pointLight1.intensity = 2 + Math.sin(time * 2) * 0.5;
-    pointLight2.intensity = 2 + Math.cos(time * 2) * 0.5;
-    pointLight1.position.x = Math.cos(time) * 10;
-    pointLight1.position.z = Math.sin(time) * 10;
-    pointLight2.position.x = Math.sin(time) * 10;
-    pointLight2.position.z = Math.cos(time) * 10;
-    
+
+    camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+    camera.position.y += (mouseY * 5 - camera.position.y) * 0.05;
+    camera.lookAt(scene.position);
+
     renderer.render(scene, camera);
-}
+  }
 
-animate();
+  animate();
 
-// Handle window resize
-window.addEventListener('resize', () => {
+  window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
-});
+  });
+}
