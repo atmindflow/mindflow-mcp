@@ -3,282 +3,304 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenClaw v2026.2.15 — New Features</title>
-  <meta name="description" content="Explore the new features in OpenClaw v2026.2.15: Discord Components v2, refined Discord UX, plugin LLM I/O hooks, nested sub-agents with depth control, per-channel ack overrides, Cron/Gateway notify + webhook token, and unified channel probe/token base types." />
-
+  <title>OpenClaw — Release v2026.2.15</title>
+  <meta name="description" content="OpenClaw v2026.2.15 — What’s new, how it works, and downloads. Glassmorphic UI with WebGL agent mesh illustration." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="./styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Ambient background -->
-  <div class="bg" aria-hidden="true">
-    <div class="bg__glow bg__glow--a"></div>
-    <div class="bg__glow bg__glow--b"></div>
-    <div class="bg__grid"></div>
-    <div class="bg__noise"></div>
+  <!-- WebGL Canvas Background -->
+  <canvas id="stage"></canvas>
+  <div class="stage-glow"></div>
+
+  <!-- Sticky Header -->
+  <header class="site-header glass">
+    <div class="header-left">
+      <div class="brand">
+        <div class="logo-dot"></div>
+        <span class="brand-name">OpenClaw</span>
+      </div>
+      <span class="version-badge">v2026.2.15</span>
+    </div>
+    <nav class="header-actions">
+      <a class="btn ghost" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release Notes</a>
+      <div class="divider"></div>
+      <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip">Download ZIP</a>
+      <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg">Download DMG</a>
+      <a class="btn subtle" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dSYM.zip">dSYM</a>
+    </nav>
+  </header>
+
+  <!-- Control Dock -->
+  <div class="control-dock glass">
+    <div class="control">
+      <label for="motionToggle">Motion</label>
+      <input type="checkbox" id="motionToggle" checked />
+    </div>
+    <div class="control">
+      <label for="qualityRange">Quality</label>
+      <input type="range" id="qualityRange" min="0.5" max="2" step="0.25" value="1.25" />
+    </div>
   </div>
 
-  <div class="container">
-    <header class="topbar">
-      <a class="logo" href="#top" aria-label="OpenClaw home">
-        <span class="logo__mark" aria-hidden="true"></span>
-        <span class="logo__text">OpenClaw <span class="tag">v2026.2.15</span></span>
-      </a>
-
-      <nav class="nav" aria-label="Primary">
-        <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release notes</a>
-        <a href="#how-it-works">How it works</a>
-      </nav>
-
-      <div class="actions">
-        <button id="toggleMotion" class="chip" type="button" title="Toggle motion">Motion: <span data-state>On</span></button>
-        <button id="toggleQuality" class="chip" type="button" title="Toggle WebGL quality">Quality: <span data-quality>High</span></button>
+  <!-- Hero -->
+  <main class="hero">
+    <div class="hero-inner glass panel">
+      <h1 class="headline">openclaw 2026.2.15</h1>
+      <p class="subhead">A focused release leveling up native interaction across Discord and channels, unlocking deeper plugin insight, and safer, smarter sub-agent orchestration—wrapped in a faster ops flow.</p>
+      <div class="hero-ctas">
+        <a class="btn xl primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip">Download ZIP</a>
+        <a class="btn xl gradient" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg">Download DMG</a>
+        <a class="btn xl ghost" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">View on GitHub</a>
       </div>
-    </header>
+      <div class="meta">
+        <span class="chip">Published: 2026-02-16</span>
+        <span class="chip" title="Latest stable">Latest</span>
+      </div>
+    </div>
+  </main>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero__copy">
-          <div class="badge" role="status">
-            <span class="dot" aria-hidden="true"></span>
-            Latest release • 2026‑02‑16
-          </div>
+  <!-- What's New -->
+  <section class="section panel glass">
+    <h2>What’s new in v2026.2.15</h2>
+    <ul class="whats-new">
+      <li>
+        <strong>Discord: Components v2 interactive prompts</strong> — Buttons, selects, modals, and attachment-backed file blocks for native interaction.
+      </li>
+      <li>
+        <strong>Discord: CV2 UI passthrough + exec approval UX</strong> — Embeds passthrough, CV2 containers, button layout, and Discord-forwarding skip.
+      </li>
+      <li>
+        <strong>Plugins: llm_input / llm_output hooks</strong> — Extensions can observe prompt/input context and model output usage details. (#16724)
+      </li>
+      <li>
+        <strong>Subagents: nested sub-agents</strong> — Configurable depth with spawn limits, depth-aware tool policy, and announce chain routing. (#14447)
+      </li>
+      <li>
+        <strong>Slack/Discord/Telegram: per-channel ack reactions</strong> — Override acks with platform-specific emoji formats. (#17092)
+      </li>
+      <li>
+        <strong>Cron/Gateway: finished-run webhooks + auth</strong> — Toggle notify and send with a dedicated webhook token. (#14535)
+      </li>
+      <li>
+        <strong>Channels: deduplicated base types</strong> — Unified probe/token resolution across core and extensions with preserved per-channel error typing. (#16986)
+      </li>
+    </ul>
+  </section>
 
-          <h1 class="title">OpenClaw v2026.2.15 — Focused on richer UI, deeper orchestration, and developer hooks.</h1>
-          <p class="subtitle">
-            This page highlights what’s new in OpenClaw v2026.2.15 — Discord Components v2 with refined UX, nested sub‑agents with depth controls,
-            plugin hooks for <code>llm_input</code>/<code>llm_output</code>, per‑channel ack override, Cron/Gateway notify + webhook token,
-            and unified channel probe/token base types.
-          </p>
+  <!-- How it works -->
+  <section class="section panel glass">
+    <h2>How it works</h2>
 
-          <div class="cta">
-            <a class="btn btn--primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip">
-              Download .zip
-              <span class="btn__icon" aria-hidden="true">→</span>
-            </a>
-            <a class="btn btn--secondary" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">
-              View full release notes
-              <span class="btn__icon" aria-hidden="true">↗</span>
-            </a>
-          </div>
-
-          <p class="note">
-            Also available:
-            <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg">macOS (.dmg)</a>
-            ·
-            <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dSYM.zip">dSYM</a>
-          </p>
-
-          <div class="hero__mini">
-            <div class="mini panel">
-              <div class="kicker">Interactive 3D</div>
-              <div class="mini__row">
-                <div class="mini__hint">
-                  <strong>Drag</strong> to orbit · <strong>Scroll</strong> to zoom · <strong>Click</strong> a node to highlight
-                </div>
-                <button id="pulse" class="pill" type="button">Pulse network</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero__stage" aria-label="3D illustration">
-          <div class="stage panel">
-            <canvas id="gl" class="stage__canvas" aria-label="OpenClaw WebGL illustration"></canvas>
-            <div class="stage__hud" aria-hidden="false">
-              <div class="hud__title">Agent Mesh</div>
-              <div class="hud__meta">
-                <span class="hud__chip">Discord CV2</span>
-                <span class="hud__chip">Nested sub‑agents</span>
-                <span class="hud__chip">LLM I/O hooks</span>
-              </div>
-              <div class="hud__hint" id="hudHint">Tip: click a glowing node to pin focus</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="cards" aria-label="New features highlights">
-        <article class="card panel">
-          <div class="kicker">Discord</div>
-          <h3>Components v2</h3>
-          <p>Build native, multi‑step flows with buttons, selects, modals, and attachment‑backed file blocks. Cleaner layouts and approvals.</p>
-        </article>
-        <article class="card panel">
-          <div class="kicker">Discord</div>
-          <h3>Refined UX</h3>
-          <p>CV2 containers, embed passthrough, and improved execution/approval ergonomics for conversational tasks.</p>
-        </article>
-        <article class="card panel">
-          <div class="kicker">Plugins</div>
-          <h3>LLM input/output hooks</h3>
-          <p>Extensions can observe <code>llm_input</code> / <code>llm_output</code> for analytics, routing, and guardrails.</p>
-        </article>
-        <article class="card panel">
-          <div class="kicker">Sub‑agents</div>
-          <h3>Nested with depth control</h3>
-          <p>Opt‑in depth via <code>maxSpawnDepth</code> and bound fan‑out with <code>maxChildrenPerAgent</code>.</p>
-        </article>
-        <article class="card panel">
-          <div class="kicker">Channels</div>
-          <h3>Per‑channel ack overrides</h3>
-          <p>Configure distinct acknowledgement reactions per Slack/Discord/Telegram channel.</p>
-        </article>
-        <article class="card panel">
-          <div class="kicker">Cron/Gateway</div>
-          <h3>Notify + webhook token</h3>
-          <p>Use finished‑run <code>notify</code> webhooks and a dedicated <code>cron.webhookToken</code> for targeted callbacks.</p>
-        </article>
-        <article class="card panel">
-          <div class="kicker">Channels</div>
-          <h3>Unified base types</h3>
-          <p>Probe/token base types are deduplicated across core and extensions for simpler configuration.</p>
-        </article>
-      </section>
-
-      <section id="how-it-works" class="section">
-        <div class="kicker">How it works</div>
-        <h2>Configuration and quick implementation</h2>
-        <div class="panel block">
-          <ul class="list code-list">
-            <li class="item">
-              <strong>Discord Components v2</strong>
-              <pre aria-label="discord cv2 example"><code>// config/discord.yml
-components:
-  version: 2
-  containers:
-    allowEmbedsPassthrough: true
-skills:
-  - id: file_intake
+    <article class="feature">
+      <h3>1) Discord Components v2 — rich interactive prompts</h3>
+      <p>Unlock native Discord interactions: buttons, selects, modals, and attachment-backed file blocks.</p>
+      <div class="code">
+        <pre><code class="lang-yaml"># openclaw.config.yaml
+channels:
+  discord:
+    enabled: true
+    token: ${DISCORD_BOT_TOKEN}
     components:
-      modal:
-        title: "Upload artifact"
-        fields:
-          - id: desc
-            type: text
-            label: "Description"
-      fileBlock:
-        accept: [".csv", ".pdf"]
-        required: true
-</code></pre>
-              <div class="tip">Register handlers to receive modal submissions and file attachments via CV2 containers.</div>
-            </li>
-            <li class="item">
-              <strong>Refined Discord UX (exec/approval)</strong>
-              <pre aria-label="discord ux options"><code>// runtime/options.json
-{
-  "discord": {
-    "cv2": { "compactEmbeds": true },
-    "approval": { "confirmEmoji": "✅", "rejectEmoji": "⛔" }
-  }
+      version: 2                 # Enable Components v2
+      fileBlocks: true           # Attachment-backed file blocks
+      modals: true               # Modal prompts
+      selects: true              # Select inputs
+      buttons: true              # Buttons
+
+prompts:
+  - id: "deploy_flow"
+    channel: discord
+    ui:
+      layout: cv2                # CV2 container layout
+      blocks:
+        - type: select
+          id: env
+          label: Environment
+          options: ["staging", "prod"]
+        - type: button
+          id: approve
+          label: Approve
+        - type: fileBlock
+          id: artifact
+          label: Upload artifact</code></pre>
+      </div>
+      <p class="why">Why it matters: Bring interactive agent UX directly into Discord with zero context switching.</p>
+    </article>
+
+    <article class="feature">
+      <h3>2) Discord CV2 UI passthrough + exec approval UX</h3>
+      <p>Refined containers, button layout, embeds passthrough, and Discord-forwarding skip for clean approvals.</p>
+      <div class="code">
+        <pre><code class="lang-yaml"># openclaw.config.yaml
+channels:
+  discord:
+    ui:
+      componentsV2:
+        containerStyle: "card"
+        buttonLayout: "row"
+        embedsPassthrough: true    # Preserve original embeds
+        forwardToDiscord: false    # Skip redundant forward when native UI is present
+approval:
+  exec:
+    required: true
+    prompts:
+      confirm:
+        channel: discord
+        ui:
+          layout: cv2
+          buttons:
+            - id: yes
+              label: "Approve"
+              style: success
+            - id: no
+              label: "Reject"
+              style: danger</code></pre>
+      </div>
+      <p class="why">Why it matters: Clearer, safer run approvals without clutter or double-posting.</p>
+    </article>
+
+    <article class="feature">
+      <h3>3) Plugins: llm_input and llm_output hooks</h3>
+      <p>Observe prompt/input context and model output usage details in your extensions.</p>
+      <div class="code">
+        <pre><code class="lang-js">// plugin.js
+export function on_llm_input(payload) {
+  // payload: { prompt, system, tools, user, metadata }
+  logger.info({ size: payload.prompt?.length }, "llm_input observed");
 }
-</code></pre>
-              <div class="tip">Use compact embeds and clear approvals to streamline multi‑step actions.</div>
-            </li>
-            <li class="item">
-              <strong>Plugin LLM hooks</strong>
-              <pre aria-label="plugin llm hook"><code>// extensions/analytics/index.js
-export const hooks = {
-  async llm_input(ctx) {
-    ctx.log.debug({ model: ctx.model, promptTokens: ctx.tokens }, "LLM input");
-  },
-  async llm_output(ctx) {
-    ctx.emit("trace", { latency: ctx.latencyMs, usage: ctx.usage });
-  }
-};
-</code></pre>
-              <div class="tip">Observe prompts and completions for analytics, routing, red‑teaming, or safety checks.</div>
-            </li>
-            <li class="item">
-              <strong>Nested sub‑agents with depth control</strong>
-              <pre aria-label="subagents depth"><code>// config/agents.yml
+
+export function on_llm_output(payload) {
+  // payload: { tokens: { prompt, completion, total }, model, latencyMs, text }
+  metrics.counter("llm.tokens", payload.tokens.total);
+  audit.write({
+    model: payload.model,
+    latency: payload.latencyMs,
+    sample: payload.text?.slice(0, 200)
+  });
+}
+
+// plugin.manifest.json
+{
+  "name": "telemetry-plugin",
+  "hooks": ["llm_input", "llm_output"]
+}</code></pre>
+      </div>
+      <p class="why">Why it matters: Gain transparent observability for quality, cost, and safety controls.</p>
+    </article>
+
+    <article class="feature">
+      <h3>4) Subagents: nested sub-agents (depth-aware)</h3>
+      <p>Let agents spawn children (and grandchildren) with safe depth and child limits.</p>
+      <div class="code">
+        <pre><code class="lang-yaml"># openclaw.config.yaml
 agents:
   defaults:
     subagents:
-      maxSpawnDepth: 2      # allow parent -> child -> grandchild
-      maxChildrenPerAgent: 5
+      maxSpawnDepth: 2            # allow sub-sub-agents
+      maxChildrenPerAgent: 5      # default cap
+      toolPolicy:
+        inherit: true
+        depthAware: true
   registry:
     orchestrator:
-      tools: ["spawn_subagent"]
-</code></pre>
-              <div class="tip">Depth‑aware policy prevents runaway trees while enabling specialized workers.</div>
-            </li>
-            <li class="item">
-              <strong>Per‑channel ack reaction overrides</strong>
-              <pre aria-label="ack overrides"><code>// config/channels.yml
-slack:
-  ackReaction: ":hourglass:"
-discord:
-  ackReaction: "🟦"
-telegram:
-  ackReaction: "⌛"
-</code></pre>
-              <div class="tip">Give each channel its own acknowledgement semantics.</div>
-            </li>
-            <li class="item">
-              <strong>Cron/Gateway notify + webhook token</strong>
-              <pre aria-label="cron notify"><code>// config/cron.yml
-notify:
-  on: ["run:finished"]
-  url: "https://example.com/hooks/openclaw"
-  tokenRef: "cron.webhookToken"
-// secrets.env
-CRON_WEBHOOK_TOKEN=superlongsignedtoken
-</code></pre>
-              <div class="tip">Receive reliable callbacks for completed runs using a scoped token.</div>
-            </li>
-            <li class="item">
-              <strong>Unified probe/token base types</strong>
-              <pre aria-label="unified base types"><code>// config/channels.base.yml
-base:
-  probe:
-    timeoutMs: 3000
-    retries: 2
-  token:
-    kind: "bearer"
-    env: "CHANNEL_TOKEN"
-</code></pre>
-              <div class="tip">Standardize probing and tokens across core and extensions to reduce drift.</div>
-            </li>
-          </ul>
-          <div class="note" style="margin-top: 10px;">
-            Full notes: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">v2026.2.15 release</a>
-          </div>
-        </div>
-      </section>
+      entry: orchestrator.js
 
-      <section class="section">
-        <div class="panel callout">
-          <div class="callout__copy">
-            <div class="kicker">Purpose</div>
-            <h2 class="callout__title">A crisp release page that turns new features into quick upgrades.</h2>
-            <p class="callout__text">
-              This page exists to clearly present only the new capabilities in v2026.2.15, help teams understand why they matter,
-              and show exactly how to enable them. The interactive WebGL “Agent Mesh” provides a memorable visual of agents,
-              channels, and flows working in harmony.
-            </p>
-          </div>
-          <div class="callout__stats" role="list" aria-label="Release pillars">
-            <div class="stat" role="listitem"><div class="stat__k">Native UI</div><div class="stat__v">Discord CV2</div></div>
-            <div class="stat" role="listitem"><div class="stat__k">Orchestration</div><div class="stat__v">Nested sub‑agents</div></div>
-            <div class="stat" role="listitem"><div class="stat__k">Observability</div><div class="stat__v">LLM I/O hooks</div></div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="footer__row">
-        <div>© 2026 OpenClaw • <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub</a> • <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release v2026.2.15</a></div>
-        <div class="footer__right">powered by Mindflow</div>
+# orchestrator.js
+export default async function orchestrator(ctx) {
+  const planner = await ctx.spawn("planner");     // depth 1
+  const exec = await planner.spawn("executor");   // depth 2
+  return await exec.run({ task: ctx.input });
+}</code></pre>
       </div>
-    </footer>
-  </div>
+      <p class="why">Why it matters: Compose complex workflows while bounding risk and cost.</p>
+    </article>
 
-  <script type="module" src="./script.js"></script>
+    <article class="feature">
+      <h3>5) Per-channel ack reaction overrides</h3>
+      <p>Customize ack emojis per platform with account/channel-level overrides.</p>
+      <div class="code">
+        <pre><code class="lang-yaml"># openclaw.config.yaml
+channels:
+  slack:
+    acks:
+      default: ":white_check_mark:"
+      overrides:
+        C12345678: ":bolt:"
+  discord:
+    acks:
+      default: "✅"
+      overrides:
+        112233445566778899: "🧠"
+  telegram:
+    acks:
+      default: "👍"
+      overrides:
+        - chatId: -100987654321
+          emoji: "🤖"</code></pre>
+      </div>
+      <p class="why">Why it matters: Meet users where they are with native-feeling confirmations.</p>
+    </article>
+
+    <article class="feature">
+      <h3>6) Cron/Gateway: finished-run webhook + auth token</h3>
+      <p>Toggle finished-run notifications and secure outbound posts with a dedicated token.</p>
+      <div class="code">
+        <pre><code class="lang-yaml"># openclaw.config.yaml
+cron:
+  schedules:
+    - id: nightly-report
+      cron: "0 2 * * *"
+      workflow: nightly
+      notify: true                 # deliver finished-run webhook
+  webhookToken: ${CRON_WEBHOOK_TOKEN}  # dedicated auth for outbound posts
+
+gateway:
+  webhooks:
+    finishedRun:
+      url: https://example.com/hooks/openclaw/finished
+      auth: header
+      headerName: "X-OpenClaw-Token"
+      headerValue: ${CRON_WEBHOOK_TOKEN}</code></pre>
+      </div>
+      <p class="why">Why it matters: Simple, secured integrations with your pipelines and dashboards.</p>
+    </article>
+
+    <article class="feature">
+      <h3>7) Channels: deduplicated probe/token base types</h3>
+      <p>Unified probe/token resolution across core and extensions while preserving per-channel error typing.</p>
+      <div class="code">
+        <pre><code class="lang-js">// channels.config.json
+{
+  "probe": { "timeoutMs": 3000, "retry": 1 },
+  "tokenResolution": { "source": "env", "key": "CHANNEL_TOKEN" }
+}
+
+// Extension can rely on shared base types
+import { BaseProbe, TokenResolver } from "@openclaw/channels-base";
+
+export class MyChannelProbe extends BaseProbe {
+  async check() { return this.ping("https://api.mychannel.dev/health"); }
+}
+
+export const resolver = new TokenResolver({ envKey: "MYCHANNEL_TOKEN" });</code></pre>
+      </div>
+      <p class="why">Why it matters: Less duplication, clearer errors, and faster extension development.</p>
+    </article>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer glass">
+    <div class="footer-inner">
+      <span>OpenClaw v2026.2.15 · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release</a></span>
+      <span class="dot">•</span>
+      <span>powered by Mindflow</span>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
