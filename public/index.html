@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenClaw — What’s new in v2026.2.15</title>
+  <meta name="description" content="OpenClaw v2026.2.15 – Latest features, how it works, and upgrade notes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #0f1620;
+      --text: #e6eef8;
+      --muted: #a8b3c7;
+      --brand: #ff4d4f; /* lobster vibe */
+      --brand-2: #5b9dff;
+      --ok: #19c37d;
+      --warn: #f5a524;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background:radial-gradient(1200px 1200px at 20% -10%, #1a2330 0%, #0b0f14 55%), #0b0f14;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:32px 20px 80px}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:28px
+    }
+    .logo{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
+    .logo img{width:36px;height:36px; filter:drop-shadow(0 2px 10px rgba(255,77,79,.3))}
+    .badge{display:inline-flex; align-items:center; gap:8px; color:var(--text); background:linear-gradient(135deg, #1b2330 0%, #121823 100%); border:1px solid #1e2a3a; box-shadow:var(--shadow); border-radius:999px; padding:8px 14px; font-weight:600}
+    .badge small{color:var(--muted); font-weight:500}
+    .hero{
+      display:grid; grid-template-columns:1.1fr .9fr; gap:24px; align-items:stretch;
+    }
+    @media (max-width: 980px){ .hero{grid-template-columns:1fr} }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
+      border:1px solid #1e2a3a; border-radius:var(--radius); padding:26px; box-shadow:var(--shadow)
+    }
+    h1{margin:6px 0 10px; font-size:44px; line-height:1.1}
+    h1 .ver{font-size:.6em; font-weight:700; letter-spacing:.02em; color:#9fc0ff}
+    p.lead{color:var(--muted); font-size:18px; line-height:1.6}
+    ul.feature-list{display:grid; grid-template-columns:1fr 1fr; gap:14px; list-style:none; padding:0; margin:18px 0 0}
+    @media (max-width: 980px){ ul.feature-list{grid-template-columns:1fr} }
+    .feature{
+      background:#0f1620; border:1px solid #1e2a3a; border-radius:12px; padding:16px; display:flex; gap:12px; align-items:flex-start
+    }
+    .feature .dot{width:10px; height:10px; border-radius:50%; background:var(--brand); margin-top:8px; box-shadow:0 0 0 4px rgba(255,77,79,.12)}
+    .feature h3{margin:0 0 6px; font-size:16px}
+    .feature p{margin:0; color:var(--muted); font-size:14px; line-height:1.55}
+    .how{
+      display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:18px
+    }
+    @media (max-width: 980px){ .how{grid-template-columns:1fr} }
+    pre{margin:0; background:#0a0f15; border:1px solid #1e2a3a; border-radius:12px; padding:16px; overflow:auto; color:#d7e6ff}
+    code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:13px}
+    .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .btn{appearance:none; border:1px solid #1e2a3a; color:white; background:#152032; padding:12px 16px; border-radius:12px; text-decoration:none; font-weight:600}
+    .btn.primary{background:linear-gradient(135deg, var(--brand) 0%, #ff7a7c 100%); border-color:#ff7a7c}
+    .btn.secondary{background:linear-gradient(135deg, #1b2a40 0%, #152032 100%)}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; background:#0c131d; border:1px solid #1e2a3a; border-radius:999px; color:#a6b7d0}
+    footer{margin-top:36px; color:#7f8ea8; font-size:13px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .kicker{display:flex; gap:8px; flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="logo" href="https://openclaw.ai" target="_blank" rel="noreferrer noopener">
+        <img alt="OpenClaw" src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-logo-text.png" />
+        <strong>OpenClaw</strong>
+      </a>
+      <span class="badge">Latest release <small>v2026.2.15</small></span>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <h1>What’s new in <span class="ver">v2026.2.15</span></h1>
+        <p class="lead">A faster, safer, more interactive OpenClaw. This release focuses on richer native interactions, safer defaults, and deeper automation hooks — while keeping your personal AI assistant always-on and in control across your channels.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noreferrer noopener">Read full release notes</a>
+          <a class="btn secondary" href="https://docs.openclaw.ai/start/getting-started" target="_blank" rel="noreferrer noopener">Getting started</a>
+          <span class="pill">Node ≥ 22 · npm/pnpm/bun</span>
+        </div>
+        <div class="how">
+          <div class="card">
+            <h3>Install & onboard</h3>
+            <pre><code>npm install -g openclaw@latest
+openclaw onboard --install-daemon</code></pre>
+          </div>
+          <div class="card">
+            <h3>Talk to your assistant</h3>
+            <pre><code>openclaw agent --message "Ship checklist" --thinking high</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Highlights</h3>
+        <ul class="feature-list">
+          <li class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Discord Components v2</h3>
+              <p>Buttons, selects, modals, and attachment-backed file blocks for rich, native Discord interactions.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Plugins: prompt I/O hooks</h3>
+              <p>New <code>llm_input</code> and <code>llm_output</code> hooks let extensions observe prompt context and model output usage.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Nested sub‑agents</h3>
+              <p>Enable sub‑sub‑agents with depth control and child limits for scalable, multi‑agent workflows.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Per‑channel acks</h3>
+              <p>Override ack reactions per Slack/Discord/Telegram account or channel for platform‑native UX.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Cron & webhooks</h3>
+              <p>Finished‑run notifications and dedicated tokens for secure outbound cron webhook delivery.</p>
+            </div>
+          </li>
+          <li class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Security hardening</h3>
+              <p>SHA‑256 sandbox hashing, strict sandbox config validation, secret redaction, and safer defaults across the stack.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:22px">
+      <h2 style="margin-top:0">How it works (1‑minute tour)</h2>
+      <p class="lead">OpenClaw routes your chats from WhatsApp/Telegram/Slack/Discord/etc. through a local Gateway control plane. The Gateway coordinates sessions, tools, and apps (macOS/iOS/Android), so your assistant can listen, speak, browse, and automate securely — all from your own devices.</p>
+      <pre><code>Channels → Gateway (control plane) → Agents & Tools → Replies back to your channels</code></pre>
+    </section>
+
+    <section class="card" style="margin-top:22px">
+      <h2 style="margin-top:0">Upgrade notes</h2>
+      <ul>
+        <li>Recommended runtime: Node ≥ 22</li>
+        <li>Run <code>openclaw update</code> or reinstall with npm/pnpm/bun</li>
+        <li>See full notes for Discord CV2 UX tweaks, sandbox & logging changes, and Telegram delivery fixes</li>
+      </ul>
+      <div class="cta"><a class="btn" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noreferrer noopener">Full release notes</a></div>
+    </section>
+
+    <footer>
+      <div class="kicker">
+        <span>OpenClaw v2026.2.15</span>
+        <span>•</span>
+        <a target="_blank" rel="noreferrer noopener" href="https://docs.openclaw.ai">Docs</a>
+        <span>•</span>
+        <a target="_blank" rel="noreferrer noopener" href="https://discord.gg/clawd">Discord</a>
+        <span>•</span>
+        <a target="_blank" rel="noreferrer noopener" href="https://github.com/openclaw/openclaw">GitHub</a>
+      </div>
+      <div>© 2026 OpenClaw contributors · Powered by Mindflow</div>
+    </footer>
+  </div>
+</body>
+</html>
