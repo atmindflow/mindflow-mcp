@@ -1,80 +1,95 @@
-<!DOCTYPE html
-><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw v2026.2.15 - Nested Subagents Release</title>
+    <title>OpenClaw v2026.2.15 - Nested Subagents</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="webgl-container"></div>
     
-    <div class="container">
-        <header class="hero">
-            <div class="logo-container">
-                <div class="logo-circle">
-                    <svg viewBox="0 0 100 100" class="logo-svg">
-                        <path d="M50 10 L70 30 L60 50 L70 70 L50 90 L30 70 L40 50 L30 30 Z" fill="currentColor"/>
-                    </svg>
-                </div>
+    <div class="content-wrapper">
+        <header class="hero-section">
+            <div class="version-badge">
+                <span class="version">v2026.2.15</span>
+                <span class="date">Released February 16, 2026</span>
             </div>
-            <h1 class="hero-title">OpenClaw v2026.2.15</h1>
-            <p class="hero-subtitle">Released February 16, 2026</p>
-            <div class="hero-badge">Latest Release</div>
+            <h1 class="hero-title">Nested Subagents</h1>
+            <p class="hero-subtitle">Unlock infinite agent hierarchies with configurable depth control</p>
         </header>
 
-        <section class="main-feature">
-            <h2 class="feature-headline">Nested Subagents: Infinite Intelligence Hierarchy</h2>
-            <p class="feature-description">
-                OpenClaw now supports <strong>nested subagents</strong> (sub-sub-agents) with configurable depth,
-                enabling sophisticated multi-level task delegation and autonomous problem decomposition.
-            </p>
-        </section>
+        <section class="feature-section">
+            <div class="glass-card feature-card">
+                <div class="icon-wrapper">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M24 4L44 14V34L24 44L4 34V14L24 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24 24L44 14M24 24L4 14M24 24V44" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2>What are Nested Subagents?</h2>
+                <p>OpenClaw now supports <strong>sub-sub-agents</strong> - allowing agents to spawn their own subagents, which can spawn their own subagents, and so on. This creates a powerful hierarchy for complex task decomposition and parallel execution.</p>
+            </div>
 
-        <section class="details-grid">
-            <div class="detail-card">
-                <div class="detail-icon">🎯</div>
-                <h3>What It Is</h3>
-                <p>Subagents can now spawn their own subagents, creating a hierarchical tree of specialized workers. Configure maximum depth and children per agent to control complexity.</p>
+            <div class="glass-card feature-card">
+                <div class="icon-wrapper">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="14" cy="28" r="3" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="34" cy="28" r="3" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="10" cy="40" r="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="18" cy="40" r="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="30" cy="40" r="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="38" cy="40" r="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M24 16V24M24 24L14 28M24 24L34 28M14 31L10 38M14 31L18 38M34 31L30 38M34 31L38 38" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2>Why it Matters</h2>
+                <p>Break down complex workflows into manageable layers. Each agent can delegate specialized tasks to child agents, creating a self-organizing system that scales with your problem's complexity while maintaining full control over depth and breadth.</p>
             </div>
-            <div class="detail-card">
-                <div class="detail-icon">⚡</div>
-                <h3>Why It Matters</h3>
-                <p>Complex tasks automatically decompose into manageable subtasks at multiple levels. Each layer handles appropriate abstraction, enabling emergent problem-solving capabilities.</p>
-            </div>
-            <div class="detail-card">
-                <div class="detail-icon">🔧</div>
-                <h3>How It Works</h3>
-                <p>Parent agents delegate to children, who can delegate further. Each level maintains context and reports back up the chain, creating scalable autonomous workflows.</p>
+
+            <div class="glass-card feature-card">
+                <div class="icon-wrapper">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 20L22 26L32 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2>How it Works</h2>
+                <p>Configure maximum spawn depth and children per agent. Set <code>maxSpawnDepth: 2</code> to allow agents to spawn subagents, which can spawn their own subagents (2 levels deep). Control resource usage with <code>maxChildrenPerAgent</code>.</p>
             </div>
         </section>
 
         <section class="config-section">
-            <h3 class="config-title">Configuration Example</h3>
-            <div class="config-block">
-                <pre><code>agents:
+            <div class="glass-card config-card">
+                <h3>Configuration</h3>
+                <p class="config-description">Add this to your OpenClaw configuration file:</p>
+                <pre class="code-block"><code>agents:
   defaults:
     subagents:
       maxSpawnDepth: 2
       maxChildrenPerAgent: 5</code></pre>
             </div>
-            <p class="config-note">
-                <strong>maxSpawnDepth: 2</strong> allows parent → child → grandchild hierarchy<br>
-                <strong>maxChildrenPerAgent: 5</strong> limits each agent to spawn 5 direct subagents
-            </p>
         </section>
 
         <section class="cta-section">
-            <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" class="cta-button" target="_blank" rel="noopener">
-                <span>View Release on GitHub</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
+            <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" class="btn btn-primary" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2L3 7V13L10 18L17 13V7L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
+                View Release
+            </a>
+            <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip" class="btn btn-secondary" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 3V13M10 13L6 9M10 13L14 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 17H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Download
             </a>
         </section>
 
         <footer class="footer">
-            <p>Powered by <strong>Mindflow</strong></p>
+            <p>Powered by Mindflow</p>
         </footer>
     </div>
 

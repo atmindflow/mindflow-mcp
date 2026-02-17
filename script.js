@@ -1,108 +1,142 @@
-// Initialize Three.js scene
-if (typeof THREE !== 'undefined') {
-  const container = document.getElementById('webgl-container');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+// Three.js WebGL Scene
+let scene, camera, renderer, particles, geometry, animatedMesh;
+let mouseX = 0, mouseY = 0;
+let windowHalfX = window.innerWidth / 2;
+let windowHalfY = window.innerHeight / 2;
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  container.appendChild(renderer.domElement);
-
-  camera.position.z = 50;
-
-  // Particle system
-  const particlesGeometry = new THREE.BufferGeometry();
-  const particlesCount = 800;
-  const posArray = new Float32Array(particlesCount * 3);
-  for (let i = 0; i < particlesCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 100;
-  }
-  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-  const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.15,
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.6,
-    blending: THREE.AdditiveBlending
-  });
-  const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-  scene.add(particlesMesh);
-
-  // Floating wireframe shapes
-  const shapes = [];
-  const geometries = [
-    new THREE.OctahedronGeometry(0.8),
-    new THREE.TetrahedronGeometry(0.8),
-    new THREE.IcosahedronGeometry(0.8)
-  ];
-
-  for (let i = 0; i < 15; i++) {
-    const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.15
+function init() {
+    const container = document.getElementById('webgl-container');
+    
+    // Scene setup
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x667eea, 0.0008);
+    
+    // Camera
+    camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        1,
+        3000
+    );
+    camera.position.z = 1000;
+    
+    // Particle system
+    const particleCount = 2000;
+    geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    
+    for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 2000;
+        positions[i + 1] = (Math.random() - 0.5) * 2000;
+        positions[i + 2] = (Math.random() - 0.5) * 2000;
+        
+        // Color variation (purples, blues, pinks)
+        const colorChoice = Math.random();
+        if (colorChoice < 0.33) {
+            colors[i] = 0.4 + Math.random() * 0.2;     // R
+            colors[i + 1] = 0.5 + Math.random() * 0.2; // G
+            colors[i + 2] = 0.9 + Math.random() * 0.1; // B
+        } else if (colorChoice < 0.66) {
+            colors[i] = 0.46 + Math.random() * 0.2;    // R
+            colors[i + 1] = 0.29 + Math.random() * 0.2; // G
+            colors[i + 2] = 0.64 + Math.random() * 0.2; // B
+        } else {
+            colors[i] = 0.94 + Math.random() * 0.06;   // R
+            colors[i + 1] = 0.58 + Math.random() * 0.2; // G
+            colors[i + 2] = 0.98 + Math.random() * 0.02; // B
+        }
+    }
+    
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    
+    const material = new THREE.PointsMaterial({
+        size: 3,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.7,
+        blending: THREE.AdditiveBlending
     });
-    const mesh = new THREE.Mesh(geometry, material);
-
-    mesh.position.x = (Math.random() - 0.5) * 80;
-    mesh.position.y = (Math.random() - 0.5) * 80;
-    mesh.position.z = (Math.random() - 0.5) * 80;
-
-    mesh.rotation.x = Math.random() * Math.PI;
-    mesh.rotation.y = Math.random() * Math.PI;
-
-    mesh.userData = {
-      speedX: (Math.random() - 0.5) * 0.002,
-      speedY: (Math.random() - 0.5) * 0.002,
-      rotationSpeed: (Math.random() - 0.5) * 0.01
-    };
-
-    shapes.push(mesh);
-    scene.add(mesh);
-  }
-
-  // Mouse interaction
-  let mouseX = 0;
-  let mouseY = 0;
-  document.addEventListener('mousemove', (event) => {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-  });
-
-  // Animate
-  let time = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    time += 0.001;
-
-    particlesMesh.rotation.y = time * 0.3;
-    particlesMesh.rotation.x = time * 0.2;
-
-    shapes.forEach((shape) => {
-      shape.position.x += shape.userData.speedX;
-      shape.position.y += shape.userData.speedY;
-      if (Math.abs(shape.position.x) > 40) shape.position.x *= -0.9;
-      if (Math.abs(shape.position.y) > 40) shape.position.y *= -0.9;
-      shape.rotation.x += shape.userData.rotationSpeed;
-      shape.rotation.y += shape.userData.rotationSpeed;
+    
+    particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+    
+    // Animated geometric shape
+    const torusGeometry = new THREE.TorusKnotGeometry(150, 30, 100, 16);
+    const torusMaterial = new THREE.MeshBasicMaterial({
+        color: 0x764ba2,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.15
     });
+    animatedMesh = new THREE.Mesh(torusGeometry, torusMaterial);
+    animatedMesh.position.set(0, 0, -200);
+    scene.add(animatedMesh);
+    
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+    
+    // Event listeners
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
+    window.addEventListener('resize', onWindowResize, false);
+    
+    animate();
+}
 
-    camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
-    camera.position.y += (mouseY * 5 - camera.position.y) * 0.05;
-    camera.lookAt(scene.position);
+function onDocumentMouseMove(event) {
+    mouseX = (event.clientX - windowHalfX) * 0.5;
+    mouseY = (event.clientY - windowHalfY) * 0.5;
+}
 
-    renderer.render(scene, camera);
-  }
-
-  animate();
-
-  window.addEventListener('resize', () => {
+function onWindowResize() {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    render();
+}
+
+function render() {
+    const time = Date.now() * 0.00005;
+    
+    // Rotate particles
+    particles.rotation.x = time * 0.5;
+    particles.rotation.y = time * 0.75;
+    
+    // Animate geometric shape
+    if (animatedMesh) {
+        animatedMesh.rotation.x = time * 2;
+        animatedMesh.rotation.y = time * 3;
+        animatedMesh.position.y = Math.sin(time * 2) * 50;
+    }
+    
+    // Camera movement based on mouse
+    camera.position.x += (mouseX - camera.position.x) * 0.02;
+    camera.position.y += (-mouseY - camera.position.y) * 0.02;
+    camera.lookAt(scene.position);
+    
+    // Particle wave effect
+    const positions = particles.geometry.attributes.position.array;
+    for (let i = 0; i < positions.length; i += 3) {
+        positions[i + 1] += Math.sin(time * 5 + positions[i] * 0.01) * 0.5;
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+    
+    renderer.render(scene, camera);
+}
+
+// Initialize on load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
 }
