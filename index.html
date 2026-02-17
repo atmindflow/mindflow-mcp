@@ -1,114 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw - Multi-channel Agent Runtime</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenClaw v2026.2.15 — What’s New</title>
+  <meta name="description" content="Discover what's new in OpenClaw v2026.2.15: richer Discord components v2, sub-agents with depth control, security hardening, and reliability improvements across channels and tooling." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-    <canvas id="webgl-canvas"></canvas>
-    
-    <header>
-        <nav>
-            <div class="logo">OpenClaw</div>
-            <div class="version-badge">v2026.2.15</div>
-        </nav>
+  <!-- Ambient background -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg__glow bg__glow--a"></div>
+    <div class="bg__glow bg__glow--b"></div>
+    <div class="bg__grid"></div>
+    <div class="bg__noise"></div>
+  </div>
+
+  <div class="container">
+    <header class="topbar">
+      <a class="logo" href="#top" aria-label="OpenClaw home">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span class="logo__text">OpenClaw <span class="tag">v2026.2.15</span></span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release notes</a>
+        <a href="#how-it-works">How it works</a>
+      </nav>
+
+      <div class="actions">
+        <button id="toggleMotion" class="chip" type="button" title="Toggle motion">Motion: <span data-state>On</span></button>
+        <button id="toggleQuality" class="chip" type="button" title="Toggle WebGL quality">Quality: <span data-quality>High</span></button>
+      </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="fade-in">OpenClaw</h1>
-                <p class="tagline fade-in-delay-1">Multi-channel, secure, extensible agent runtime — now with richer Discord UI, nested sub-agents, and deeper platform hooks.</p>
-                <div class="cta-buttons fade-in-delay-2">
-                    <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg" class="btn btn-primary">Download for macOS</a>
-                    <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" class="btn btn-secondary">Release Notes</a>
-                </div>
-            </div>
-        </section>
+    <main id="top">
+      <section class="hero">
+        <div class="hero__copy">
+          <div class="badge" role="status">
+            <span class="dot" aria-hidden="true"></span>
+            Latest release • 2026‑02‑16
+          </div>
 
-        <section class="how-it-works">
-            <div class="container">
-                <h2 class="section-title">How It Works</h2>
-                <p class="how-desc">OpenClaw orchestrates LLM-powered agents across channels (Discord, Slack, Telegram, Web, CLI) with a gateway, sandboxed skills, scheduling (cron), memory, and rich UX surfaces. The 2026.2.15 release upgrades Discord Components to v2 for interactive prompts, enables nested sub-agents with depth control, and opens new plugin hooks to observe LLM inputs/outputs for better governance.</p>
-            </div>
-        </section>
+          <h1 class="title">Richer interactions, deeper sub‑agents, and end‑to‑end hardening.</h1>
+          <p class="subtitle">
+            This page is a polished release showcase for OpenClaw v2026.2.15—designed to communicate what changed, why it matters,
+            and how to upgrade, with an interactive 3D WebGL illustration that visually represents “agents, channels, and secure flows”.
+          </p>
 
-        <section class="features">
-            <div class="container">
-                <h2 class="section-title">Key Features</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">💬</div>
-                        <div class="feature-area">Discord/UI</div>
-                        <h3>Discord Components v2</h3>
-                        <p>Unlock rich interactive agent prompts with buttons, selects, modals, and attachment-backed file blocks. Includes embeds passthrough and improved exec approval UX.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔄</div>
-                        <div class="feature-area">Agents/Core</div>
-                        <h3>Nested Sub-agents</h3>
-                        <p>Configure sub-agents to spawn their own children with depth limits and per-agent child caps. Depth-aware tool policy and consistent announce routing.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔌</div>
-                        <div class="feature-area">Plugins/Observability</div>
-                        <h3>LLM I/O Hooks for Plugins</h3>
-                        <p>Expose llm_input and llm_output payloads so extensions can observe prompt/input context and model output usage details.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <div class="feature-area">Channels/UX</div>
-                        <h3>Per-channel Ack Reactions</h3>
-                        <p>Add account/channel-level overrides to align reactions with platform-specific emoji formats across Slack/Discord/Telegram.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⏰</div>
-                        <div class="feature-area">Cron/Gateway</div>
-                        <h3>Cron Webhook Controls</h3>
-                        <p>Add finished-run webhook delivery toggle and dedicated auth token for outbound cron webhook posts.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎯</div>
-                        <div class="feature-area">Channels/Core</div>
-                        <h3>Unified Channel Types</h3>
-                        <p>Deduplicate probe/token resolution base types across core and extensions while preserving per-channel error typing.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+          <div class="cta">
+            <a class="btn btn--primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip">
+              Download .zip
+              <span class="btn__icon" aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn--secondary" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">
+              View full release notes
+              <span class="btn__icon" aria-hidden="true">↗</span>
+            </a>
+          </div>
 
-        <section class="downloads">
-            <div class="container">
-                <h2 class="section-title">Download Options</h2>
-                <div class="download-grid">
-                    <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg" class="download-card">
-                        <div class="download-icon">🍎</div>
-                        <h3>macOS (.dmg)</h3>
-                        <p>Optimized for Apple Silicon & Intel</p>
-                    </a>
-                    <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip" class="download-card">
-                        <div class="download-icon">📦</div>
-                        <h3>Universal (.zip)</h3>
-                        <p>Cross-platform archive</p>
-                    </a>
-                    <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dSYM.zip" class="download-card">
-                        <div class="download-icon">🔍</div>
-                        <h3>Debug Symbols</h3>
-                        <p>For development & debugging</p>
-                    </a>
+          <p class="note">
+            Also available:
+            <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg">macOS (.dmg)</a>
+            ·
+            <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dSYM.zip">dSYM</a>
+          </p>
+
+          <div class="hero__mini">
+            <div class="mini panel">
+              <div class="kicker">Interactive 3D</div>
+              <div class="mini__row">
+                <div class="mini__hint">
+                  <strong>Drag</strong> to orbit · <strong>Scroll</strong> to zoom · <strong>Click</strong> a node to highlight
                 </div>
+                <button id="pulse" class="pill" type="button">Pulse network</button>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+
+        <div class="hero__stage" aria-label="3D illustration">
+          <div class="stage panel">
+            <canvas id="gl" class="stage__canvas" aria-label="OpenClaw WebGL illustration"></canvas>
+            <div class="stage__hud" aria-hidden="false">
+              <div class="hud__title">Agent Mesh</div>
+              <div class="hud__meta">
+                <span class="hud__chip">Discord CV2</span>
+                <span class="hud__chip">Sub‑agents depth</span>
+                <span class="hud__chip">SHA‑256 hardening</span>
+              </div>
+              <div class="hud__hint" id="hudHint">Tip: click a glowing node to pin focus</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cards" aria-label="Highlights">
+        <article class="card panel">
+          <div class="kicker">Discord</div>
+          <h3>Components v2, refined UX</h3>
+          <p>Build native, multi‑step flows with buttons, selects, modals, and attachment‑backed file blocks. Cleaner layouts and a streamlined approval experience.</p>
+        </article>
+        <article class="card panel">
+          <div class="kicker">Sub‑agents</div>
+          <h3>Depth & policy aware</h3>
+          <p>Enable sub‑sub‑agents with <code>maxSpawnDepth</code> and <code>maxChildrenPerAgent</code>. Depth‑aware tool policy prevents runaway trees.</p>
+        </article>
+        <article class="card panel">
+          <div class="kicker">Plugins</div>
+          <h3>LLM input/output taps</h3>
+          <p>Extensions can inspect <code>llm_input</code> and <code>llm_output</code> payloads for analytics, guardrails, and adaptive routing.</p>
+        </article>
+      </section>
+
+      <section class="split section" aria-label="Details">
+        <article class="panel block">
+          <div class="block__head">
+            <div>
+              <div class="kicker">Changes</div>
+              <h2>New capabilities</h2>
+            </div>
+            <button class="ghost" type="button" data-copy="changes">Copy bullets</button>
+          </div>
+          <ul class="list" id="changes">
+            <li class="item">Discord: Components v2 (buttons, selects, modals, attachment‑backed file blocks).</li>
+            <li class="item">Discord: CV2 containers, embeds passthrough, exec approval UX refinements.</li>
+            <li class="item">Plugins: <code>llm_input</code> &amp; <code>llm_output</code> hook payloads for extensions (#16724).</li>
+            <li class="item">Sub‑agents: nested sub‑agents with configurable depth + limits (#14447).</li>
+            <li class="item">Slack/Discord/Telegram: per‑channel ack reaction overrides (#17092).</li>
+            <li class="item">Cron/Gateway: finished‑run webhook <code>notify</code> + dedicated <code>cron.webhookToken</code>.</li>
+            <li class="item">Channels: unified probe/token base types across core + extensions.</li>
+          </ul>
+        </article>
+
+        <article class="panel block">
+          <div class="block__head">
+            <div>
+              <div class="kicker">Fixes</div>
+              <h2>Reliability &amp; security</h2>
+            </div>
+            <button class="ghost" type="button" data-copy="fixes">Copy bullets</button>
+          </div>
+          <ul class="list" id="fixes">
+            <li class="item">Security: SHA‑256 sandbox config hashing; block dangerous Docker configs.</li>
+            <li class="item">Security/Logging: redact Telegram tokens; sanitize inbound chat; stricter role matching.</li>
+            <li class="item">Sandbox: stable hashing; safer installers; cap web fetch size pre‑parsing.</li>
+            <li class="item">Gateway/UI: better scope handling; safer status; stricter agent keys.</li>
+            <li class="item">Memory/FTS: Unicode‑aware tokenization; correct time‑aware memory files.</li>
+            <li class="item">Telegram/Discord: robust retries; de‑dup replies; stable streaming.</li>
+            <li class="item">TUI/CLI: ANSI‑aware filtering, stable wrapping, better paste handling.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section id="how-it-works" class="section">
+        <div class="kicker">How it works</div>
+        <h2>Upgrade paths and configuration</h2>
+        <div class="panel block">
+          <ul class="list">
+            <li class="item"><strong>Discord Components v2</strong> — No code changes required for basic actions. For modals/file blocks in skills, register component handlers and pass file attachments via CV2 containers.</li>
+            <li class="item"><strong>Sub‑agents</strong> — Opt‑in depth via <code>agents.defaults.subagents.maxSpawnDepth</code> (e.g. <code>2</code>) and limit fan‑out with <code>maxChildrenPerAgent</code> (default <code>5</code>).</li>
+            <li class="item"><strong>Plugin LLM hooks</strong> — Implement <code>llm_input</code>/<code>llm_output</code> in extensions to observe prompts and completion metadata for analytics, red‑teaming, or safety checks.</li>
+            <li class="item"><strong>Security upgrades</strong> — Config hashing moves to SHA‑256, sandbox policy blocks risky Docker flags, secrets are redacted from logs by default.</li>
+          </ul>
+          <p class="note" style="margin-top: 10px;">
+            Full notes:
+            <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">v2026.2.15 release</a>
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="panel callout">
+          <div class="callout__copy">
+            <div class="kicker">Purpose</div>
+            <h2 class="callout__title">A release landing page that converts curiosity into upgrades.</h2>
+            <p class="callout__text">
+              The goal is to present the release at a glance (highlights), provide confidence (security &amp; reliability details),
+              and help teams act (upgrade paths), while the WebGL “Agent Mesh” gives a memorable, interactive visual identity.
+            </p>
+          </div>
+          <div class="callout__stats" role="list" aria-label="Release pillars">
+            <div class="stat" role="listitem"><div class="stat__k">Native UI</div><div class="stat__v">Discord CV2</div></div>
+            <div class="stat" role="listitem"><div class="stat__k">Orchestration</div><div class="stat__v">Sub‑agents</div></div>
+            <div class="stat" role="listitem"><div class="stat__k">Hardening</div><div class="stat__v">SHA‑256</div></div>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>Powered by <strong>Mindflow</strong></p>
-        </div>
+    <footer class="footer">
+      <div class="footer__row">
+        <div>© 2026 OpenClaw • <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub</a> • <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release v2026.2.15</a></div>
+        <div class="footer__right">powered by Mindflow</div>
+      </div>
     </footer>
+  </div>
 
-    <script src="script.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
