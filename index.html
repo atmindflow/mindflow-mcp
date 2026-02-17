@@ -3,837 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luanti 5.15.1 - Free Open-Source Voxel Game Engine</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
-            padding: 15px 0;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #667eea;
-            transition: transform 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.1);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-            padding: 5px 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #667eea;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: #667eea;
-        }
-
-        .hero {
-            padding: 120px 0;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            animation: floatBackground 20s ease-in-out infinite;
-        }
-
-        @keyframes floatBackground {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            animation: fadeInUp 1s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .version-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-            box-shadow: 0 5px 20px rgba(255,107,107,0.4);
-        }
-
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 5px 20px rgba(255,107,107,0.4);
-            }
-            50% { 
-                transform: scale(1.05);
-                box-shadow: 0 5px 30px rgba(255,107,107,0.6);
-            }
-        }
-
-        .hero p {
-            font-size: 24px;
-            margin-bottom: 40px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            transition: all 0.3s;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-primary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: #667eea;
-            transform: translateY(-3px);
-        }
-
-        .features {
-            background: white;
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 42px;
-            margin-bottom: 60px;
-            color: #333;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .section-title.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .feature-card {
-            padding: 30px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0;
-            transform: translateY(30px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(102,126,234,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .feature-card:hover::before {
-            left: 100%;
-        }
-
-        .feature-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(102,126,234,0.3);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .feature-card:hover h3,
-        .feature-card:hover p {
-            color: white;
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .feature-card:nth-child(1) .feature-icon { animation-delay: 0s; }
-        .feature-card:nth-child(2) .feature-icon { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) .feature-icon { animation-delay: 0.4s; }
-        .feature-card:nth-child(4) .feature-icon { animation-delay: 0.6s; }
-        .feature-card:nth-child(5) .feature-icon { animation-delay: 0.8s; }
-        .feature-card:nth-child(6) .feature-icon { animation-delay: 1s; }
-
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #667eea;
-            transition: color 0.3s;
-        }
-
-        .release-notes {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 80px 0;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .release-notes::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            animation: floatBackground 15s ease-in-out infinite;
-        }
-
-        .release-content {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            margin-top: 40px;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .release-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-        }
-
-        .release-content h3 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .release-content ul {
-            list-style-position: inside;
-            font-size: 18px;
-            line-height: 2;
-        }
-
-        .release-content ul li {
-            padding-left: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .release-content ul li:hover {
-            transform: translateX(10px);
-            color: #fff;
-        }
-
-        .platforms {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 80px 0;
-        }
-
-        .platform-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .platform-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .platform-card::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-            opacity: 0.1;
-        }
-
-        .platform-card:hover::before {
-            width: 500px;
-            height: 500px;
-        }
-
-        .platform-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(102,126,234,0.3);
-        }
-
-        .platform-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-        .platform-card:hover .platform-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        .download-stats {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 60px;
-            gap: 30px;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 20px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .stat-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .stat-number {
-            font-size: 48px;
-            font-weight: bold;
-            color: #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover .stat-number {
-            transform: scale(1.2);
-            color: #764ba2;
-        }
-
-        .stat-label {
-            font-size: 18px;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        footer {
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-            color: white;
-            padding: 40px 0 20px 0;
-            text-align: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-            position: relative;
-            padding: 5px 10px;
-        }
-
-        .footer-links a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #667eea;
-            transition: width 0.3s ease;
-        }
-
-        .footer-links a:hover::before {
-            width: 100%;
-        }
-
-        .footer-links a:hover {
-            color: #667eea;
-            transform: translateY(-2px);
-        }
-
-        .powered-by {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(102,126,234,0.2);
-            border-radius: 10px;
-            display: inline-block;
-            animation: pulse 3s infinite;
-        }
-
-        .powered-by span {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-            .hero p {
-                font-size: 18px;
-            }
-            .section-title {
-                font-size: 32px;
-            }
-            .nav-links {
-                gap: 15px;
-                font-size: 14px;
-            }
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    <title>OpenClaw - Your Personal AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header id="header">
-        <nav class="container">
-            <div class="logo">🎮 Luanti</div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#release">Release Notes</a></li>
-                <li><a href="#download">Download</a></li>
-                <li><a href="https://docs.luanti.org/">Docs</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="gradient-bg"></div>
+    
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🦞 OpenClaw</div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#installation">Installation</a>
+                <a href="#security">Security</a>
+                <a href="#" class="btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
 
     <section class="hero">
-        <div class="container hero-content">
-            <div class="version-badge">🚀 NEW RELEASE v5.15.1</div>
-            <h1>Luanti</h1>
-            <p>Free Open-Source Voxel Game Engine with Easy Modding</p>
-            <p style="font-size: 18px; opacity: 0.9;">Formerly known as Minetest</p>
-            <div class="cta-buttons">
-                <a href="#download" class="btn btn-primary">Download Now</a>
-                <a href="https://github.com/luanti-org/luanti" class="btn btn-secondary">View on GitHub</a>
+        <div class="container">
+            <div class="hero-content">
+                <div class="version-badge">v2026.2.16</div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">OpenClaw</span>
+                </h1>
+                <p class="hero-tagline">Your Personal AI Assistant - Always On, Always Local</p>
+                <p class="hero-description">A personal AI assistant that runs on your own devices. Connect to WhatsApp, Telegram, Slack, Discord, and more - all from one control plane.</p>
+                <div class="hero-buttons">
+                    <button class="btn-large btn-primary">Start Free Trial</button>
+                    <button class="btn-large btn-secondary">View Documentation</button>
+                </div>
+                <div class="floating-cards">
+                    <div class="float-card card-1">💬 Multi-Channel</div>
+                    <div class="float-card card-2">🎤 Voice Control</div>
+                    <div class="float-card card-3">🔒 Secure Local</div>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="features" class="features">
         <div class="container">
-            <h2 class="section-title reveal">Why Choose Luanti?</h2>
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Easy Modding</h3>
-                    <p>Create your own games and mods using Lua scripting. Extensive API and active community support.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🌍</div>
-                    <h3>Infinite Worlds</h3>
-                    <p>Explore procedurally generated voxel worlds with unlimited possibilities and creativity.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🔓</div>
-                    <h3>100% Free & Open Source</h3>
-                    <p>Licensed under LGPLv2.1+. No ads, no tracking, completely free forever.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🖥️</div>
-                    <h3>Cross-Platform</h3>
-                    <p>Runs on Windows, Linux, macOS, Android, and more. Play anywhere!</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">⚡</div>
-                    <h3>High Performance</h3>
-                    <p>Optimized C++ engine with efficient rendering and low resource usage.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎮</div>
-                    <h3>Multiplayer Ready</h3>
-                    <p>Built-in server support with robust networking for seamless multiplayer experiences.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="release" class="release-notes">
-        <div class="container">
-            <h2 class="section-title reveal">What's New in v5.15.1</h2>
-            <div class="release-content reveal">
-                <h3>📋 Release Highlights</h3>
-                <p style="font-size: 20px; margin: 20px 0;">This is a bugfix release focusing on stability and performance improvements.</p>
-                
-                <h3 style="margin-top: 40px;">🔧 Key Improvements</h3>
-                <ul>
-                    <li>Critical bug fixes for enhanced stability</li>
-                    <li>Performance optimizations for smoother gameplay</li>
-                    <li>Improved compatibility across platforms</li>
-                    <li>Enhanced multiplayer reliability</li>
-                    <li>Various UI/UX improvements</li>
-                </ul>
-
-                <h3 style="margin-top: 40px;">💡 How It Works</h3>
-                <p style="margin: 20px 0;">Luanti is a voxel game engine that allows you to:</p>
-                <ul>
-                    <li><strong>Play</strong> - Enjoy various games created by the community</li>
-                    <li><strong>Create</strong> - Build your own worlds using intuitive tools</li>
-                    <li><strong>Mod</strong> - Extend functionality with Lua scripting</li>
-                    <li><strong>Share</strong> - Host servers and share with friends</li>
-                </ul>
-
-                <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                    <p><strong>📖 Full Changelog:</strong> <a href="https://docs.luanti.org/about/changelog/#5150--5151" style="color: white; text-decoration: underline;">View detailed changelog</a></p>
-                    <p style="margin-top: 10px;"><strong>⚠️ Important:</strong> Minetest Game is not packaged alongside Luanti and should be downloaded separately if needed.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="download" class="platforms">
-        <div class="container">
-            <h2 class="section-title reveal">Download Luanti 5.15.1</h2>
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle">Everything you need in a modern AI assistant</p>
             
-            <div class="platform-grid">
-                <div class="platform-card reveal">
-                    <div class="platform-icon">🪟</div>
-                    <h3>Windows</h3>
-                    <p>64-bit & 32-bit</p>
-                    <a href="https://github.com/luanti-org/luanti/releases/download/5.15.1/luanti-5.15.1.exe" class="btn btn-primary" style="margin-top: 20px; position: relative; z-index: 1;">Download EXE</a>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📨</div>
+                    <h3>Multi-Channel Inbox</h3>
+                    <p>Connect to WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, BlueBubbles (iMessage), Microsoft Teams, Matrix, Zalo, WebChat, and more - all from one control plane.</p>
                 </div>
                 
-                <div class="platform-card reveal">
-                    <div class="platform-icon">🐧</div>
-                    <h3>Linux</h3>
-                    <p>Via package manager or source</p>
-                    <a href="https://github.com/luanti-org/luanti/releases/tag/5.15.1" class="btn btn-primary" style="margin-top: 20px; position: relative; z-index: 1;">View Options</a>
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <h3>Local-First Gateway</h3>
+                    <p>Single control plane for sessions, channels, tools, and events. Your data stays on your devices.</p>
                 </div>
                 
-                <div class="platform-card reveal">
-                    <div class="platform-icon">🍎</div>
-                    <h3>macOS</h3>
-                    <p>ARM64 & x86_64</p>
-                    <a href="https://github.com/luanti-org/luanti/releases/tag/5.15.1" class="btn btn-primary" style="margin-top: 20px; position: relative; z-index: 1;">Download DMG</a>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Voice Wake & Talk Mode</h3>
+                    <p>Always-on speech for macOS/iOS/Android with ElevenLabs integration. Just speak and get responses.</p>
                 </div>
                 
-                <div class="platform-card reveal">
-                    <div class="platform-icon">🤖</div>
-                    <h3>Android</h3>
-                    <p>Multiple architectures</p>
-                    <a href="https://github.com/luanti-org/luanti/releases/tag/5.15.1" class="btn btn-primary" style="margin-top: 20px; position: relative; z-index: 1;">Download APK</a>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Live Canvas</h3>
+                    <p>Agent-driven visual workspace with A2UI - your assistant can create and manipulate visual content in real-time.</p>
                 </div>
-            </div>
-
-            <div class="download-stats">
-                <div class="stat-card reveal">
-                    <div class="stat-number" data-target="5100">0</div>
-                    <div class="stat-label">Total Downloads</div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Browser Control</h3>
+                    <p>Dedicated OpenClaw Chrome/Chromium with snapshots, actions, uploads, and profiles.</p>
                 </div>
-                <div class="stat-card reveal">
-                    <div class="stat-number" data-target="4">0</div>
-                    <div class="stat-label">Platforms</div>
-                </div>
-                <div class="stat-card reveal">
-                    <div class="stat-number">Feb 2026</div>
-                    <div class="stat-label">Latest Release</div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Multi-Agent Routing</h3>
+                    <p>Route inbound channels/accounts/peers to isolated agents with workspaces and per-agent sessions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer>
+    <section id="installation" class="installation">
         <div class="container">
-            <p style="font-size: 18px; margin-bottom: 10px;">Luanti - Free Open-Source Voxel Game Engine</p>
-            <p style="opacity: 0.8;">Copyright © 2010-2026 Perttu Ahola and contributors</p>
-            <div class="footer-links">
-                <a href="https://www.luanti.org/">Official Website</a>
-                <a href="https://docs.luanti.org/">Documentation</a>
-                <a href="https://forum.luanti.org/">Forum</a>
-                <a href="https://github.com/luanti-org/luanti">GitHub</a>
-                <a href="https://github.com/luanti-org/luanti/releases">All Releases</a>
+            <h2 class="section-title">Quick Installation</h2>
+            <p class="section-subtitle">Get started in minutes with Node ≥22</p>
+            
+            <div class="install-box">
+                <div class="code-header">
+                    <span>Terminal</span>
+                    <button class="copy-btn" onclick="copyCode()">📋 Copy</button>
+                </div>
+                <pre class="code-block" id="codeBlock"><code>npm install -g openclaw@latest
+openclaw onboard --install-daemon
+openclaw gateway --port 18789 --verbose</code></pre>
             </div>
-            <div class="powered-by">
-                <span>⚡ Powered by Mindflow</span>
+        </div>
+    </section>
+
+    <section id="security" class="security">
+        <div class="container">
+            <div class="security-content">
+                <div class="security-left">
+                    <h2 class="section-title">Security by Default</h2>
+                    <p class="security-description">OpenClaw is designed with security as a core principle. Your data stays local and under your control.</p>
+                </div>
+                <div class="security-right">
+                    <div class="security-badges">
+                        <div class="security-badge">
+                            <div class="badge-icon">🔐</div>
+                            <div class="badge-text">DM pairing policy - unknown senders receive a pairing code</div>
+                        </div>
+                        <div class="security-badge">
+                            <div class="badge-icon">✅</div>
+                            <div class="badge-text">Local allowlist for approved contacts</div>
+                        </div>
+                        <div class="security-badge">
+                            <div class="badge-icon">🛡️</div>
+                            <div class="badge-text">Explicit opt-in required for public inbound DMs</div>
+                        </div>
+                        <div class="security-badge">
+                            <div class="badge-icon">🩺</div>
+                            <div class="badge-text">Built-in 'openclaw doctor' to surface risky configurations</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p style="margin-top: 20px; opacity: 0.6; font-size: 14px;">Licensed under LGPLv2.1+</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <div class="footer-logo">🦞 OpenClaw</div>
+                    <p>Your Personal AI Assistant - Always On, Always Local</p>
+                </div>
+                <div class="footer-right">
+                    <p class="powered-by">Powered by <span class="mindflow">Mindflow</span></p>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <script>
-        function reveal() {
-            const reveals = document.querySelectorAll('.reveal');
-            for (let i = 0; i < reveals.length; i++) {
-                const windowHeight = window.innerHeight;
-                const elementTop = reveals[i].getBoundingClientRect().top;
-                const elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add('active');
-                }
-            }
-        }
-
-        window.addEventListener('scroll', reveal);
-        reveal();
-
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.section-title').forEach(title => {
-            observer.observe(title);
-        });
-
-        document.querySelectorAll('.feature-card').forEach((card, index) => {
-            setTimeout(() => {
-                const cardObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                        }
-                    });
-                }, { threshold: 0.1 });
-                cardObserver.observe(card);
-            }, index * 100);
-        });
-
-        function animateCounter(element) {
-            const target = parseInt(element.getAttribute('data-target'));
-            const duration = 2000;
-            const step = target / (duration / 16);
-            let current = 0;
-
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    element.textContent = target + '+';
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current);
-                }
-            }, 16);
-        }
-
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    const number = entry.target.querySelector('.stat-number[data-target]');
-                    if (number && !number.classList.contains('animated')) {
-                        number.classList.add('animated');
-                        animateCounter(number);
-                    }
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.stat-card').forEach(card => {
-            statsObserver.observe(card);
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
