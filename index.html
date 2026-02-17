@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenClaw v2026.2.15 — What’s New</title>
-  <meta name="description" content="Discover what's new in OpenClaw v2026.2.15: richer Discord components v2, sub-agents with depth control, security hardening, and reliability improvements across channels and tooling." />
+  <title>OpenClaw v2026.2.15 — New Features</title>
+  <meta name="description" content="Explore the new features in OpenClaw v2026.2.15: Discord Components v2, refined Discord UX, plugin LLM I/O hooks, nested sub-agents with depth control, per-channel ack overrides, Cron/Gateway notify + webhook token, and unified channel probe/token base types." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,10 +48,11 @@
             Latest release • 2026‑02‑16
           </div>
 
-          <h1 class="title">Richer interactions, deeper sub‑agents, and end‑to‑end hardening.</h1>
+          <h1 class="title">OpenClaw v2026.2.15 — Focused on richer UI, deeper orchestration, and developer hooks.</h1>
           <p class="subtitle">
-            This page is a polished release showcase for OpenClaw v2026.2.15—designed to communicate what changed, why it matters,
-            and how to upgrade, with an interactive 3D WebGL illustration that visually represents “agents, channels, and secure flows”.
+            This page highlights what’s new in OpenClaw v2026.2.15 — Discord Components v2 with refined UX, nested sub‑agents with depth controls,
+            plugin hooks for <code>llm_input</code>/<code>llm_output</code>, per‑channel ack override, Cron/Gateway notify + webhook token,
+            and unified channel probe/token base types.
           </p>
 
           <div class="cta">
@@ -92,8 +93,8 @@
               <div class="hud__title">Agent Mesh</div>
               <div class="hud__meta">
                 <span class="hud__chip">Discord CV2</span>
-                <span class="hud__chip">Sub‑agents depth</span>
-                <span class="hud__chip">SHA‑256 hardening</span>
+                <span class="hud__chip">Nested sub‑agents</span>
+                <span class="hud__chip">LLM I/O hooks</span>
               </div>
               <div class="hud__hint" id="hudHint">Tip: click a glowing node to pin focus</div>
             </div>
@@ -101,78 +102,152 @@
         </div>
       </section>
 
-      <section class="cards" aria-label="Highlights">
+      <section class="cards" aria-label="New features highlights">
         <article class="card panel">
           <div class="kicker">Discord</div>
-          <h3>Components v2, refined UX</h3>
-          <p>Build native, multi‑step flows with buttons, selects, modals, and attachment‑backed file blocks. Cleaner layouts and a streamlined approval experience.</p>
+          <h3>Components v2</h3>
+          <p>Build native, multi‑step flows with buttons, selects, modals, and attachment‑backed file blocks. Cleaner layouts and approvals.</p>
         </article>
         <article class="card panel">
-          <div class="kicker">Sub‑agents</div>
-          <h3>Depth & policy aware</h3>
-          <p>Enable sub‑sub‑agents with <code>maxSpawnDepth</code> and <code>maxChildrenPerAgent</code>. Depth‑aware tool policy prevents runaway trees.</p>
+          <div class="kicker">Discord</div>
+          <h3>Refined UX</h3>
+          <p>CV2 containers, embed passthrough, and improved execution/approval ergonomics for conversational tasks.</p>
         </article>
         <article class="card panel">
           <div class="kicker">Plugins</div>
-          <h3>LLM input/output taps</h3>
-          <p>Extensions can inspect <code>llm_input</code> and <code>llm_output</code> payloads for analytics, guardrails, and adaptive routing.</p>
+          <h3>LLM input/output hooks</h3>
+          <p>Extensions can observe <code>llm_input</code> / <code>llm_output</code> for analytics, routing, and guardrails.</p>
         </article>
-      </section>
-
-      <section class="split section" aria-label="Details">
-        <article class="panel block">
-          <div class="block__head">
-            <div>
-              <div class="kicker">Changes</div>
-              <h2>New capabilities</h2>
-            </div>
-            <button class="ghost" type="button" data-copy="changes">Copy bullets</button>
-          </div>
-          <ul class="list" id="changes">
-            <li class="item">Discord: Components v2 (buttons, selects, modals, attachment‑backed file blocks).</li>
-            <li class="item">Discord: CV2 containers, embeds passthrough, exec approval UX refinements.</li>
-            <li class="item">Plugins: <code>llm_input</code> &amp; <code>llm_output</code> hook payloads for extensions (#16724).</li>
-            <li class="item">Sub‑agents: nested sub‑agents with configurable depth + limits (#14447).</li>
-            <li class="item">Slack/Discord/Telegram: per‑channel ack reaction overrides (#17092).</li>
-            <li class="item">Cron/Gateway: finished‑run webhook <code>notify</code> + dedicated <code>cron.webhookToken</code>.</li>
-            <li class="item">Channels: unified probe/token base types across core + extensions.</li>
-          </ul>
+        <article class="card panel">
+          <div class="kicker">Sub‑agents</div>
+          <h3>Nested with depth control</h3>
+          <p>Opt‑in depth via <code>maxSpawnDepth</code> and bound fan‑out with <code>maxChildrenPerAgent</code>.</p>
         </article>
-
-        <article class="panel block">
-          <div class="block__head">
-            <div>
-              <div class="kicker">Fixes</div>
-              <h2>Reliability &amp; security</h2>
-            </div>
-            <button class="ghost" type="button" data-copy="fixes">Copy bullets</button>
-          </div>
-          <ul class="list" id="fixes">
-            <li class="item">Security: SHA‑256 sandbox config hashing; block dangerous Docker configs.</li>
-            <li class="item">Security/Logging: redact Telegram tokens; sanitize inbound chat; stricter role matching.</li>
-            <li class="item">Sandbox: stable hashing; safer installers; cap web fetch size pre‑parsing.</li>
-            <li class="item">Gateway/UI: better scope handling; safer status; stricter agent keys.</li>
-            <li class="item">Memory/FTS: Unicode‑aware tokenization; correct time‑aware memory files.</li>
-            <li class="item">Telegram/Discord: robust retries; de‑dup replies; stable streaming.</li>
-            <li class="item">TUI/CLI: ANSI‑aware filtering, stable wrapping, better paste handling.</li>
-          </ul>
+        <article class="card panel">
+          <div class="kicker">Channels</div>
+          <h3>Per‑channel ack overrides</h3>
+          <p>Configure distinct acknowledgement reactions per Slack/Discord/Telegram channel.</p>
+        </article>
+        <article class="card panel">
+          <div class="kicker">Cron/Gateway</div>
+          <h3>Notify + webhook token</h3>
+          <p>Use finished‑run <code>notify</code> webhooks and a dedicated <code>cron.webhookToken</code> for targeted callbacks.</p>
+        </article>
+        <article class="card panel">
+          <div class="kicker">Channels</div>
+          <h3>Unified base types</h3>
+          <p>Probe/token base types are deduplicated across core and extensions for simpler configuration.</p>
         </article>
       </section>
 
       <section id="how-it-works" class="section">
         <div class="kicker">How it works</div>
-        <h2>Upgrade paths and configuration</h2>
+        <h2>Configuration and quick implementation</h2>
         <div class="panel block">
-          <ul class="list">
-            <li class="item"><strong>Discord Components v2</strong> — No code changes required for basic actions. For modals/file blocks in skills, register component handlers and pass file attachments via CV2 containers.</li>
-            <li class="item"><strong>Sub‑agents</strong> — Opt‑in depth via <code>agents.defaults.subagents.maxSpawnDepth</code> (e.g. <code>2</code>) and limit fan‑out with <code>maxChildrenPerAgent</code> (default <code>5</code>).</li>
-            <li class="item"><strong>Plugin LLM hooks</strong> — Implement <code>llm_input</code>/<code>llm_output</code> in extensions to observe prompts and completion metadata for analytics, red‑teaming, or safety checks.</li>
-            <li class="item"><strong>Security upgrades</strong> — Config hashing moves to SHA‑256, sandbox policy blocks risky Docker flags, secrets are redacted from logs by default.</li>
+          <ul class="list code-list">
+            <li class="item">
+              <strong>Discord Components v2</strong>
+              <pre aria-label="discord cv2 example"><code>// config/discord.yml
+components:
+  version: 2
+  containers:
+    allowEmbedsPassthrough: true
+skills:
+  - id: file_intake
+    components:
+      modal:
+        title: "Upload artifact"
+        fields:
+          - id: desc
+            type: text
+            label: "Description"
+      fileBlock:
+        accept: [".csv", ".pdf"]
+        required: true
+</code></pre>
+              <div class="tip">Register handlers to receive modal submissions and file attachments via CV2 containers.</div>
+            </li>
+            <li class="item">
+              <strong>Refined Discord UX (exec/approval)</strong>
+              <pre aria-label="discord ux options"><code>// runtime/options.json
+{
+  "discord": {
+    "cv2": { "compactEmbeds": true },
+    "approval": { "confirmEmoji": "✅", "rejectEmoji": "⛔" }
+  }
+}
+</code></pre>
+              <div class="tip">Use compact embeds and clear approvals to streamline multi‑step actions.</div>
+            </li>
+            <li class="item">
+              <strong>Plugin LLM hooks</strong>
+              <pre aria-label="plugin llm hook"><code>// extensions/analytics/index.js
+export const hooks = {
+  async llm_input(ctx) {
+    ctx.log.debug({ model: ctx.model, promptTokens: ctx.tokens }, "LLM input");
+  },
+  async llm_output(ctx) {
+    ctx.emit("trace", { latency: ctx.latencyMs, usage: ctx.usage });
+  }
+};
+</code></pre>
+              <div class="tip">Observe prompts and completions for analytics, routing, red‑teaming, or safety checks.</div>
+            </li>
+            <li class="item">
+              <strong>Nested sub‑agents with depth control</strong>
+              <pre aria-label="subagents depth"><code>// config/agents.yml
+agents:
+  defaults:
+    subagents:
+      maxSpawnDepth: 2      # allow parent -> child -> grandchild
+      maxChildrenPerAgent: 5
+  registry:
+    orchestrator:
+      tools: ["spawn_subagent"]
+</code></pre>
+              <div class="tip">Depth‑aware policy prevents runaway trees while enabling specialized workers.</div>
+            </li>
+            <li class="item">
+              <strong>Per‑channel ack reaction overrides</strong>
+              <pre aria-label="ack overrides"><code>// config/channels.yml
+slack:
+  ackReaction: ":hourglass:"
+discord:
+  ackReaction: "🟦"
+telegram:
+  ackReaction: "⌛"
+</code></pre>
+              <div class="tip">Give each channel its own acknowledgement semantics.</div>
+            </li>
+            <li class="item">
+              <strong>Cron/Gateway notify + webhook token</strong>
+              <pre aria-label="cron notify"><code>// config/cron.yml
+notify:
+  on: ["run:finished"]
+  url: "https://example.com/hooks/openclaw"
+  tokenRef: "cron.webhookToken"
+// secrets.env
+CRON_WEBHOOK_TOKEN=superlongsignedtoken
+</code></pre>
+              <div class="tip">Receive reliable callbacks for completed runs using a scoped token.</div>
+            </li>
+            <li class="item">
+              <strong>Unified probe/token base types</strong>
+              <pre aria-label="unified base types"><code>// config/channels.base.yml
+base:
+  probe:
+    timeoutMs: 3000
+    retries: 2
+  token:
+    kind: "bearer"
+    env: "CHANNEL_TOKEN"
+</code></pre>
+              <div class="tip">Standardize probing and tokens across core and extensions to reduce drift.</div>
+            </li>
           </ul>
-          <p class="note" style="margin-top: 10px;">
-            Full notes:
-            <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">v2026.2.15 release</a>
-          </p>
+          <div class="note" style="margin-top: 10px;">
+            Full notes: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">v2026.2.15 release</a>
+          </div>
         </div>
       </section>
 
@@ -180,16 +255,17 @@
         <div class="panel callout">
           <div class="callout__copy">
             <div class="kicker">Purpose</div>
-            <h2 class="callout__title">A release landing page that converts curiosity into upgrades.</h2>
+            <h2 class="callout__title">A crisp release page that turns new features into quick upgrades.</h2>
             <p class="callout__text">
-              The goal is to present the release at a glance (highlights), provide confidence (security &amp; reliability details),
-              and help teams act (upgrade paths), while the WebGL “Agent Mesh” gives a memorable, interactive visual identity.
+              This page exists to clearly present only the new capabilities in v2026.2.15, help teams understand why they matter,
+              and show exactly how to enable them. The interactive WebGL “Agent Mesh” provides a memorable visual of agents,
+              channels, and flows working in harmony.
             </p>
           </div>
           <div class="callout__stats" role="list" aria-label="Release pillars">
             <div class="stat" role="listitem"><div class="stat__k">Native UI</div><div class="stat__v">Discord CV2</div></div>
-            <div class="stat" role="listitem"><div class="stat__k">Orchestration</div><div class="stat__v">Sub‑agents</div></div>
-            <div class="stat" role="listitem"><div class="stat__k">Hardening</div><div class="stat__v">SHA‑256</div></div>
+            <div class="stat" role="listitem"><div class="stat__k">Orchestration</div><div class="stat__v">Nested sub‑agents</div></div>
+            <div class="stat" role="listitem"><div class="stat__k">Observability</div><div class="stat__v">LLM I/O hooks</div></div>
           </div>
         </div>
       </section>
