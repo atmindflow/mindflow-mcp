@@ -12,27 +12,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Copy code functionality
-function copyCode() {
-    const codeBlock = document.getElementById('codeBlock');
-    const textToCopy = codeBlock.textContent;
-    
-    navigator.clipboard.writeText(textToCopy).then(() => {
-        const copyBtn = document.querySelector('.copy-btn');
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = '✅ Copied!';
-        copyBtn.style.background = '#10b981';
-        
-        setTimeout(() => {
-            copyBtn.textContent = originalText;
-            copyBtn.style.background = '';
-        }, 2000);
-    }).catch(err => {
-        console.error('Failed to copy:', err);
-    });
-}
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(10, 10, 26, 0.95)';
+        navbar.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+    } else {
+        navbar.style.background = 'rgba(10, 10, 26, 0.8)';
+        navbar.style.boxShadow = 'none';
+    }
+});
 
-// Intersection Observer for scroll animations
+// Feature cards intersection observer for animation
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -47,65 +39,102 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all feature cards and security badges
-document.addEventListener('DOMContentLoaded', () => {
-    const featureCards = document.querySelectorAll('.feature-card');
-    const securityBadges = document.querySelectorAll('.security-badge');
+document.querySelectorAll('.feature-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'all 0.6s ease';
+    observer.observe(card);
+});
+
+// Floating cards interactive movement
+const floatingCards = document.querySelectorAll('.floating-card');
+
+document.addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX / window.innerWidth;
+    const mouseY = e.clientY / window.innerHeight;
     
-    featureCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(50px)';
-        card.style.transition = 'all 0.6s ease-out';
-        observer.observe(card);
+    floatingCards.forEach((card, index) => {
+        const speed = (index + 1) * 20;
+        const x = (mouseX - 0.5) * speed;
+        const y = (mouseY - 0.5) * speed;
+        
+        card.style.transform = `translate(${x}px, ${y}px)`;
     });
-    
-    securityBadges.forEach(badge => {
-        badge.style.opacity = '0';
-        badge.style.transform = 'translateX(-50px)';
-        badge.style.transition = 'all 0.6s ease-out';
-        observer.observe(badge);
+});
+
+// Button ripple effect
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
     });
 });
 
-// Parallax effect for gradient background
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const gradientBg = document.querySelector('.gradient-bg');
-    if (gradientBg) {
-        gradientBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+// Add ripple animation styles dynamically
+const style = document.createElement('style');
+style.textContent = `
+    .btn {
+        position: relative;
+        overflow: hidden;
     }
-});
-
-// Add active state to navbar on scroll
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(15, 23, 42, 0.8)';
-    }
-});
-
-// Typing effect for hero title (optional enhancement)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.textContent = '';
     
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        transform: scale(0);
+        animation: ripple-animation 0.6s ease-out;
+        pointer-events: none;
+    }
+    
+    @keyframes ripple-animation {
+        to {
+            transform: scale(4);
+            opacity: 0;
         }
     }
+`;
+document.head.appendChild(style);
+
+// Parallax effect for hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    const heroVisual = document.querySelector('.hero-visual');
     
-    type();
+    if (heroContent) {
+        heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+    }
+    
+    if (heroVisual) {
+        heroVisual.style.transform = `translateY(${scrolled * 0.5}px)`;
+    }
+});
+
+// Version badge animation
+const versionBadge = document.querySelector('.version-badge');
+if (versionBadge) {
+    setInterval(() => {
+        versionBadge.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+            versionBadge.style.transform = 'scale(1)';
+        }, 200);
+    }, 3000);
+    versionBadge.style.transition = 'transform 0.2s ease';
 }
 
-// Random float animation variation
-document.querySelectorAll('.float-card').forEach((card, index) => {
-    const randomDelay = Math.random() * 2;
-    const randomDuration = 3 + Math.random() * 2;
-    card.style.animationDelay = `${randomDelay}s`;
-    card.style.animationDuration = `${randomDuration}s`;
-});
+console.log('🚀 OpenClaw - Powered by Mindflow AI');
