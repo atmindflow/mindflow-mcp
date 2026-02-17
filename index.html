@@ -17,166 +17,153 @@
                 <span class="date">Released February 16, 2026</span>
             </div>
             <h1 class="hero-title">Discord Components v2</h1>
-            <p class="hero-subtitle">Interactive agent prompts with buttons, selects, modals and attachment-backed file blocks</p>
+            <p class="hero-subtitle">Unlock rich interactive agent prompts with buttons, selects, modals, and attachment-backed file blocks</p>
         </header>
 
         <section class="feature-section">
-            <div class="glass-card feature-card">
+            <div class="feature-card">
                 <div class="icon-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="18" height="18" rx="2"/>
-                        <path d="M9 9h6m-6 4h6m-6 4h4"/>
+                        <path d="M9 12h6M12 9v6"/>
                     </svg>
                 </div>
-                <h2>Rich Interaction UI</h2>
-                <p>Build sophisticated user experiences with Discord's component system. Buttons, select menus, and modals let users interact with your agents in intuitive ways—no more plain text commands.</p>
+                <h3>Interactive Buttons</h3>
+                <p>Create dynamic button components that allow users to trigger actions directly from Discord messages. Perfect for confirmations, choices, and workflow controls.</p>
             </div>
 
-            <div class="glass-card feature-card">
+            <div class="feature-card">
                 <div class="icon-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+                        <rect x="3" y="6" width="18" height="12" rx="2"/>
+                        <path d="M7 10h10M7 14h6"/>
                     </svg>
                 </div>
-                <h2>Event-Driven Architecture</h2>
-                <p>Components trigger events that your agent receives in real-time. Handle button clicks, dropdown selections, and modal submissions with full context and state preservation.</p>
+                <h3>Smart Selects & Modals</h3>
+                <p>Build rich selection menus and full-featured modal dialogs. Collect structured input from users with dropdowns, text fields, and multi-step forms.</p>
             </div>
 
-            <div class="glass-card feature-card">
+            <div class="feature-card">
                 <div class="icon-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                        <polyline points="13 2 13 9 20 9"/>
                     </svg>
                 </div>
-                <h2>Attachment-Backed Blocks</h2>
-                <p>Present file content directly in Discord with attachment-backed file blocks. Users can view, download, or interact with files seamlessly within the conversation flow.</p>
+                <h3>File Block Attachments</h3>
+                <p>Leverage attachment-backed file blocks to send documents, images, and data files directly through component interactions, streamlining file-based workflows.</p>
             </div>
         </section>
 
         <section class="how-it-works-section">
-            <div class="glass-card wide-card">
-                <h2>How It Works</h2>
-                <div class="flow-diagram">
-                    <div class="flow-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Agent Sends Component</h3>
-                            <p>Agent creates a message with interactive components (buttons, selects, modals)</p>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>User Interacts</h3>
-                            <p>User clicks button, selects option, or submits modal in Discord</p>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>Agent Receives Event</h3>
-                            <p>Agent gets interaction event with full context and user choice</p>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">→</div>
-                    <div class="flow-step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h3>Execute Action</h3>
-                            <p>Agent processes interaction and responds or performs action</p>
-                        </div>
-                    </div>
+            <h2>How It Works</h2>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <h4>Agent Receives Request</h4>
+                    <p>User initiates interaction via Discord</p>
                 </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <h4>Component Rendered</h4>
+                    <p>OpenClaw builds interactive UI</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <h4>User Interacts</h4>
+                    <p>Clicks button, selects option, or uploads file</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <h4>Action Processed</h4>
+                    <p>Agent handles input and responds</p>
+                </div>
+            </div>
 
-                <div class="code-example">
-                    <h3>Example Component Message</h3>
-                    <pre class="code-block"><code>{
-  "content": "Choose your deployment environment:",
+            <div class="code-example">
+                <div class="code-header">
+                    <span>Example Component Response</span>
+                    <button class="copy-btn" onclick="copyCode(event, 'code-content')">Copy</button>
+                </div>
+                <pre><code id="code-content">{
+  "content": "Choose an action:",
   "components": [
     {
       "type": 1,
       "components": [
         {
           "type": 2,
-          "style": 1,
-          "label": "Production",
-          "custom_id": "deploy_prod"
-        },
-        {
-          "type": 2,
-          "style": 2,
-          "label": "Staging",
-          "custom_id": "deploy_staging"
-        },
-        {
-          "type": 2,
+          "label": "Approve",
           "style": 3,
-          "label": "Development",
-          "custom_id": "deploy_dev"
+          "custom_id": "approve_btn"
+        },
+        {
+          "type": 2,
+          "label": "Reject",
+          "style": 4,
+          "custom_id": "reject_btn"
         }
       ]
     }
   ]
 }</code></pre>
-                </div>
             </div>
         </section>
 
-        <section class="secondary-features-section">
-            <div class="glass-card wide-card">
-                <h2>What Else Is New</h2>
-                <div class="features-grid">
-                    <div class="mini-feature">
-                        <h4>Embeds Passthrough</h4>
-                        <p>Full Discord embed support with rich formatting and metadata</p>
-                    </div>
-                    <div class="mini-feature">
-                        <h4>Plugin Hooks Extended</h4>
-                        <p>Access llm_input and llm_output payloads in plugin lifecycle</p>
-                    </div>
-                    <div class="mini-feature">
-                        <h4>Nested Subagents</h4>
-                        <p>Configure maxSpawnDepth and maxChildrenPerAgent for hierarchies</p>
-                    </div>
-                    <div class="mini-feature">
-                        <h4>Per-Channel Reactions</h4>
-                        <p>Override acknowledgment reactions on Slack, Discord, and Telegram</p>
-                    </div>
-                    <div class="mini-feature">
-                        <h4>Webhook Notifications</h4>
-                        <p>Finished-run webhook toggle and cron.webhookToken for security</p>
-                    </div>
-                    <div class="mini-feature">
-                        <h4>Channel Type Deduplication</h4>
-                        <p>Cleaner probe and token resolution across channel base types</p>
-                    </div>
+        <section class="benefits-section">
+            <h2>Why Customers Benefit</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <h4>Faster Workflows</h4>
+                    <p>Reduce back-and-forth messaging with inline action buttons and selection menus</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎯</div>
+                    <h4>Better UX</h4>
+                    <p>Native Discord components feel familiar and professional to end users</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔧</div>
+                    <h4>Flexible Integration</h4>
+                    <p>Build complex forms, approval flows, and file exchanges without leaving Discord</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📦</div>
+                    <h4>Rich Data Collection</h4>
+                    <p>Gather structured user input with selects, modals, and file attachments</p>
                 </div>
             </div>
         </section>
 
         <section class="config-section">
-            <div class="glass-card config-card">
-                <h3>Quick Start Configuration</h3>
-                <p class="config-description">Enable Discord Components v2 in your OpenClaw setup:</p>
-                <pre class="code-block"><code>channels:
+            <h2>Quick Configuration</h2>
+            <p class="config-intro">Enable Discord Components v2 in your OpenClaw configuration:</p>
+            <div class="code-example">
+                <div class="code-header">
+                    <span>config.yaml</span>
+                    <button class="copy-btn" onclick="copyCode(event, 'config-code')">Copy</button>
+                </div>
+                <pre><code id="config-code">channels:
   discord:
-    componentsVersion: 2
-    enableEmbeds: true
-
-agents:
-  defaults:
-    subagents:
-      maxSpawnDepth: 2
-      maxChildrenPerAgent: 5</code></pre>
+    componentsVersion: 2</code></pre>
             </div>
         </section>
 
         <section class="cta-section">
-            <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" class="btn btn-primary" target="_blank" rel="noopener">View Release</a>
-            <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip" class="btn btn-secondary" target="_blank" rel="noopener">Download</a>
+            <h2>Get Started Today</h2>
+            <p>Download OpenClaw v2026.2.15 and start building interactive Discord experiences.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" class="btn btn-primary" target="_blank" rel="noopener">
+                    View Release Notes
+                </a>
+                <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip" class="btn btn-secondary" target="_blank" rel="noopener">
+                    Download
+                </a>
+            </div>
         </section>
 
         <footer class="footer">

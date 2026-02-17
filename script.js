@@ -175,4 +175,19 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+// Small helper for copy buttons (used by index.html)
+function copyCode(ev, elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const text = el.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = ev?.target;
+        if (!btn) return;
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => (btn.textContent = original), 1400);
+    });
+}
+
 init();
