@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw v2026.2.15 - Personal AI Assistant Release</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .version {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary {
+            background: #ffd700;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.6em;
+            margin: 25px 0 15px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateX(5px);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffd700;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 15px 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .channels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .channel-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦞 OpenClaw</h1>
+            <div class="version">Version 2026.2.15 Released!</div>
+            <p class="tagline">Your Personal AI Assistant - Now More Powerful Than Ever</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg" class="btn btn-primary">Download for macOS</a>
+                <a href="https://github.com/openclaw/openclaw" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </header>
+
+        <div class="content-section">
+            <h2>🚀 What's New in v2026.2.15</h2>
+            
+            <div class="highlight-box">
+                <strong>EXFOLIATE! EXFOLIATE!</strong> - This release brings major improvements to security, multi-platform support, and interactive capabilities across all your favorite messaging channels.
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Channels Supported</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Security Fixes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Feature Improvements</div>
+                </div>
+            </div>
+
+            <h3>✨ Major Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🎮 Discord Components v2</h4>
+                    <p>Rich interactive prompts with buttons, selects, modals, and file blocks for native Discord interaction.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🤖 Nested Sub-Agents</h4>
+                    <p>Sub-agents can now spawn their own children with configurable depth for complex workflows.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🔌 LLM Plugin Hooks</h4>
+                    <p>Extensions observe prompt/input context and model output usage through exposed hook payloads.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>⏰ Enhanced Cron Jobs</h4>
+                    <p>Webhook delivery toggle and dedicated auth token support for secure outbound posts.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>💬 Per-Channel Customization</h4>
+                    <p>Custom ack reaction overrides at account/channel level for platform-specific emoji.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🔒 Enhanced Security</h4>
+                    <p>SHA-256 sandbox hashing, token redaction, Docker config blocking, and XSS prevention.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>🌐 Multi-Platform Support</h2>
+            <p class="tagline">Connect your AI assistant to the channels you already use every day</p>
+            
+            <div class="channels">
+                <span class="channel-badge">WhatsApp</span>
+                <span class="channel-badge">Telegram</span>
+                <span class="channel-badge">Slack</span>
+                <span class="channel-badge">Discord</span>
+                <span class="channel-badge">Google Chat</span>
+                <span class="channel-badge">Signal</span>
+                <span class="channel-badge">iMessage</span>
+                <span class="channel-badge">BlueBubbles</span>
+                <span class="channel-badge">Microsoft Teams</span>
+                <span class="channel-badge">Matrix</span>
+                <span class="channel-badge">Zalo</span>
+                <span class="channel-badge">WebChat</span>
+                <span class="channel-badge">iOS</span>
+                <span class="channel-badge">Android</span>
+                <span class="channel-badge">macOS</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>🎉 Get Started Today</h2>
+            <p style="font-size: 1.2em; margin: 20px 0;">
+                Download OpenClaw v2026.2.15 now and experience the future of personal AI assistants. 
+                Built for privacy, designed for power, and ready to work on your favorite platforms.
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg" class="btn btn-primary">Download macOS App</a>
+                <a href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip" class="btn btn-secondary">Download ZIP</a>
+                <a href="https://docs.openclaw.ai/start/getting-started" class="btn btn-secondary">Getting Started Guide</a>
+            </div>
+        </div>
+
+        <footer>
+            <p style="font-size: 1.2em; margin-bottom: 20px;">🦞 Built for Molty, a space lobster AI assistant</p>
+            <p>by Peter Steinberger and the OpenClaw community</p>
+            <p style="margin-top: 20px;">
+                <a href="https://github.com/openclaw/openclaw" style="color: white; margin: 0 10px;">GitHub</a> | 
+                <a href="https://openclaw.ai" style="color: white; margin: 0 10px;">Website</a> | 
+                <a href="https://docs.openclaw.ai" style="color: white; margin: 0 10px;">Documentation</a> | 
+                <a href="https://discord.gg/clawd" style="color: white; margin: 0 10px;">Discord</a>
+            </p>
+            <p style="margin-top: 20px; opacity: 0.8;">MIT License • v2026.2.15 • Released February 16, 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
