@@ -1,100 +1,148 @@
-// Three.js WebGL Scene
-let scene, camera, renderer, particles, geometry, animatedMesh;
+// Three.js WebGL Background - Nested Node Network
+let scene, camera, renderer, nodes = [], connections = [];
 let mouseX = 0, mouseY = 0;
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
 
 function init() {
-    const container = document.getElementById('webgl-container');
-    
-    // Scene setup
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x667eea, 0.0008);
-    
-    // Camera
-    camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        1,
-        3000
-    );
-    camera.position.z = 1000;
-    
-    // Particle system
-    const particleCount = 2000;
-    geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    
-    for (let i = 0; i < particleCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 2000;
-        positions[i + 1] = (Math.random() - 0.5) * 2000;
-        positions[i + 2] = (Math.random() - 0.5) * 2000;
-        
-        // Color variation (purples, blues, pinks)
-        const colorChoice = Math.random();
-        if (colorChoice < 0.33) {
-            colors[i] = 0.4 + Math.random() * 0.2;     // R
-            colors[i + 1] = 0.5 + Math.random() * 0.2; // G
-            colors[i + 2] = 0.9 + Math.random() * 0.1; // B
-        } else if (colorChoice < 0.66) {
-            colors[i] = 0.46 + Math.random() * 0.2;    // R
-            colors[i + 1] = 0.29 + Math.random() * 0.2; // G
-            colors[i + 2] = 0.64 + Math.random() * 0.2; // B
-        } else {
-            colors[i] = 0.94 + Math.random() * 0.06;   // R
-            colors[i + 1] = 0.58 + Math.random() * 0.2; // G
-            colors[i + 2] = 0.98 + Math.random() * 0.02; // B
-        }
-    }
-    
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    
-    const material = new THREE.PointsMaterial({
-        size: 3,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.7,
-        blending: THREE.AdditiveBlending
-    });
-    
-    particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-    
-    // Animated geometric shape
-    const torusGeometry = new THREE.TorusKnotGeometry(150, 30, 100, 16);
-    const torusMaterial = new THREE.MeshBasicMaterial({
-        color: 0x764ba2,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.15
-    });
-    animatedMesh = new THREE.Mesh(torusGeometry, torusMaterial);
-    animatedMesh.position.set(0, 0, -200);
-    scene.add(animatedMesh);
-    
-    // Renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    scene.fog = new THREE.FogExp2(0x0f0c29, 0.0008);
+
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 50;
+
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
-    container.appendChild(renderer.domElement);
-    
-    // Event listeners
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+    // Create hierarchical node network representing nested components
+    createNodeNetwork();
+    createConnections();
+
+    // Add ambient light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    // Add point lights
+    const light1 = new THREE.PointLight(0x667eea, 1, 100);
+    light1.position.set(20, 20, 20);
+    scene.add(light1);
+
+    const light2 = new THREE.PointLight(0x764ba2, 1, 100);
+    light2.position.set(-20, -20, 20);
+    scene.add(light2);
+
+    // Mouse move interaction
+    document.addEventListener('mousemove', onMouseMove, false);
     window.addEventListener('resize', onWindowResize, false);
-    
+
     animate();
 }
 
-function onDocumentMouseMove(event) {
-    mouseX = (event.clientX - windowHalfX) * 0.5;
-    mouseY = (event.clientY - windowHalfY) * 0.5;
+function createNodeNetwork() {
+    const nodeGeometry = new THREE.SphereGeometry(0.3, 16, 16);
+    const materials = [
+        new THREE.MeshPhongMaterial({ color: 0x667eea, emissive: 0x667eea, emissiveIntensity: 0.5 }),
+        new THREE.MeshPhongMaterial({ color: 0x764ba2, emissive: 0x764ba2, emissiveIntensity: 0.5 }),
+        new THREE.MeshPhongMaterial({ color: 0xf093fb, emissive: 0xf093fb, emissiveIntensity: 0.5 })
+    ];
+
+    // Create hierarchical structure - parent nodes with children
+    for (let i = 0; i < 8; i++) {
+        const parentNode = new THREE.Mesh(nodeGeometry, materials[0]);
+        const angle = (i / 8) * Math.PI * 2;
+        const radius = 25;
+        parentNode.position.set(
+            Math.cos(angle) * radius,
+            Math.sin(angle * 0.5) * 10,
+            Math.sin(angle) * radius
+        );
+        parentNode.userData = { 
+            baseX: parentNode.position.x,
+            baseY: parentNode.position.y,
+            baseZ: parentNode.position.z,
+            speed: Math.random() * 0.02 + 0.01,
+            children: []
+        };
+        scene.add(parentNode);
+        nodes.push(parentNode);
+
+        // Add child nodes (nested components)
+        for (let j = 0; j < 3; j++) {
+            const childNode = new THREE.Mesh(nodeGeometry.clone(), materials[1]);
+            const childAngle = (j / 3) * Math.PI * 2;
+            const childRadius = 5;
+            childNode.position.set(
+                parentNode.position.x + Math.cos(childAngle) * childRadius,
+                parentNode.position.y + Math.sin(childAngle) * childRadius,
+                parentNode.position.z
+            );
+            childNode.userData = {
+                parent: parentNode,
+                baseX: childNode.position.x,
+                baseY: childNode.position.y,
+                baseZ: childNode.position.z,
+                speed: Math.random() * 0.03 + 0.02,
+                offset: j
+            };
+            scene.add(childNode);
+            nodes.push(childNode);
+            parentNode.userData.children.push(childNode);
+
+            // Add grandchild nodes (deeply nested)
+            if (j === 0) {
+                const grandchildNode = new THREE.Mesh(nodeGeometry.clone(), materials[2]);
+                grandchildNode.position.set(
+                    childNode.position.x + 3,
+                    childNode.position.y,
+                    childNode.position.z + 3
+                );
+                grandchildNode.userData = {
+                    parent: childNode,
+                    baseX: grandchildNode.position.x,
+                    baseY: grandchildNode.position.y,
+                    baseZ: grandchildNode.position.z,
+                    speed: Math.random() * 0.04 + 0.03
+                };
+                scene.add(grandchildNode);
+                nodes.push(grandchildNode);
+            }
+        }
+    }
+}
+
+function createConnections() {
+    const lineMaterial = new THREE.LineBasicMaterial({ 
+        color: 0x667eea, 
+        transparent: true, 
+        opacity: 0.2 
+    });
+
+    nodes.forEach(node => {
+        if (node.userData.children) {
+            node.userData.children.forEach(child => {
+                const points = [node.position, child.position];
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line(geometry, lineMaterial);
+                scene.add(line);
+                connections.push({ line, from: node, to: child });
+            });
+        }
+        if (node.userData.parent) {
+            const points = [node.userData.parent.position, node.position];
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(geometry, lineMaterial.clone());
+            scene.add(line);
+            connections.push({ line, from: node.userData.parent, to: node });
+        }
+    });
+}
+
+function onMouseMove(event) {
+    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
 function onWindowResize() {
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -102,41 +150,29 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    render();
-}
 
-function render() {
-    const time = Date.now() * 0.00005;
-    
-    // Rotate particles
-    particles.rotation.x = time * 0.5;
-    particles.rotation.y = time * 0.75;
-    
-    // Animate geometric shape
-    if (animatedMesh) {
-        animatedMesh.rotation.x = time * 2;
-        animatedMesh.rotation.y = time * 3;
-        animatedMesh.position.y = Math.sin(time * 2) * 50;
-    }
-    
+    const time = Date.now() * 0.001;
+
+    // Animate nodes
+    nodes.forEach((node, i) => {
+        node.position.x = node.userData.baseX + Math.sin(time * node.userData.speed + i) * 2;
+        node.position.y = node.userData.baseY + Math.cos(time * node.userData.speed + i) * 2;
+        node.rotation.x += 0.01;
+        node.rotation.y += 0.01;
+    });
+
+    // Update connections
+    connections.forEach(conn => {
+        const points = [conn.from.position, conn.to.position];
+        conn.line.geometry.setFromPoints(points);
+    });
+
     // Camera movement based on mouse
-    camera.position.x += (mouseX - camera.position.x) * 0.02;
-    camera.position.y += (-mouseY - camera.position.y) * 0.02;
+    camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
+    camera.position.y += (mouseY * 10 - camera.position.y) * 0.05;
     camera.lookAt(scene.position);
-    
-    // Particle wave effect
-    const positions = particles.geometry.attributes.position.array;
-    for (let i = 0; i < positions.length; i += 3) {
-        positions[i + 1] += Math.sin(time * 5 + positions[i] * 0.01) * 0.5;
-    }
-    particles.geometry.attributes.position.needsUpdate = true;
-    
+
     renderer.render(scene, camera);
 }
 
-// Initialize on load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
+init();
