@@ -3,37 +3,33 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenClaw — Release v2026.2.15</title>
-  <meta name="description" content="OpenClaw v2026.2.15 — What’s new, how it works, and downloads. Glassmorphic UI with WebGL agent mesh illustration." />
+  <title>OpenClaw — Release v2026.2.17</title>
+  <meta name="description" content="OpenClaw v2026.2.17 — What’s new, how it works, and downloads. Streaming upgrades, subagents spawn, mobile share, safer cron/webhooks, and broader model support." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- WebGL Canvas Background -->
   <canvas id="stage"></canvas>
   <div class="stage-glow"></div>
 
-  <!-- Sticky Header -->
   <header class="site-header glass">
     <div class="header-left">
       <div class="brand">
         <div class="logo-dot"></div>
         <span class="brand-name">OpenClaw</span>
       </div>
-      <span class="version-badge">v2026.2.15</span>
+      <span class="version-badge">v2026.2.17</span>
     </div>
     <nav class="header-actions">
-      <a class="btn ghost" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release Notes</a>
+      <a class="btn ghost" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">Release Notes</a>
       <div class="divider"></div>
-      <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip">Download ZIP</a>
-      <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg">Download DMG</a>
-      <a class="btn subtle" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dSYM.zip">dSYM</a>
+      <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.zip">Download ZIP</a>
+      <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.dmg">Download DMG</a>
     </nav>
   </header>
 
-  <!-- Control Dock -->
   <div class="control-dock glass">
     <div class="control">
       <label for="motionToggle">Motion</label>
@@ -45,256 +41,127 @@
     </div>
   </div>
 
-  <!-- Hero -->
   <main class="hero">
     <div class="hero-inner glass panel">
-      <h1 class="headline">openclaw 2026.2.15</h1>
-      <p class="subhead">A focused release leveling up native interaction across Discord and channels, unlocking deeper plugin insight, and safer, smarter sub-agent orchestration—wrapped in a faster ops flow.</p>
+      <h1 class="headline">openclaw 2026.2.17</h1>
+      <p class="subhead">A release that pushes <strong>streaming</strong> and <strong>multi-channel UX</strong> forward (Slack streaming, Telegram button styles), improves <strong>subagent orchestration</strong> (new <code>/subagents spawn</code>), expands <strong>model support</strong> (Anthropic 1M context beta + Sonnet 4.6), and adds practical <strong>mobile workflows</strong> (iOS Share Extension + Talk background listening).</p>
       <div class="hero-ctas">
-        <a class="btn xl primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.zip">Download ZIP</a>
-        <a class="btn xl gradient" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.15/OpenClaw-2026.2.15.dmg">Download DMG</a>
-        <a class="btn xl ghost" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn xl primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.zip">Download ZIP</a>
+        <a class="btn xl gradient" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.dmg">Download DMG</a>
+        <a class="btn xl ghost" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">View on GitHub</a>
       </div>
       <div class="meta">
-        <span class="chip">Published: 2026-02-16</span>
+        <span class="chip">Published: 2026-02-18</span>
         <span class="chip" title="Latest stable">Latest</span>
       </div>
     </div>
   </main>
 
-  <!-- What's New -->
   <section class="section panel glass">
-    <h2>What’s new in v2026.2.15</h2>
+    <h2>What’s new in v2026.2.17</h2>
     <ul class="whats-new">
-      <li>
-        <strong>Discord: Components v2 interactive prompts</strong> — Buttons, selects, modals, and attachment-backed file blocks for native interaction.
-      </li>
-      <li>
-        <strong>Discord: CV2 UI passthrough + exec approval UX</strong> — Embeds passthrough, CV2 containers, button layout, and Discord-forwarding skip.
-      </li>
-      <li>
-        <strong>Plugins: llm_input / llm_output hooks</strong> — Extensions can observe prompt/input context and model output usage details. (#16724)
-      </li>
-      <li>
-        <strong>Subagents: nested sub-agents</strong> — Configurable depth with spawn limits, depth-aware tool policy, and announce chain routing. (#14447)
-      </li>
-      <li>
-        <strong>Slack/Discord/Telegram: per-channel ack reactions</strong> — Override acks with platform-specific emoji formats. (#17092)
-      </li>
-      <li>
-        <strong>Cron/Gateway: finished-run webhooks + auth</strong> — Toggle notify and send with a dedicated webhook token. (#14535)
-      </li>
-      <li>
-        <strong>Channels: deduplicated base types</strong> — Unified probe/token resolution across core and extensions with preserved per-channel error typing. (#16986)
-      </li>
+      <li><strong>Anthropic: opt‑in 1M context beta header</strong> — Enable <code>params.context1m: true</code> for Opus/Sonnet to send <code>anthropic-beta: context-1m-2025-08-07</code>.</li>
+      <li><strong>Models: Anthropic Sonnet 4.6 support</strong> — Adds <code>anthropic/claude-sonnet-4-6</code> with forward-compat fallback when provider catalogs lag.</li>
+      <li><strong>Commands/Subagents: <code>/subagents spawn</code></strong> — Deterministic subagent activation directly from chat commands.</li>
+      <li><strong>Slack: native single-message streaming</strong> — Uses <code>chat.startStream</code>/<code>appendStream</code>/<code>stopStream</code>, enabled by default with fallback when streaming fails.</li>
+      <li><strong>Telegram: inline button <code>style</code> + reaction events</strong> — Button styles (<code>primary|success|danger</code>) and optional reaction notifications.</li>
+      <li><strong>iOS Share Extension</strong> — Share URL/text/images to the gateway via <code>agent.request</code>, with route fallback and optional receipts.</li>
+      <li><strong>iOS Talk: Background Listening + Voice Directive Hint</strong> — Keep Talk active in background (opt-in) and optionally disable token-heavy voice-switch hints.</li>
+      <li><strong>Cron/Gateway: webhooks + scheduling control</strong> — Separate per-job webhook delivery, enforce valid URLs, and add <code>--stagger</code>/<code>--exact</code>.</li>
+      <li><strong>Security & reliability</strong> — Includes credential-theft mitigation (OC-09) and stronger context guards for tool output.</li>
     </ul>
   </section>
 
-  <!-- How it works -->
   <section class="section panel glass">
     <h2>How it works</h2>
 
     <article class="feature">
-      <h3>1) Discord Components v2 — rich interactive prompts</h3>
-      <p>Unlock native Discord interactions: buttons, selects, modals, and attachment-backed file blocks.</p>
+      <h3>1) Turn on 1M context (Anthropic) when you actually need it</h3>
+      <p>v2026.2.17 adds an explicit opt-in switch that maps to Anthropic’s 1M context beta header—keeping default behavior conservative while letting you unlock huge context windows for deep research or long transcripts.</p>
       <div class="code">
-        <pre><code class="lang-yaml"># openclaw.config.yaml
-channels:
-  discord:
-    enabled: true
-    token: ${DISCORD_BOT_TOKEN}
-    components:
-      version: 2                 # Enable Components v2
-      fileBlocks: true           # Attachment-backed file blocks
-      modals: true               # Modal prompts
-      selects: true              # Select inputs
-      buttons: true              # Buttons
-
-prompts:
-  - id: "deploy_flow"
-    channel: discord
-    ui:
-      layout: cv2                # CV2 container layout
-      blocks:
-        - type: select
-          id: env
-          label: Environment
-          options: ["staging", "prod"]
-        - type: button
-          id: approve
-          label: Approve
-        - type: fileBlock
-          id: artifact
-          label: Upload artifact</code></pre>
+        <pre><code class="lang-yaml">agent:
+  model: anthropic/claude-opus-4-6
+  params:
+    context1m: true   # adds: anthropic-beta: context-1m-2025-08-07
+</code></pre>
       </div>
-      <p class="why">Why it matters: Bring interactive agent UX directly into Discord with zero context switching.</p>
+      <p class="why">Why it matters: big context only when needed = lower cost + less accidental context bloat.</p>
     </article>
 
     <article class="feature">
-      <h3>2) Discord CV2 UI passthrough + exec approval UX</h3>
-      <p>Refined containers, button layout, embeds passthrough, and Discord-forwarding skip for clean approvals.</p>
+      <h3>2) Sonnet 4.6 support with forward-compat fallbacks</h3>
+      <p>Adopt <code>anthropic/claude-sonnet-4-6</code> immediately, even if upstream model catalogs temporarily lag. OpenClaw keeps aliases/defaults aligned and falls back cleanly.</p>
       <div class="code">
-        <pre><code class="lang-yaml"># openclaw.config.yaml
-channels:
-  discord:
-    ui:
-      componentsV2:
-        containerStyle: "card"
-        buttonLayout: "row"
-        embedsPassthrough: true    # Preserve original embeds
-        forwardToDiscord: false    # Skip redundant forward when native UI is present
-approval:
-  exec:
-    required: true
-    prompts:
-      confirm:
-        channel: discord
-        ui:
-          layout: cv2
-          buttons:
-            - id: yes
-              label: "Approve"
-              style: success
-            - id: no
-              label: "Reject"
-              style: danger</code></pre>
+        <pre><code class="lang-bash">openclaw agent --message "Summarize this thread" --model anthropic/claude-sonnet-4-6
+</code></pre>
       </div>
-      <p class="why">Why it matters: Clearer, safer run approvals without clutter or double-posting.</p>
+      <p class="why">Why it matters: faster upgrades without brittle configuration churn.</p>
     </article>
 
     <article class="feature">
-      <h3>3) Plugins: llm_input and llm_output hooks</h3>
-      <p>Observe prompt/input context and model output usage details in your extensions.</p>
+      <h3>3) Deterministic orchestration: <code>/subagents spawn</code></h3>
+      <p>Spawn subagents intentionally (not implicitly) to keep workflows predictable—perfect for runbooks, multi-step ops, and planner/executor patterns.</p>
       <div class="code">
-        <pre><code class="lang-js">// plugin.js
-export function on_llm_input(payload) {
-  // payload: { prompt, system, tools, user, metadata }
-  logger.info({ size: payload.prompt?.length }, "llm_input observed");
-}
-
-export function on_llm_output(payload) {
-  // payload: { tokens: { prompt, completion, total }, model, latencyMs, text }
-  metrics.counter("llm.tokens", payload.tokens.total);
-  audit.write({
-    model: payload.model,
-    latency: payload.latencyMs,
-    sample: payload.text?.slice(0, 200)
-  });
-}
-
-// plugin.manifest.json
-{
-  "name": "telemetry-plugin",
-  "hooks": ["llm_input", "llm_output"]
-}</code></pre>
+        <pre><code class="lang-text">/subagents spawn planner
+/subagents spawn executor
+</code></pre>
       </div>
-      <p class="why">Why it matters: Gain transparent observability for quality, cost, and safety controls.</p>
+      <p class="why">Why it matters: clearer control over parallelism, cost, and responsibility boundaries.</p>
     </article>
 
     <article class="feature">
-      <h3>4) Subagents: nested sub-agents (depth-aware)</h3>
-      <p>Let agents spawn children (and grandchildren) with safe depth and child limits.</p>
+      <h3>4) Slack streaming that feels native</h3>
+      <p>Slack now supports true single-message streaming via <code>chat.startStream</code>/<code>appendStream</code>/<code>stopStream</code>. Reply threading stays aligned, and the system falls back gracefully if streaming fails.</p>
       <div class="code">
-        <pre><code class="lang-yaml"># openclaw.config.yaml
-agents:
-  defaults:
-    subagents:
-      maxSpawnDepth: 2            # allow sub-sub-agents
-      maxChildrenPerAgent: 5      # default cap
-      toolPolicy:
-        inherit: true
-        depthAware: true
-  registry:
-    orchestrator:
-      entry: orchestrator.js
-
-# orchestrator.js
-export default async function orchestrator(ctx) {
-  const planner = await ctx.spawn("planner");     // depth 1
-  const exec = await planner.spawn("executor");   // depth 2
-  return await exec.run({ task: ctx.input });
-}</code></pre>
-      </div>
-      <p class="why">Why it matters: Compose complex workflows while bounding risk and cost.</p>
-    </article>
-
-    <article class="feature">
-      <h3>5) Per-channel ack reaction overrides</h3>
-      <p>Customize ack emojis per platform with account/channel-level overrides.</p>
-      <div class="code">
-        <pre><code class="lang-yaml"># openclaw.config.yaml
-channels:
+        <pre><code class="lang-yaml">channels:
   slack:
-    acks:
-      default: ":white_check_mark:"
-      overrides:
-        C12345678: ":bolt:"
-  discord:
-    acks:
-      default: "✅"
-      overrides:
-        112233445566778899: "🧠"
-  telegram:
-    acks:
-      default: "👍"
-      overrides:
-        - chatId: -100987654321
-          emoji: "🤖"</code></pre>
+    stream:
+      enabled: true
+</code></pre>
       </div>
-      <p class="why">Why it matters: Meet users where they are with native-feeling confirmations.</p>
+      <p class="why">Why it matters: faster perceived latency and fewer message fragments in busy channels.</p>
     </article>
 
     <article class="feature">
-      <h3>6) Cron/Gateway: finished-run webhook + auth token</h3>
-      <p>Toggle finished-run notifications and secure outbound posts with a dedicated token.</p>
+      <h3>5) Mobile-first capture: iOS Share → Gateway → Agent</h3>
+      <p>Share a URL, text, or image from any app and the iOS Share Extension forwards it directly into OpenClaw via <code>agent.request</code>, with delivery-route fallback and optional receipts.</p>
       <div class="code">
-        <pre><code class="lang-yaml"># openclaw.config.yaml
-cron:
-  schedules:
-    - id: nightly-report
-      cron: "0 2 * * *"
-      workflow: nightly
-      notify: true                 # deliver finished-run webhook
-  webhookToken: ${CRON_WEBHOOK_TOKEN}  # dedicated auth for outbound posts
-
-gateway:
-  webhooks:
-    finishedRun:
-      url: https://example.com/hooks/openclaw/finished
-      auth: header
-      headerName: "X-OpenClaw-Token"
-      headerValue: ${CRON_WEBHOOK_TOKEN}</code></pre>
+        <pre><code class="lang-text">Share Sheet → OpenClaw → gateway agent.request → your chosen channel/session
+</code></pre>
       </div>
-      <p class="why">Why it matters: Simple, secured integrations with your pipelines and dashboards.</p>
+      <p class="why">Why it matters: capture “in the moment” context without copy/paste or switching apps.</p>
     </article>
 
     <article class="feature">
-      <h3>7) Channels: deduplicated probe/token base types</h3>
-      <p>Unified probe/token resolution across core and extensions while preserving per-channel error typing.</p>
+      <h3>6) Telegram buttons get intent: <code>primary|success|danger</code></h3>
+      <p>Inline buttons can now declare a style, and reactions can be surfaced as system events (configurable scope). This is a small change that makes assistants feel more native and predictable.</p>
       <div class="code">
-        <pre><code class="lang-js">// channels.config.json
-{
-  "probe": { "timeoutMs": 3000, "retry": 1 },
-  "tokenResolution": { "source": "env", "key": "CHANNEL_TOKEN" }
+        <pre><code class="lang-json">{
+  "buttons": [
+    { "text": "Approve", "style": "success", "action": "approve" },
+    { "text": "Reject",  "style": "danger",  "action": "reject" }
+  ]
 }
-
-// Extension can rely on shared base types
-import { BaseProbe, TokenResolver } from "@openclaw/channels-base";
-
-export class MyChannelProbe extends BaseProbe {
-  async check() { return this.ping("https://api.mychannel.dev/health"); }
-}
-
-export const resolver = new TokenResolver({ envKey: "MYCHANNEL_TOKEN" });</code></pre>
+</code></pre>
       </div>
-      <p class="why">Why it matters: Less duplication, clearer errors, and faster extension development.</p>
+      <p class="why">Why it matters: clearer UI = fewer wrong taps in high-stakes flows.</p>
+    </article>
+
+    <article class="feature">
+      <h3>7) Cron gets stricter webhooks + better scheduling</h3>
+      <p>Per-job webhooks are now separated from announce delivery, URLs are validated as HTTP(S), and recurring jobs get deterministic staggering to reduce top-of-hour spikes.</p>
+      <div class="code">
+        <pre><code class="lang-bash">openclaw cron add --stagger 30s
+openclaw cron edit --exact
+</code></pre>
+      </div>
+      <p class="why">Why it matters: fewer collisions, safer automation, and more predictable integrations.</p>
     </article>
   </section>
 
-  <!-- Footer -->
   <footer class="footer glass">
     <div class="footer-inner">
-      <span>OpenClaw v2026.2.15 · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.15" target="_blank" rel="noopener">Release</a></span>
+      <span>OpenClaw v2026.2.17 · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">Release</a></span>
       <span class="dot">•</span>
       <span>powered by Mindflow</span>
     </div>
