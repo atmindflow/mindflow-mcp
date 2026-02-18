@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OpenClaw — Release v2026.2.17</title>
-  <meta name="description" content="OpenClaw v2026.2.17 — What’s new, how it works, and downloads. Streaming upgrades, subagents spawn, mobile share, safer cron/webhooks, and broader model support." />
+  <meta name="description" content="OpenClaw v2026.2.17 release highlights: Slack native streaming, /subagents spawn, iOS Share + Talk upgrades, safer cron webhooks, and expanded Anthropic support (1M context opt-in + Sonnet 4.6)." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -30,21 +30,14 @@
     </nav>
   </header>
 
-  <div class="control-dock glass">
-    <div class="control">
-      <label for="motionToggle">Motion</label>
-      <input type="checkbox" id="motionToggle" checked />
-    </div>
-    <div class="control">
-      <label for="qualityRange">Quality</label>
-      <input type="range" id="qualityRange" min="0.5" max="2" step="0.25" value="1.25" />
-    </div>
-  </div>
-
   <main class="hero">
     <div class="hero-inner glass panel">
       <h1 class="headline">openclaw 2026.2.17</h1>
-      <p class="subhead">A release that pushes <strong>streaming</strong> and <strong>multi-channel UX</strong> forward (Slack streaming, Telegram button styles), improves <strong>subagent orchestration</strong> (new <code>/subagents spawn</code>), expands <strong>model support</strong> (Anthropic 1M context beta + Sonnet 4.6), and adds practical <strong>mobile workflows</strong> (iOS Share Extension + Talk background listening).</p>
+      <p class="subhead">
+        v2026.2.17 focuses on real-time UX (native Slack streaming, Telegram button styling),
+        predictable orchestration (new <code>/subagents spawn</code>), expanded Anthropic support
+        (opt-in 1M context + Sonnet 4.6), and mobile workflows (iOS Share Extension + Talk upgrades).
+      </p>
       <div class="hero-ctas">
         <a class="btn xl primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.zip">Download ZIP</a>
         <a class="btn xl gradient" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.dmg">Download DMG</a>
@@ -58,105 +51,17 @@
   </main>
 
   <section class="section panel glass">
-    <h2>What’s new in v2026.2.17</h2>
+    <h2>What's new in v2026.2.17</h2>
     <ul class="whats-new">
-      <li><strong>Anthropic: opt‑in 1M context beta header</strong> — Enable <code>params.context1m: true</code> for Opus/Sonnet to send <code>anthropic-beta: context-1m-2025-08-07</code>.</li>
-      <li><strong>Models: Anthropic Sonnet 4.6 support</strong> — Adds <code>anthropic/claude-sonnet-4-6</code> with forward-compat fallback when provider catalogs lag.</li>
-      <li><strong>Commands/Subagents: <code>/subagents spawn</code></strong> — Deterministic subagent activation directly from chat commands.</li>
-      <li><strong>Slack: native single-message streaming</strong> — Uses <code>chat.startStream</code>/<code>appendStream</code>/<code>stopStream</code>, enabled by default with fallback when streaming fails.</li>
-      <li><strong>Telegram: inline button <code>style</code> + reaction events</strong> — Button styles (<code>primary|success|danger</code>) and optional reaction notifications.</li>
-      <li><strong>iOS Share Extension</strong> — Share URL/text/images to the gateway via <code>agent.request</code>, with route fallback and optional receipts.</li>
-      <li><strong>iOS Talk: Background Listening + Voice Directive Hint</strong> — Keep Talk active in background (opt-in) and optionally disable token-heavy voice-switch hints.</li>
-      <li><strong>Cron/Gateway: webhooks + scheduling control</strong> — Separate per-job webhook delivery, enforce valid URLs, and add <code>--stagger</code>/<code>--exact</code>.</li>
-      <li><strong>Security & reliability</strong> — Includes credential-theft mitigation (OC-09) and stronger context guards for tool output.</li>
+      <li><strong>Anthropic 1M context (opt-in)</strong>: set <code>params.context1m: true</code> to send the <code>anthropic-beta: context-1m-2025-08-07</code> header for Opus/Sonnet.</li>
+      <li><strong>Anthropic Sonnet 4.6</strong>: adds <code>anthropic/claude-sonnet-4-6</code> with forward-compat fallback when catalogs lag.</li>
+      <li><strong>Subagents</strong>: new <code>/subagents spawn</code> command for deterministic subagent activation.</li>
+      <li><strong>Slack</strong>: true single-message streaming via <code>chat.startStream</code>/<code>appendStream</code>/<code>stopStream</code> (fallback when streaming fails).</li>
+      <li><strong>Telegram</strong>: inline button <code>style</code> support (<code>primary|success|danger</code>) plus optional reaction notifications.</li>
+      <li><strong>iOS</strong>: Share Extension forwards URL/text/images to gateway <code>agent.request</code>; Talk adds Background Listening and a Voice Directive Hint toggle.</li>
+      <li><strong>Cron</strong>: safer per-job webhook delivery and better schedule controls (<code>--stagger</code>, <code>--exact</code>).</li>
     </ul>
-  </section>
-
-  <section class="section panel glass">
-    <h2>How it works</h2>
-
-    <article class="feature">
-      <h3>1) Turn on 1M context (Anthropic) when you actually need it</h3>
-      <p>v2026.2.17 adds an explicit opt-in switch that maps to Anthropic’s 1M context beta header—keeping default behavior conservative while letting you unlock huge context windows for deep research or long transcripts.</p>
-      <div class="code">
-        <pre><code class="lang-yaml">agent:
-  model: anthropic/claude-opus-4-6
-  params:
-    context1m: true   # adds: anthropic-beta: context-1m-2025-08-07
-</code></pre>
-      </div>
-      <p class="why">Why it matters: big context only when needed = lower cost + less accidental context bloat.</p>
-    </article>
-
-    <article class="feature">
-      <h3>2) Sonnet 4.6 support with forward-compat fallbacks</h3>
-      <p>Adopt <code>anthropic/claude-sonnet-4-6</code> immediately, even if upstream model catalogs temporarily lag. OpenClaw keeps aliases/defaults aligned and falls back cleanly.</p>
-      <div class="code">
-        <pre><code class="lang-bash">openclaw agent --message "Summarize this thread" --model anthropic/claude-sonnet-4-6
-</code></pre>
-      </div>
-      <p class="why">Why it matters: faster upgrades without brittle configuration churn.</p>
-    </article>
-
-    <article class="feature">
-      <h3>3) Deterministic orchestration: <code>/subagents spawn</code></h3>
-      <p>Spawn subagents intentionally (not implicitly) to keep workflows predictable—perfect for runbooks, multi-step ops, and planner/executor patterns.</p>
-      <div class="code">
-        <pre><code class="lang-text">/subagents spawn planner
-/subagents spawn executor
-</code></pre>
-      </div>
-      <p class="why">Why it matters: clearer control over parallelism, cost, and responsibility boundaries.</p>
-    </article>
-
-    <article class="feature">
-      <h3>4) Slack streaming that feels native</h3>
-      <p>Slack now supports true single-message streaming via <code>chat.startStream</code>/<code>appendStream</code>/<code>stopStream</code>. Reply threading stays aligned, and the system falls back gracefully if streaming fails.</p>
-      <div class="code">
-        <pre><code class="lang-yaml">channels:
-  slack:
-    stream:
-      enabled: true
-</code></pre>
-      </div>
-      <p class="why">Why it matters: faster perceived latency and fewer message fragments in busy channels.</p>
-    </article>
-
-    <article class="feature">
-      <h3>5) Mobile-first capture: iOS Share → Gateway → Agent</h3>
-      <p>Share a URL, text, or image from any app and the iOS Share Extension forwards it directly into OpenClaw via <code>agent.request</code>, with delivery-route fallback and optional receipts.</p>
-      <div class="code">
-        <pre><code class="lang-text">Share Sheet → OpenClaw → gateway agent.request → your chosen channel/session
-</code></pre>
-      </div>
-      <p class="why">Why it matters: capture “in the moment” context without copy/paste or switching apps.</p>
-    </article>
-
-    <article class="feature">
-      <h3>6) Telegram buttons get intent: <code>primary|success|danger</code></h3>
-      <p>Inline buttons can now declare a style, and reactions can be surfaced as system events (configurable scope). This is a small change that makes assistants feel more native and predictable.</p>
-      <div class="code">
-        <pre><code class="lang-json">{
-  "buttons": [
-    { "text": "Approve", "style": "success", "action": "approve" },
-    { "text": "Reject",  "style": "danger",  "action": "reject" }
-  ]
-}
-</code></pre>
-      </div>
-      <p class="why">Why it matters: clearer UI = fewer wrong taps in high-stakes flows.</p>
-    </article>
-
-    <article class="feature">
-      <h3>7) Cron gets stricter webhooks + better scheduling</h3>
-      <p>Per-job webhooks are now separated from announce delivery, URLs are validated as HTTP(S), and recurring jobs get deterministic staggering to reduce top-of-hour spikes.</p>
-      <div class="code">
-        <pre><code class="lang-bash">openclaw cron add --stagger 30s
-openclaw cron edit --exact
-</code></pre>
-      </div>
-      <p class="why">Why it matters: fewer collisions, safer automation, and more predictable integrations.</p>
-    </article>
+    <p class="note">Source: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">official v2026.2.17 release notes</a>.</p>
   </section>
 
   <footer class="footer glass">
