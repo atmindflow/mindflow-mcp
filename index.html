@@ -1,208 +1,261 @@
-<!-- OpenClaw v2026.2.17 – Landing page by Mindflow AI
-Site: https://mindflow-mcp.vercel.app
-Focus: Latest release only (v2026.2.17)
-Inspiration: clean product hero + feature grid, subtle glassmorphism, animated accents
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenClaw 2026.2.17 — What’s New</title>
-  <meta name="description" content="Explore the headline capabilities in OpenClaw 2026.2.17: subagent spawning, iOS background Talk, Slack/Telegram/Discord streaming UX, Anthropic 1M ctx beta, security hardening, and more." />
+  <meta name="color-scheme" content="dark" />
+  <title>OpenClaw v2026.2.17 — What’s New (WebGL Edition)</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <canvas id="bg" aria-hidden="true"></canvas>
-  <header class="site-header">
-    <div class="container nav">
-      <div class="brand">
-        <div class="claw-logo" aria-hidden="true"></div>
-        <span>OpenClaw</span>
-      </div>
-      <nav>
-        <a href="#highlights">Highlights</a>
-        <a href="#agents">Agents</a>
-        <a href="#platforms">Platforms</a>
-        <a href="#ops">Ops & Security</a>
-        <a class="btn" target="_blank" rel="noreferrer" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17">Release notes</a>
-      </nav>
-    </div>
-  </header>
-  <section class="hero container">
-    <div class="hero-content">
-      <div class="chip">Latest release</div>
-      <h1>OpenClaw <span class="version">2026.2.17</span></h1>
-      <p class="subtitle">Faster multi-channel assistants, smarter subagents, richer mobile UX, and hardened ops. Designed for production workflows.</p>
-      <div class="ctas">
-        <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/download/v2026.2.17/OpenClaw-2026.2.17.zip">Download .zip</a>
-        <a class="btn ghost" href="#highlights">See what’s new</a>
-      </div>
-      <ul class="meta">
-        <li>Tag: v2026.2.17</li>
-        <li>Published: 2026‑02‑18</li>
-        <li>Target: main</li>
-      </ul>
-    </div>
-    <div class="hero-viz" role="img" aria-label="Animated graph of multi-channel events">
-      <div class="node n1">Slack</div>
-      <div class="node n2">Telegram</div>
-      <div class="node n3">Discord</div>
-      <div class="node n4">iOS</div>
-      <div class="node n5">Cron</div>
-      <div class="pulse p1"></div>
-      <div class="pulse p2"></div>
-      <div class="pulse p3"></div>
-    </div>
-  </section>
-  <section id="highlights" class="container section">
-    <h2>Release highlights</h2>
-    <div class="grid highlight-grid">
-      <article class="card">
-        <h3>Deterministic subagents</h3>
-        <p>Spin up focused workers from chat with <code>/subagents spawn</code>. Clear context-prefixing keeps provenance intact downstream.</p>
-        <ul>
-          <li>Deterministic spawn from commands</li>
-          <li>Context-preserving task messages</li>
-          <li>Runtime guidance for one‑off sessions</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Mobile Talk, elevated</h3>
-        <p>iOS adds Background Listening, better barge‑in control, and a QR‑first onboarding wizard for fast pairing.</p>
-        <ul>
-          <li>Background Talk toggle (battery‑safe)</li>
-          <li>Voice Directive Hint toggle</li>
-          <li>Stability fixes across onboarding/gateway</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Real‑time messaging</h3>
-        <p>Native Slack streaming and Telegram/Discord UX polish: inline buttons, reusable components, sticky replies, and smarter previews.</p>
-        <ul>
-          <li>Slack <code>chat.startStream/append/stop</code></li>
-          <li>Telegram inline button styles</li>
-          <li>Discord reusable components, allowlists</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Anthropic 1M ctx + Sonnet 4.6</h3>
-        <p>Opt‑in 1M context beta for Opus/Sonnet and catalog‑friendly Sonnet 4.6 support with graceful fallbacks.</p>
-        <ul>
-          <li><code>params.context1m: true</code> beta header</li>
-          <li>Forward‑compat model aliases</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Cron you can trust</h3>
-        <p>Deterministic staggering, usage telemetry, schedule hardening, and route‑correct announce delivery.</p>
-        <ul>
-          <li>Default stagger + <code>--stagger</code>/<code>--exact</code></li>
-          <li>Per‑run token usage logs</li>
-          <li>No‑timeout: <code>timeoutSeconds: 0</code></li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Security & Config hardening</h3>
-        <p>Environment‑injection guardrails, stricter include resolution, transcript permissions, and doctor‑level repairs.</p>
-        <ul>
-          <li>Fix OC‑09 env‑var injection path</li>
-          <li>Secure transcripts (0600)</li>
-          <li>Safer <code>$include</code> resolution</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-  <section id="agents" class="container section">
-    <h2>Agents and Tools</h2>
-    <div class="feature-row">
-      <div class="feature-copy">
-        <h3>Loop‑smart tools and bigger reads</h3>
-        <p>Read auto‑paging scales with context window; loop detection is now progress‑aware with throttled diagnostic events.</p>
-        <ul>
-          <li>Auto‑paging <code>read</code> with context‑aware budgets</li>
-          <li>Structured <code>tool.loop</code> diagnostics</li>
-          <li>Preflight shell‑injection guard for exec</li>
-        </ul>
-      </div>
-      <div class="feature-viz">
-        <div class="terminal">
-          <div class="dots"></div>
-          <pre><code>$ /subagents spawn indexer
-✓ spawned subagent: docs-indexer
-… reading 1,000+ chunks (auto‑paged)
-⚠ loop.guard: coalesced repeats (10/20)
-✓ completed in 12.4s
-</code></pre>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="bg-ornaments" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="gridlines"></div>
+  </div>
+
+  <div class="wrapper" id="main">
+    <header class="topbar">
+      <div class="brand" aria-label="OpenClaw">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="spark"></span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">OpenClaw</div>
+          <div class="brand-sub">Release notes · v2026.2.17</div>
         </div>
       </div>
-    </div>
-  </section>
-  <section id="platforms" class="container section">
-    <h2>Channels and apps</h2>
-    <div class="grid icon-grid">
-      <div class="icon-card">
-        <div class="ic slack"></div>
-        <h4>Slack streaming</h4>
-        <p>Token‑efficient, threaded streams with graceful fallback.</p>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="#headliners">Headliners</a>
+        <a class="nav-link" href="#tour">Release tour</a>
+        <a class="nav-link" href="#config">Quick config</a>
+        <a class="nav-link" href="#gallery">Gallery</a>
+      </nav>
+
+      <div class="top-actions">
+        <a class="btn ghost" href="https://openclaw.ai" target="_blank" rel="noreferrer">Project site</a>
+        <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noreferrer">View release</a>
       </div>
-      <div class="icon-card">
-        <div class="ic telegram"></div>
-        <h4>Telegram polish</h4>
-        <p>Styled buttons, reaction events, smarter previews.</p>
+    </header>
+
+    <section class="hero" aria-label="Hero">
+      <div class="hero-copy">
+        <span class="badge">
+          <span class="dot" aria-hidden="true"></span>
+          Latest release · v2026.2.17
+        </span>
+
+        <h1 class="title">Faster, safer, more connected — now with a live 3D WebGL header</h1>
+
+        <p class="subtitle">
+          This build highlights 1M-token Anthropic context opt-in, Sonnet 4.6 support, deterministic subagent spawning,
+          Slack single-message streaming, stronger Telegram/Discord components, and a wide set of reliability + security fixes.
+        </p>
+
+        <div class="cta-row" role="group" aria-label="Primary actions">
+          <a class="btn primary" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noreferrer">View release</a>
+          <a class="btn" href="https://docs.openclaw.ai/start/getting-started" target="_blank" rel="noreferrer">Get Started</a>
+          <a class="btn ghost" href="#config">Quick config</a>
+        </div>
+
+        <div class="hero-notes">
+          <div class="note">
+            <div class="note-k">Design inspiration</div>
+            <div class="note-v">Dark radial gradients + teal/blue accents inspired by OpenClaw’s docs aesthetic and logo.</div>
+          </div>
+          <div class="note">
+            <div class="note-k">3D illustration</div>
+            <div class="note-v">A rotating “claw-knot” form with particles and rim lighting rendered in WebGL (Three.js).</div>
+          </div>
+        </div>
       </div>
-      <div class="icon-card">
-        <div class="ic discord"></div>
-        <h4>Discord UX</h4>
-        <p>Reusable components, allowlists, voice messages.</p>
+
+      <aside class="device" aria-label="Interactive WebGL illustration">
+        <div class="device-top">
+          <span class="pill"><span class="dot" style="background:var(--accent-2)" aria-hidden="true"></span>WebGL · 3D</span>
+          <span class="pill"><span class="dot" style="background:var(--success)" aria-hidden="true"></span>GPU accelerated</span>
+          <span class="pill"><span class="dot" style="background:var(--danger)" aria-hidden="true"></span>Abort-safe</span>
+        </div>
+
+        <div class="screen">
+          <canvas id="webgl" class="webgl" aria-label="3D illustration canvas"></canvas>
+
+          <div class="hud" aria-hidden="true">
+            <div class="hud-row">
+              <div class="hud-title">OpenClaw v2026.2.17</div>
+              <div class="hud-chip">stream · subagents · security</div>
+            </div>
+            <div class="hud-row hud-muted">
+              Drag to rotate · Scroll to zoom · Double click to reset
+            </div>
+          </div>
+
+          <div class="fallback" id="webglFallback" hidden>
+            <div class="fallback-card">
+              <div class="fallback-title">WebGL unavailable</div>
+              <p class="fallback-text">
+                Your browser/device disabled WebGL. The page still works, but the 3D illustration can’t render.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="device-bottom">
+          <span class="tag">Lighting: rim + bloom-like glow</span>
+          <span class="tag">Particles: additive points</span>
+          <span class="tag">Controls: pointer + wheel</span>
+        </div>
+
+        <div class="illus" aria-hidden="true"></div>
+      </aside>
+    </section>
+
+    <section class="section" id="headliners" aria-label="Headliners">
+      <div class="kicker">Headliners</div>
+      <div class="grid">
+        <article class="card">
+          <span class="chip">Contexts</span>
+          <h3>Anthropic 1M beta header</h3>
+          <p>Opt-in via <span class="mono">params.context1m: true</span> to unlock massive context windows where supported.</p>
+        </article>
+
+        <article class="card">
+          <span class="chip">Models</span>
+          <h3>Claude Sonnet 4.6</h3>
+          <p>Updated aliases/defaults with graceful fallback when upstream catalogs still list 4.5.</p>
+        </article>
+
+        <article class="card">
+          <span class="chip">Subagents</span>
+          <h3>/subagents spawn</h3>
+          <p>Deterministically create scoped subagents from chat to parallelize tasks safely and predictably.</p>
+        </article>
+
+        <article class="card">
+          <span class="chip">Slack</span>
+          <h3>Native streaming</h3>
+          <p>Single-message streaming via start/append/stop keeps threads tidy and reduces channel noise.</p>
+        </article>
+
+        <article class="card">
+          <span class="chip">Telegram</span>
+          <h3>Styled inline buttons</h3>
+          <p>Intent-first buttons via <span class="mono">primary | success | danger</span> styles for crisp UX.</p>
+        </article>
+
+        <article class="card">
+          <span class="chip">iOS</span>
+          <h3>Share + Talk upgrades</h3>
+          <p>Share extension, Background Listening, Voice Directive hints, and sturdier barge-in handling.</p>
+        </article>
       </div>
-      <div class="icon-card">
-        <div class="ic apple"></div>
-        <h4>iOS Talk</h4>
-        <p>Background listening, barge‑in hardening, QR onboarding.</p>
+    </section>
+
+    <section class="section" id="tour" aria-label="Release tour">
+      <div class="kicker">Release tour</div>
+      <div class="cards-2">
+        <article class="card">
+          <h3>Reliability everywhere</h3>
+          <p>
+            Context-aware tool budgets, subagent overflow guards, stable reply threading across streams,
+            and channel-specific fixes keep long-running conversations predictable.
+          </p>
+          <ul class="list">
+            <li>Auto-page <span class="mono">tools.read</span> without breaking responses</li>
+            <li>Subagent truncation recovery for long tool results</li>
+            <li>Thread-sticky replies for better streaming continuity</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Security upgrades</h3>
+          <p>
+            Exec preflight guards against env-var injection, strict include resolution, user-only transcripts,
+            and safer config merges reduce accidental exposure.
+          </p>
+          <ul class="list">
+            <li>OC-09 patch set</li>
+            <li><span class="mono">$include</span> confinement / path hardening</li>
+            <li>0600 transcript permissions</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Cron at scale</h3>
+          <p>
+            Deterministic staggering, per-job webhook delivery, usage telemetry, and exact-timing overrides
+            for precise automation and load smoothing.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Voice + Calls</h3>
+          <p>
+            Pre-cached greetings, optional stale-call reaper, and race-free turn handling for robust
+            real-time conversational systems.
+          </p>
+        </article>
       </div>
-      <div class="icon-card">
-        <div class="ic cron"></div>
-        <h4>Cron</h4>
-        <p>Stagger, usage logs, reliable announce flows.</p>
+    </section>
+
+    <section class="section" id="config" aria-label="Quick config">
+      <div class="kicker">Quick config</div>
+      <div class="table" role="table" aria-label="Configuration table">
+        <div class="tr" role="row">
+          <div class="lhs" role="cell">1M context</div>
+          <div role="cell">Set <span class="mono">agent.model.params.context1m: true</span> (where supported).</div>
+        </div>
+        <div class="tr" role="row">
+          <div class="lhs" role="cell">Sonnet 4.6</div>
+          <div role="cell">Use <span class="mono">anthropic/claude-sonnet-4-6</span> (fallbacks preserved).</div>
+        </div>
+        <div class="tr" role="row">
+          <div class="lhs" role="cell">Subagents</div>
+          <div role="cell">Trigger via <span class="mono">/subagents spawn</span> in any chat.</div>
+        </div>
+        <div class="tr" role="row">
+          <div class="lhs" role="cell">Slack stream</div>
+          <div role="cell">Streaming defaults on; falls back to normal delivery on failures.</div>
+        </div>
+        <div class="tr" role="row">
+          <div class="lhs" role="cell">Telegram buttons</div>
+          <div role="cell">Inline <span class="mono">style</span> = <span class="mono">primary|success|danger</span>.</div>
+        </div>
+        <div class="tr" role="row">
+          <div class="lhs" role="cell">Cron stagger</div>
+          <div role="cell"><span class="mono">openclaw cron add --stagger 17s --exact</span></div>
+        </div>
       </div>
-      <div class="icon-card">
-        <div class="ic shield"></div>
-        <h4>Security</h4>
-        <p>Exec guards, transcript permissions, config repairs.</p>
+      <div class="disclaimer">See the full release notes for all channels, fixes, and edge-case behavior.</div>
+    </section>
+
+    <section class="section" id="gallery" aria-label="Gallery">
+      <div class="kicker">Gallery</div>
+      <div class="gallery">
+        <div class="tile"><span class="emoji" aria-hidden="true">📲</span>&nbsp;iOS Share → Gateway</div>
+        <div class="tile"><span class="emoji" aria-hidden="true">🧠</span>&nbsp;Thinking defaults</div>
+        <div class="tile"><span class="emoji" aria-hidden="true">🧩</span>&nbsp;Intent-first tools UI</div>
       </div>
-    </div>
-  </section>
-  <section id="ops" class="container section">
-    <h2>Operate with confidence</h2>
-    <div class="ops-grid">
-      <article class="card">
-        <h3>Docker & Runtime</h3>
-        <p>Optional <code>OPENCLAW_INSTALL_BROWSER</code> to preinstall Chromium + Xvfb in images.</p>
-      </article>
-      <article class="card">
-        <h3>Gateway resilience</h3>
-        <p>Safer self‑updates, restart guards, strict health checks, proxy normalization.</p>
-      </article>
-      <article class="card">
-        <h3>UI & Web</h3>
-        <p>Intent‑first tool detail views, compact prompts, usage charts that preserve totals.</p>
-      </article>
-    </div>
-    <div class="cta-foot">
-      <a class="btn primary" target="_blank" rel="noreferrer" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17">Read full changelog</a>
-      <a class="btn ghost" target="_blank" rel="noreferrer" href="https://github.com/openclaw/openclaw">Star on GitHub</a>
-    </div>
-  </section>
-  <footer class="site-footer">
-    <div class="container">
-      <span>OpenClaw 2026.2.17</span>
-      <span>Built by Mindflow AI • <a href="https://mindflow-mcp.vercel.app">mindflow-mcp.vercel.app</a></span>
-    </div>
-  </footer>
-  <script src="script.js"></script>
+    </section>
+
+    <footer class="footer" aria-label="Footer">
+      <div class="footer-row">
+        <span>Inspired by OpenClaw docs/website aesthetic and logo palette.</span>
+        <span class="footer-sep">·</span>
+        <span>Built for clean GitHub-repo export (separate HTML/CSS/JS files).</span>
+      </div>
+      <div class="footer-row">powered by Mindflow</div>
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
