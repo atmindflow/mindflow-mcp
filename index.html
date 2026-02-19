@@ -1,662 +1,289 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>OpenClaw v2026.2.17 — What's New</title>
-  <meta name="description" content="OpenClaw v2026.2.17 — latest release highlights, what's new, and how it works."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* ===================================
-       BASE & RESET
-       =================================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #0a0e14;
-      color: #e6edf3;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    a {
-      color: #7c5cff;
-      text-decoration: none;
-      transition: opacity 0.2s ease;
-    }
-    a:hover {
-      opacity: 0.8;
-    }
-    code, kbd, pre {
-      font-family: 'SF Mono', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-      background: rgba(124, 92, 255, 0.1);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.9em;
-    }
-    ul {
-      padding-left: 1.5em;
-    }
-    li {
-      margin-bottom: 0.5em;
-    }
-
-    /* ===================================
-       LAYOUT
-       =================================== */
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    /* ===================================
-       HEADER
-       =================================== */
-    header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    header img {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #e6edf3 0%, #a5b4fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border: 1px solid rgba(124, 92, 255, 0.3);
-      border-radius: 999px;
-      background: rgba(124, 92, 255, 0.15);
-      font-size: 12px;
-      font-weight: 600;
-      color: #a78bfa;
-    }
-    .header-link {
-      color: rgba(230, 237, 243, 0.6);
-      font-size: 14px;
-      margin-left: auto;
-    }
-
-    /* ===================================
-       HERO CARD
-       =================================== */
-    .hero-card {
-      position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      background: rgba(15, 20, 28, 0.6);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      overflow: hidden;
-      min-height: 480px;
-    }
-    #heroCanvas {
-      display: block;
-      width: 100%;
-      height: 480px;
-      cursor: grab;
-    }
-    #heroCanvas:active {
-      cursor: grabbing;
-    }
-    #heroFallback {
-      width: 100%;
-      height: 480px;
-      background: linear-gradient(135deg, #1a1f2e 0%, #0f141c 50%, #1e1338 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(230, 237, 243, 0.5);
-      font-size: 14px;
-    }
-    .hero-controls {
-      position: absolute;
-      bottom: 16px;
-      right: 16px;
-      display: flex;
-      gap: 10px;
-      z-index: 10;
-    }
-    .hero-controls button {
-      padding: 8px 14px;
-      background: rgba(15, 20, 28, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      color: #e6edf3;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-    .hero-controls button:hover {
-      background: rgba(124, 92, 255, 0.2);
-      border-color: rgba(124, 92, 255, 0.4);
-    }
-    .hero-controls button:active {
-      transform: scale(0.97);
-    }
-
-    /* ===================================
-       GRID & CARDS
-       =================================== */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    @media (max-width: 980px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .card {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      background: rgba(15, 20, 28, 0.6);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      padding: 24px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-    .card h2 {
-      margin: 0 0 16px 0;
-      font-size: 20px;
-      font-weight: 700;
-      color: #e6edf3;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .card h2::before {
-      content: '';
-      width: 4px;
-      height: 20px;
-      background: linear-gradient(180deg, #7c5cff 0%, #a78bfa 100%);
-      border-radius: 2px;
-    }
-    .card-body {
-      color: rgba(230, 237, 243, 0.85);
-      line-height: 1.7;
-    }
-    .muted {
-      color: rgba(230, 237, 243, 0.6);
-      font-size: 14px;
-    }
-    .feature-grid {
-      display: grid;
-      gap: 16px;
-    }
-    .feature-item {
-      padding: 14px;
-      background: rgba(124, 92, 255, 0.05);
-      border: 1px solid rgba(124, 92, 255, 0.15);
-      border-radius: 10px;
-      transition: all 0.2s ease;
-    }
-    .feature-item:hover {
-      background: rgba(124, 92, 255, 0.1);
-      border-color: rgba(124, 92, 255, 0.25);
-    }
-    .feature-item strong {
-      color: #a78bfa;
-      font-weight: 600;
-    }
-
-    /* ===================================
-       FOOTER
-       =================================== */
-    footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      color: rgba(230, 237, 243, 0.5);
-      font-size: 13px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    footer a {
-      color: rgba(124, 92, 255, 0.8);
-    }
-
-    /* ===================================
-       FULL-WIDTH SECTION
-       =================================== */
-    .full-card {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      background: rgba(15, 20, 28, 0.6);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      padding: 24px;
-    }
-    .full-card h2 {
-      margin: 0 0 16px 0;
-      font-size: 20px;
-      font-weight: 700;
-      color: #e6edf3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw - Personal AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrap">
+    <!-- WebGL Canvas for 3D Background -->
+    <canvas id="webgl-canvas"></canvas>
+    
+    <!-- Main Content -->
     <header>
-      <img alt="OpenClaw" src="https://avatars.githubusercontent.com/u/58493?s=40">
-      <h1>OpenClaw v2026.2.17</h1>
-      <span class="badge">Latest</span>
-      <a href="https://github.com/openclaw/openclaw" class="header-link">github.com/openclaw/openclaw</a>
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">🦞</span>
+                <span>OpenClaw</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#install">Install</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="https://github.com/openclaw/openclaw" target="_blank">GitHub</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
     </header>
 
-    <section class="hero-card">
-      <canvas id="heroCanvas"></canvas>
-      <div id="heroFallback" style="display:none;">WebGL2 not available — static gradient fallback</div>
-      <div class="hero-controls">
-        <button id="toggleQuality">Boost Quality</button>
-        <button id="togglePause">Pause</button>
-        <button id="resetView">Reset View</button>
-      </div>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="glitch" data-text="OpenClaw">🦞 OpenClaw</h1>
+                <p class="subtitle">EXFOLIATE! EXFOLIATE!</p>
+                <p class="tagline">
+                    Your personal AI assistant that runs on your own devices. Fast, local, and always-on. 
+                    Connect via WhatsApp, Telegram, Slack, Discord, Signal, iMessage & more.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#install" class="btn btn-primary">Get Started</a>
+                    <a href="https://github.com/openclaw/openclaw" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </div>
+        </section>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Platform & Integration</h2>
-        <div class="card-body feature-grid">
-          <div class="feature-item">
-            <strong>iOS Share Extension:</strong> Forward shared URLs, text, and images directly to the gateway <code>agent.request</code> with optional delivery receipts and fallback handling.
-          </div>
-          <div class="feature-item">
-            <strong>iOS Talk Mode:</strong> Background listening toggle, voice directive hints, and improved barge-in behavior for hands-free interaction.
-          </div>
-          <div class="feature-item">
-            <strong>Slack Streaming:</strong> Native single-message text streaming (<code>chat.startStream</code> / <code>appendStream</code> / <code>stopStream</code>) with configurable modes for draft previews.
-          </div>
-          <div class="feature-item">
-            <strong>Telegram & iMessage:</strong> Inline button styles (primary|success|danger) + reaction notifications; <code>replyToId</code> support for threaded conversations.
-          </div>
-        </div>
-      </section>
+        <section class="section features-section" id="features">
+            <h2 class="section-title">Latest Release Features</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🌐</span>
+                    <h3>Local-First Gateway</h3>
+                    <p>Single control plane for sessions, channels, tools, and events. Your data stays on your devices with full control and privacy.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">💬</span>
+                    <h3>Multi-Channel Inbox</h3>
+                    <p>Connect to WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, Microsoft Teams, Matrix, Zalo, WebChat, and more - all in one place.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🎙️</span>
+                    <h3>Voice Wake & Talk Mode</h3>
+                    <p>Always-on speech recognition for macOS, iOS, and Android. Use natural voice commands powered by ElevenLabs for seamless interaction.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🎨</span>
+                    <h3>Live Canvas</h3>
+                    <p>Agent-driven visual workspace with A2UI (Agent-to-UI) technology. Watch your AI assistant create and manipulate visual content in real-time.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🤖</span>
+                    <h3>Multi-Agent Routing</h3>
+                    <p>Route inbound channels and accounts to isolated agents with separate workspaces and per-agent sessions for organized task management.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🔧</span>
+                    <h3>First-Class Tools</h3>
+                    <p>Built-in browser automation, canvas control, cron jobs, session management, and platform-specific actions (Discord, Slack integrations).</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">💻</span>
+                    <h3>Companion Apps</h3>
+                    <p>Native macOS menu bar app, iOS & Android nodes for voice commands, camera access, screen recording, and location services.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🧩</span>
+                    <h3>Skills Platform</h3>
+                    <p>Extend functionality with bundled, managed, and workspace skills. Install gating + UI for seamless skill management and discovery.</p>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="feature-card" data-tilt>
+                    <span class="feature-icon">🔐</span>
+                    <h3>Security by Default</h3>
+                    <p>DM pairing policies, allowlist controls, Docker sandboxing for non-main sessions, and comprehensive security configurations.</p>
+                    <div class="card-glow"></div>
+                </div>
+            </div>
+        </section>
 
-      <section class="card">
-        <h2>AI & Model Updates</h2>
-        <div class="card-body feature-grid">
-          <div class="feature-item">
-            <strong>Anthropic 1M Context:</strong> Beta header opt-in via <code>params.context1m: true</code> (header: <code>anthropic-beta: context-1m-2025-08-07</code>).
-          </div>
-          <div class="feature-item">
-            <strong>Claude Sonnet 4.6:</strong> Full support across aliases and defaults with forward-compatible fallback to Sonnet 4.5 when 4.6 is unavailable upstream.
-          </div>
-          <div class="feature-item">
-            <strong>Subagent Spawn:</strong> Deterministic subagent activation via <code>/subagents spawn</code> with context-prefixed task messages. Polling disabled for one-off calls to improve efficiency.
-          </div>
-        </div>
-      </section>
-    </div>
+        <section class="channels-section">
+            <div class="section">
+                <h2 class="section-title">Supported Channels</h2>
+                <p class="channels-subtitle">Connect OpenClaw to your favorite messaging platforms</p>
+                <div class="channels-grid">
+                    <div class="channel-badge">WhatsApp</div>
+                    <div class="channel-badge">Telegram</div>
+                    <div class="channel-badge">Slack</div>
+                    <div class="channel-badge">Discord</div>
+                    <div class="channel-badge">Google Chat</div>
+                    <div class="channel-badge">Signal</div>
+                    <div class="channel-badge">iMessage</div>
+                    <div class="channel-badge">BlueBubbles</div>
+                    <div class="channel-badge">Microsoft Teams</div>
+                    <div class="channel-badge">Matrix</div>
+                    <div class="channel-badge">Zalo</div>
+                    <div class="channel-badge">WebChat</div>
+                </div>
+            </div>
+        </section>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Tools & Security</h2>
-        <div class="card-body">
-          <ul>
-            <li><strong>Web Tools URL Allowlists:</strong> Restrict <code>web_search</code> and <code>web_fetch</code> to approved domains for enhanced security.</li>
-            <li><strong>Browser Custom Args:</strong> Configure custom Chrome launch arguments via <code>extraArgs</code> for advanced browser automation scenarios.</li>
-          </ul>
-        </div>
-      </section>
+        <section class="section install-wrapper" id="install">
+            <h2 class="section-title">Quick Installation</h2>
+            <div class="install-section">
+                <h3>Get Started in 3 Steps</h3>
+                
+                <p class="requirements"><strong>Requirements:</strong> Node ≥22</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn" data-code="npm install -g openclaw@latest
+openclaw onboard --install-daemon
+openclaw gateway --port 18789 --verbose">Copy</button>
+                    </div>
+                    <pre><code># Install globally
+npm install -g openclaw@latest
+# or: pnpm add -g openclaw@latest
 
-      <section class="card">
-        <h2>Infrastructure & DevOps</h2>
-        <div class="card-body">
-          <ul>
-            <li><strong>Cron Enhancements:</strong> Webhook delivery separation, deterministic stagger scheduling, and per-run usage telemetry for better observability.</li>
-            <li><strong>Docker Build:</strong> New build arg <code>OPENCLAW_INSTALL_BROWSER</code> to preinstall Chromium + Xvfb for headless browser support out of the box.</li>
-          </ul>
-        </div>
-      </section>
-    </div>
+# Run the onboarding wizard
+openclaw onboard --install-daemon
 
-    <section class="full-card">
-      <h2>WebGL Scene: Technical Notes</h2>
-      <p class="card-body muted">
-        The hero canvas renders a real-time 3D scene using WebGL2 and GLSL raymarching. The fragment shader traces rays through a Signed Distance Field (SDF) consisting of a deformed sphere core, a tilted torus, and a satellite sphere. Lighting includes soft shadows via penumbra calculation, ambient occlusion approximation, Fresnel highlights on edges, and distance-based fog. The animation respects <code>prefers-reduced-motion</code> by pausing automatically. Quality toggle adjusts raymarch step count; pause/reset buttons control animation state and camera. Resolution scales with device pixel ratio (capped at 2.0 for performance). No external libraries—pure WebGL2 and vanilla JavaScript.
-      </p>
-    </section>
+# Start the gateway
+openclaw gateway --port 18789 --verbose</code></pre>
+                </div>
+                
+                <h4>From Source (Development)</h4>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn" data-code="git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+pnpm install
+pnpm ui:build
+pnpm build
+pnpm openclaw onboard --install-daemon">Copy</button>
+                    </div>
+                    <pre><code>git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+
+pnpm install
+pnpm ui:build
+pnpm build
+
+pnpm openclaw onboard --install-daemon</code></pre>
+                </div>
+                
+                <p class="install-note">
+                    <strong>Note:</strong> The wizard guides you through setting up the gateway, workspace, channels, and skills.
+                </p>
+            </div>
+        </section>
+
+        <section class="section architecture-section">
+            <h2 class="section-title">How It Works</h2>
+            <div class="architecture-diagram">
+                <div class="code-block">
+                    <pre><code>WhatsApp / Telegram / Slack / Discord / Google Chat / Signal / iMessage
+               │
+               ▼
+┌───────────────────────────────┐
+│            <span class="highlight">Gateway</span>            │
+│       (control plane)         │
+│     ws://127.0.0.1:18789      │
+└──────────────┬────────────────┘
+               │
+               ├─ Pi agent (RPC)
+               ├─ CLI (openclaw ...)
+               ├─ WebChat UI
+               ├─ macOS app
+               └─ iOS / Android nodes</code></pre>
+                </div>
+            </div>
+            
+            <div class="architecture-features">
+                <h3 class="subsection-title">Key Architectural Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card" data-tilt>
+                        <h3>Gateway WebSocket Network</h3>
+                        <p>Single WS control plane for clients, tools, and events. Centralized management with distributed execution.</p>
+                        <div class="card-glow"></div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <h3>Browser Control</h3>
+                        <p>OpenClaw-managed Chrome/Chromium with CDP control for automated web interactions and data extraction.</p>
+                        <div class="card-glow"></div>
+                    </div>
+                    <div class="feature-card" data-tilt>
+                        <h3>Session Management</h3>
+                        <p>Main sessions for direct chats, group isolation, activation modes, queue modes, and intelligent reply-back systems.</p>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section docs-section" id="docs">
+            <h2 class="section-title">Documentation & Resources</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-tilt>
+                    <h3>📚 Getting Started</h3>
+                    <p><a href="https://docs.openclaw.ai/start/getting-started" target="_blank">Complete beginner guide</a> with auth setup, pairing, and channel configuration.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card" data-tilt>
+                    <h3>🏗️ Architecture</h3>
+                    <p><a href="https://docs.openclaw.ai/concepts/architecture" target="_blank">Deep dive</a> into the gateway and protocol model.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card" data-tilt>
+                    <h3>⚙️ Configuration</h3>
+                    <p><a href="https://docs.openclaw.ai/gateway/configuration" target="_blank">Full reference</a> for all configuration keys and examples.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card" data-tilt>
+                    <h3>🔐 Security</h3>
+                    <p><a href="https://docs.openclaw.ai/gateway/security" target="_blank">Security guide</a> before exposing your instance.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card" data-tilt>
+                    <h3>💻 Platforms</h3>
+                    <p>Guides for <a href="https://docs.openclaw.ai/platforms/macos" target="_blank">macOS</a>, <a href="https://docs.openclaw.ai/platforms/windows" target="_blank">Windows</a>, <a href="https://docs.openclaw.ai/platforms/linux" target="_blank">Linux</a>, <a href="https://docs.openclaw.ai/platforms/ios" target="_blank">iOS</a>, and <a href="https://docs.openclaw.ai/platforms/android" target="_blank">Android</a>.</p>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="feature-card" data-tilt>
+                    <h3>🐛 Troubleshooting</h3>
+                    <p><a href="https://docs.openclaw.ai/channels/troubleshooting" target="_blank">Debug common issues</a> and run the doctor command.</p>
+                    <div class="card-glow"></div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-      <span>© 2026 OpenClaw · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17">Full Release Notes</a></span>
-      <span>Powered by <a href="https://mindflow.ai">Mindflow</a></span>
+        <div class="footer-content">
+            <p class="footer-logo">🦞 OpenClaw</p>
+            <p>Built for Molty, a space lobster AI assistant</p>
+            <p>by Peter Steinberger and the community</p>
+            <div class="social-links">
+                <a href="https://github.com/openclaw/openclaw" target="_blank" aria-label="GitHub">GitHub</a>
+                <a href="https://discord.gg/clawd" target="_blank" aria-label="Discord">Discord</a>
+                <a href="https://openclaw.ai" target="_blank" aria-label="Website">Website</a>
+                <a href="https://x.com/openclaw" target="_blank" aria-label="Twitter">Twitter</a>
+            </div>
+            <p class="license">MIT License • Open Source • Community Driven</p>
+            <p class="powered-by">Powered by Mindflow</p>
+        </div>
     </footer>
-  </div>
 
-  <script>
-    (function() {
-      'use strict';
-
-      const canvas = document.getElementById('heroCanvas');
-      const fallback = document.getElementById('heroFallback');
-      const gl = canvas.getContext('webgl2', { antialias: false, alpha: false });
-
-      if (!gl) {
-        canvas.style.display = 'none';
-        fallback.style.display = 'flex';
-        return;
-      }
-
-      let state = {
-        time: 0,
-        paused: false,
-        quality: 64,
-        dpr: Math.min(window.devicePixelRatio || 1, 2.0),
-        mouseX: 0,
-        mouseY: 0,
-        isDragging: false,
-        cameraYaw: 0,
-        cameraPitch: 0.2,
-      };
-
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) {
-        state.paused = true;
-      }
-
-      const vertexShaderSource = `#version 300 es
-        precision highp float;
-        void main() {
-          float x = float((gl_VertexID & 1) << 2) - 1.0;
-          float y = float((gl_VertexID & 2) << 1) - 1.0;
-          gl_Position = vec4(x, y, 0.0, 1.0);
-        }
-      `;
-
-      const fragmentShaderSource = `#version 300 es
-        precision highp float;
-        out vec4 fragColor;
-
-        uniform vec2 u_resolution;
-        uniform float u_time;
-        uniform int u_steps;
-        uniform vec2 u_mouse;
-        uniform float u_yaw;
-        uniform float u_pitch;
-
-        float sdSphere(vec3 p, float r) {
-          return length(p) - r;
-        }
-
-        float sdTorus(vec3 p, vec2 t) {
-          vec2 q = vec2(length(p.xz) - t.x, p.y);
-          return length(q) - t.y;
-        }
-
-        float sceneSDF(vec3 p) {
-          float t = u_time * 0.4;
-          vec3 pCore = p;
-          float deform = sin(pCore.x * 2.0 + t) * 0.15 + sin(pCore.y * 3.0 + t * 1.3) * 0.1;
-          float sphere = sdSphere(pCore, 1.2 + deform);
-
-          vec3 pTorus = p;
-          float angle = radians(45.0);
-          pTorus.yz = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * pTorus.yz;
-          float rotY = t * 0.6;
-          pTorus.xz = mat2(cos(rotY), -sin(rotY), sin(rotY), cos(rotY)) * pTorus.xz;
-          float torus = sdTorus(pTorus, vec2(1.8, 0.3));
-
-          vec3 pSat = p;
-          float orbitAngle = t * 0.8;
-          pSat.x -= cos(orbitAngle) * 2.5;
-          pSat.z -= sin(orbitAngle) * 2.5;
-          pSat.y += sin(orbitAngle * 2.0) * 0.5;
-          float satellite = sdSphere(pSat, 0.4);
-
-          float d = min(sphere, torus);
-          d = min(d, satellite);
-          return d;
-        }
-
-        vec3 calcNormal(vec3 p) {
-          const float eps = 0.001;
-          vec2 h = vec2(eps, 0.0);
-          return normalize(vec3(
-            sceneSDF(p + h.xyy) - sceneSDF(p - h.xyy),
-            sceneSDF(p + h.yxy) - sceneSDF(p - h.yxy),
-            sceneSDF(p + h.yyx) - sceneSDF(p - h.yyx)
-          ));
-        }
-
-        float softShadow(vec3 ro, vec3 rd, float mint, float maxt, float k) {
-          float res = 1.0;
-          float t = mint;
-          for (int i = 0; i < 32; i++) {
-            float h = sceneSDF(ro + rd * t);
-            if (h < 0.001) return 0.0;
-            res = min(res, k * h / t);
-            t += clamp(h, 0.01, 0.2);
-            if (t > maxt) break;
-          }
-          return clamp(res, 0.0, 1.0);
-        }
-
-        float calcAO(vec3 p, vec3 n) {
-          float occ = 0.0;
-          float scale = 1.0;
-          for (int i = 0; i < 5; i++) {
-            float h = 0.01 + 0.12 * float(i) / 4.0;
-            float d = sceneSDF(p + h * n);
-            occ += (h - d) * scale;
-            scale *= 0.85;
-          }
-          return clamp(1.0 - 1.5 * occ, 0.0, 1.0);
-        }
-
-        float raymarch(vec3 ro, vec3 rd, int maxSteps) {
-          float t = 0.0;
-          for (int i = 0; i < maxSteps; i++) {
-            vec3 p = ro + rd * t;
-            float d = sceneSDF(p);
-            if (d < 0.001) break;
-            t += d * 0.8;
-            if (t > 20.0) break;
-          }
-          return t;
-        }
-
-        void main() {
-          vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / u_resolution.y;
-
-          vec3 camPos = vec3(0.0, 0.0, 5.0);
-          float yaw = u_yaw + u_mouse.x * 0.5;
-          float pitch = u_pitch + u_mouse.y * 0.3;
-
-          mat2 rotY = mat2(cos(yaw), -sin(yaw), sin(yaw), cos(yaw));
-          camPos.xz = rotY * camPos.xz;
-
-          vec3 target = vec3(0.0);
-          vec3 forward = normalize(target - camPos);
-          vec3 right = normalize(cross(forward, vec3(0.0, 1.0, 0.0)));
-          vec3 up = cross(right, forward);
-          forward = normalize(forward * cos(pitch) + up * sin(pitch));
-          up = cross(right, forward);
-
-          vec3 rd = normalize(uv.x * right + uv.y * up + forward * 1.8);
-          float t = raymarch(camPos, rd, u_steps);
-
-          vec3 col = mix(vec3(0.05, 0.08, 0.15), vec3(0.02, 0.03, 0.08), smoothstep(-1.0, 1.0, uv.y));
-
-          if (t < 20.0) {
-            vec3 p = camPos + rd * t;
-            vec3 n = calcNormal(p);
-
-            vec3 lightPos = vec3(3.0, 4.0, 5.0);
-            vec3 lightDir = normalize(lightPos - p);
-            vec3 viewDir = normalize(camPos - p);
-            vec3 halfDir = normalize(lightDir + viewDir);
-
-            float diff = max(dot(n, lightDir), 0.0);
-            float spec = pow(max(dot(n, halfDir), 0.0), 32.0);
-            float fresnel = pow(1.0 - max(dot(n, viewDir), 0.0), 3.0);
-
-            float shadow = softShadow(p + n * 0.01, lightDir, 0.02, 5.0, 8.0);
-            float ao = calcAO(p, n);
-
-            vec3 baseCol = mix(vec3(0.5, 0.3, 0.8), vec3(0.3, 0.5, 0.9), p.y * 0.5 + 0.5);
-
-            vec3 ambient = baseCol * 0.15 * ao;
-            vec3 diffuse = baseCol * diff * shadow * 0.7;
-            vec3 specular = vec3(1.0) * spec * shadow * 0.4;
-            vec3 fresnelCol = vec3(0.6, 0.4, 1.0) * fresnel * 0.5;
-
-            col = ambient + diffuse + specular + fresnelCol;
-
-            float fogFactor = 1.0 - exp(-t * 0.08);
-            vec3 fogCol = vec3(0.03, 0.05, 0.12);
-            col = mix(col, fogCol, fogFactor);
-          }
-
-          float vignette = 1.0 - dot(uv * 0.5, uv * 0.5);
-          col *= 0.6 + 0.4 * vignette;
-
-          col = pow(col, vec3(1.0 / 2.2));
-          fragColor = vec4(col, 1.0);
-        }
-      `;
-
-      function compileShader(source, type) {
-        const shader = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          console.error('Shader compile error:', gl.getShaderInfoLog(shader));
-          gl.deleteShader(shader);
-          return null;
-        }
-        return shader;
-      }
-
-      const vertShader = compileShader(vertexShaderSource, gl.VERTEX_SHADER);
-      const fragShader = compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
-      const program = gl.createProgram();
-      gl.attachShader(program, vertShader);
-      gl.attachShader(program, fragShader);
-      gl.linkProgram(program);
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error('Program link error:', gl.getProgramInfoLog(program));
-      }
-      gl.useProgram(program);
-
-      const u_resolution = gl.getUniformLocation(program, 'u_resolution');
-      const u_time = gl.getUniformLocation(program, 'u_time');
-      const u_steps = gl.getUniformLocation(program, 'u_steps');
-      const u_mouse = gl.getUniformLocation(program, 'u_mouse');
-      const u_yaw = gl.getUniformLocation(program, 'u_yaw');
-      const u_pitch = gl.getUniformLocation(program, 'u_pitch');
-
-      function resize() {
-        const w = canvas.clientWidth;
-        const h = canvas.clientHeight;
-        canvas.width = w * state.dpr;
-        canvas.height = h * state.dpr;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      canvas.addEventListener('mousedown', (e) => {
-        state.isDragging = true;
-        state.mouseX = e.clientX;
-        state.mouseY = e.clientY;
-      });
-      canvas.addEventListener('mousemove', (e) => {
-        if (state.isDragging) {
-          const dx = e.clientX - state.mouseX;
-          const dy = e.clientY - state.mouseY;
-          state.cameraYaw += dx * 0.005;
-          state.cameraPitch += dy * 0.005;
-          state.cameraPitch = Math.max(-1.0, Math.min(1.0, state.cameraPitch));
-          state.mouseX = e.clientX;
-          state.mouseY = e.clientY;
-        }
-      });
-      canvas.addEventListener('mouseup', () => {
-        state.isDragging = false;
-      });
-      canvas.addEventListener('mouseleave', () => {
-        state.isDragging = false;
-      });
-
-      function render(time) {
-        time *= 0.001;
-        if (!state.paused) state.time = time;
-
-        gl.uniform2f(u_resolution, canvas.width, canvas.height);
-        gl.uniform1f(u_time, state.time);
-        gl.uniform1i(u_steps, state.quality);
-        gl.uniform2f(u_mouse, 0.0, 0.0);
-        gl.uniform1f(u_yaw, state.cameraYaw);
-        gl.uniform1f(u_pitch, state.cameraPitch);
-
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-        requestAnimationFrame(render);
-      }
-      requestAnimationFrame(render);
-
-      const btnQuality = document.getElementById('toggleQuality');
-      const btnPause = document.getElementById('togglePause');
-      const btnReset = document.getElementById('resetView');
-
-      btnQuality.addEventListener('click', () => {
-        state.quality = state.quality === 64 ? 128 : 64;
-        btnQuality.textContent = state.quality === 128 ? 'Normal Quality' : 'Boost Quality';
-      });
-
-      btnPause.addEventListener('click', () => {
-        state.paused = !state.paused;
-        btnPause.textContent = state.paused ? 'Resume' : 'Pause';
-      });
-
-      btnReset.addEventListener('click', () => {
-        state.cameraYaw = 0;
-        state.cameraPitch = 0.2;
-      });
-
-      if (prefersReducedMotion) btnPause.textContent = 'Resume';
-    })();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
