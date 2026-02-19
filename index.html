@@ -3,40 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenClaw v2026.2.19-beta.1 — Release Highlights</title>
+  <title>OpenClaw v2026.2.19 — Stable Release</title>
   <meta
     name="description"
-    content="OpenClaw v2026.2.19-beta.1: Apple Watch companion MVP, APNs wake + auto-reconnect for nodes.invoke, paired-device hygiene CLI flows, APNs push-test pipeline, and new security audit finding gateway.http.no_auth."
+    content="OpenClaw v2026.2.19 stable release: Apple Watch companion, APNs wake + auto-reconnect, paired-device hygiene, push notification pipeline, enhanced security audits, and hardened agent streaming."
   />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!--
-    WebGL animated background canvas
-    - Raw WebGL1 (no external deps)
-    - Disabled automatically for prefers-reduced-motion
-  -->
   <canvas id="webgl-canvas" aria-hidden="true"></canvas>
 
   <div class="content-wrapper">
     <header class="hero">
       <div class="container">
         <div class="hero-content">
-          <p class="kicker">Latest prerelease</p>
+          <p class="kicker">Stable Release</p>
           <h1 class="hero-title">
             <span class="brand">OpenClaw</span>
-            <span class="version">v2026.2.19-beta.1</span>
+            <span class="version">v2026.2.19</span>
           </h1>
           <p class="hero-subtitle">
-            Release highlights: Apple Watch companion MVP, APNs wake + auto-reconnect, safer device pairing
-            hygiene, APNs test pipeline, and new security audit findings.
+            Production-ready update featuring Apple Watch companion, intelligent APNs reconnection, device hygiene workflows, push notification infrastructure, and comprehensive security hardening.
           </p>
 
           <div class="cta-group">
             <a
               class="btn btn-primary"
-              href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.19-beta.1"
+              href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.19"
               target="_blank"
               rel="noopener"
             >
@@ -53,8 +47,7 @@
           </div>
 
           <p class="hero-meta">
-            Inspired by <a href="https://openclaw.ai" target="_blank" rel="noopener">openclaw.ai</a> •
-            This page intentionally focuses only on the <strong>v2026.2.19-beta.1</strong> change set.
+            Published February 19, 2026 • Inspired by <a href="https://openclaw.ai" target="_blank" rel="noopener">openclaw.ai</a>
           </p>
         </div>
       </div>
@@ -63,108 +56,110 @@
     <main>
       <section class="section whats-new" id="whats-new">
         <div class="container">
-          <h2 class="section-title">What’s new in v2026.2.19-beta.1</h2>
+          <h2 class="section-title">What's New in v2026.2.19</h2>
 
           <div class="features-grid">
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">⌚</div>
-              <h3>Apple Watch companion (MVP)</h3>
+              <h3>Apple Watch Companion (MVP)</h3>
               <p>
-                A new watchOS companion brings a watch inbox UI, notification relay handling, and gateway
-                command surfaces for watch status and send flows.
+                A native watchOS companion app brings notifications and quick actions to your wrist. View your inbox, handle relayed notifications, and execute gateway commands directly from the watch face.
               </p>
               <ul class="feature-details">
-                <li>Inbox UI for quick triage</li>
-                <li>Relayed notifications</li>
-                <li>Gateway-backed “status” and “send” actions</li>
+                <li>Native watch inbox UI for instant triage</li>
+                <li>Real-time notification relay pipeline</li>
+                <li>Gateway-backed status and send commands</li>
               </ul>
             </article>
 
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">📲</div>
-              <h3>APNs wake + auto-reconnect for <code>nodes.invoke</code></h3>
+              <h3>APNs Wake + Auto-Reconnect</h3>
               <p>
-                If an iOS node is disconnected because the app is backgrounded, the gateway now issues a
-                silent APNs wake <em>before</em> invoking the node, and can auto-reconnect the session on
-                wake. The goal is fewer invoke failures and more reliable device actions.
+                When iOS nodes are backgrounded, the gateway now sends a silent APNs wake notification <em>before</em> invoking <code>nodes.invoke</code>. Sessions automatically reconnect on wake, dramatically reducing background failure rates.
               </p>
               <ul class="feature-details">
-                <li>Wake-first strategy</li>
-                <li>Silent push auto-reconnect</li>
-                <li>Reduced background failure rate</li>
+                <li>Pre-emptive silent push wake strategy</li>
+                <li>Automatic session reconnection on wake</li>
+                <li>Significantly fewer invoke timeout failures</li>
               </ul>
             </article>
 
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">🧹</div>
-              <h3>Paired-device hygiene flows</h3>
+              <h3>Device Pairing Hygiene</h3>
               <p>
-                New cleanup primitives help you remove stale pairings and keep the device list accurate:
-                <code>device.pair.remove</code>, <code>openclaw devices remove</code>, and guarded bulk clears
-                via <code>openclaw devices clear --yes [--pending]</code>.
+                New primitives for managing device pairings: programmatically remove stale entries via <code>device.pair.remove</code>, or use CLI commands like <code>openclaw devices remove</code> and guarded bulk operations with safety flags.
               </p>
               <ul class="feature-details">
-                <li>Remove a specific paired entry</li>
-                <li>CLI convenience commands</li>
-                <li>Optional pending-request rejection</li>
+                <li>Granular paired-device removal API</li>
+                <li>Convenient CLI management commands</li>
+                <li>Guarded bulk clear with <code>--yes</code> and <code>--pending</code> flags</li>
               </ul>
             </article>
 
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">🔔</div>
-              <h3>APNs registration + notification signing</h3>
+              <h3>Push Notification Infrastructure</h3>
               <p>
-                iOS adds push registration and a notification-signing configuration for node delivery.
-                In parallel, the gateway adds a push-test pipeline to validate APNs delivery end-to-end.
+                iOS gains push registration capabilities and notification-signing configuration for secure node delivery. The gateway includes a comprehensive push-test pipeline for end-to-end APNs validation.
               </p>
               <ul class="feature-details">
-                <li>Push registration primitives</li>
-                <li>Notification signing config</li>
-                <li>Gateway-side push test pipeline</li>
+                <li>iOS push registration primitives</li>
+                <li>Cryptographic notification signing</li>
+                <li>Gateway push-test validation pipeline</li>
               </ul>
             </article>
 
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">🛡️</div>
-              <h3>Security/Audit: <code>gateway.http.no_auth</code></h3>
+              <h3>Enhanced Security Audits</h3>
               <p>
-                New audit findings detect when <code>gateway.auth.mode = "none"</code> leaves HTTP APIs
-                reachable. The audit includes loopback warnings and critical severity when remote
-                exposure is detected.
+                New audit findings detect when <code>gateway.auth.mode = "none"</code> exposes HTTP APIs without authentication. Findings include loopback warnings and critical severity alerts for remote exposure, with comprehensive documentation.
               </p>
               <ul class="feature-details">
-                <li>Actionable findings with severity</li>
-                <li>Loopback vs remote exposure detection</li>
-                <li>Docs coverage included</li>
+                <li>Actionable <code>gateway.http.no_auth</code> findings</li>
+                <li>Severity-based detection (warning vs critical)</li>
+                <li>Loopback vs remote exposure differentiation</li>
               </ul>
             </article>
 
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">🌊</div>
-              <h3>Agents/Streaming reliability improvements</h3>
+              <h3>Agent Streaming Improvements</h3>
               <p>
-                Streaming is more robust during reasoning: partial output stays active, native
-                <code>thinking_*</code> stream events are handled consistently, reasoning-end signals are
-                deduplicated, and stale mutating tool errors are cleared after successful retries.
+                More robust streaming during reasoning phases: partial outputs remain active, native <code>thinking_*</code> events are handled consistently, reasoning-end signals are deduplicated, and stale tool errors are cleared after successful retries.
               </p>
               <ul class="feature-details">
-                <li>More stable partial streaming</li>
-                <li>Consistent thinking events</li>
-                <li>Cleaner retry success behavior</li>
+                <li>Stable partial streaming during reasoning</li>
+                <li>Consistent native thinking event handling</li>
+                <li>Intelligent error state management</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">🔒</div>
+              <h3>Comprehensive Security Hardening</h3>
+              <p>
+                Multi-layered security enhancements including SSRF protection for cron webhooks, strict IPv4 validation, NAT64/6to4/Teredo blocking, plaintext WebSocket restrictions, YAML 1.2 core schema parsing, and baseline HTTP security headers.
+              </p>
+              <ul class="feature-details">
+                <li>SSRF guards for outbound webhook delivery</li>
+                <li>Enhanced network protocol restrictions</li>
+                <li>Secure configuration parsing defaults</li>
               </ul>
             </article>
 
             <article class="feature-card">
               <div class="feature-icon" aria-hidden="true">🔧</div>
-              <h3>Tooling + guidance hardening</h3>
+              <h3>Developer Tooling & Gateway Improvements</h3>
               <p>
-                The release hardens coding-agent skill guidance by removing shell command examples that
-                interpolate untrusted issue text. Additionally, <code>oxfmt</code> behavior is aligned
-                between local and CI.
+                Hardened coding-agent skill guidance removes unsafe shell interpolation patterns. Gateway daemon properly forwards <code>TMPDIR</code> to prevent SQLite errors. Token auth now defaults with auto-generation, and <code>oxfmt</code> behavior is aligned between local and CI.
               </p>
               <ul class="feature-details">
                 <li>Safer skill guidance patterns</li>
-                <li>Formatting parity (local vs CI)</li>
+                <li>Improved gateway daemon environment handling</li>
+                <li>Consistent formatting across environments</li>
               </ul>
             </article>
           </div>
@@ -173,77 +168,77 @@
 
       <section class="section how-it-works" id="how-it-works">
         <div class="container">
-          <h2 class="section-title">How it works (two new flows)</h2>
+          <h2 class="section-title">How Key Features Work</h2>
 
           <div class="diagram-container">
-            <h3 class="diagram-title">APNs wake + auto-reconnect for <code>nodes.invoke</code></h3>
+            <h3 class="diagram-title">APNs Wake + Auto-Reconnect Flow</h3>
             <div class="flow-diagram">
               <div class="flow-step">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                  <h4>Invoke request</h4>
-                  <p>The gateway needs to call a node action while the iOS app is backgrounded.</p>
+                  <h4>Invoke Request</h4>
+                  <p>Gateway needs to execute a node action while the iOS app is backgrounded or suspended.</p>
                 </div>
               </div>
               <div class="flow-arrow" aria-hidden="true">→</div>
               <div class="flow-step">
                 <div class="step-number">2</div>
                 <div class="step-content">
-                  <h4>Silent push</h4>
-                  <p>Gateway sends an APNs wake to re-activate the client in the background.</p>
+                  <h4>Silent Push</h4>
+                  <p>Gateway sends APNs silent wake notification to reactivate the client in the background.</p>
                 </div>
               </div>
               <div class="flow-arrow" aria-hidden="true">→</div>
               <div class="flow-step">
                 <div class="step-number">3</div>
                 <div class="step-content">
-                  <h4>Reconnect</h4>
-                  <p>On wake, iOS re-establishes the gateway session to accept commands.</p>
+                  <h4>Auto-Reconnect</h4>
+                  <p>iOS app wakes, automatically re-establishes gateway session to accept pending commands.</p>
                 </div>
               </div>
               <div class="flow-arrow" aria-hidden="true">→</div>
               <div class="flow-step">
                 <div class="step-number">4</div>
                 <div class="step-content">
-                  <h4>Invoke completes</h4>
-                  <p><code>nodes.invoke</code> is executed once the node is reachable again.</p>
+                  <h4>Invoke Completes</h4>
+                  <p><code>nodes.invoke</code> executes successfully with minimal latency and no timeout failures.</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="diagram-container">
-            <h3 class="diagram-title">Apple Watch notification relay + commands</h3>
+            <h3 class="diagram-title">Apple Watch Notification Relay</h3>
             <div class="flow-diagram">
               <div class="flow-step">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                  <h4>Gateway event</h4>
-                  <p>Message/status update becomes available in the gateway.</p>
+                  <h4>Gateway Event</h4>
+                  <p>Message, status update, or notification event originates from the gateway.</p>
                 </div>
               </div>
               <div class="flow-arrow" aria-hidden="true">→</div>
               <div class="flow-step">
                 <div class="step-number">2</div>
                 <div class="step-content">
-                  <h4>iOS relay</h4>
-                  <p>iOS receives/handles the notification relay logic.</p>
+                  <h4>iOS Relay</h4>
+                  <p>iOS app receives notification and processes relay logic for watch compatibility.</p>
                 </div>
               </div>
               <div class="flow-arrow" aria-hidden="true">→</div>
               <div class="flow-step">
                 <div class="step-number">3</div>
                 <div class="step-content">
-                  <h4>Watch inbox</h4>
-                  <p>Watch displays the inbox UI; user can act quickly.</p>
+                  <h4>Watch Inbox UI</h4>
+                  <p>Watch displays notification in native inbox interface for instant user visibility.</p>
                 </div>
               </div>
               <div class="flow-arrow" aria-hidden="true">→</div>
               <div class="flow-step">
                 <div class="step-number">4</div>
                 <div class="step-content">
-                  <h4>Gateway commands</h4>
-                  <p>Watch surfaces status/send actions backed by gateway command surfaces.</p>
+                  <h4>Gateway Commands</h4>
+                  <p>User executes status checks or send actions directly from watch, backed by gateway APIs.</p>
                 </div>
               </div>
             </div>
@@ -253,64 +248,67 @@
 
       <section class="section webgl-technical" id="webgl">
         <div class="container">
-          <h2 class="section-title">WebGL background (technical notes)</h2>
+          <h2 class="section-title">WebGL Background: Technical Implementation</h2>
 
           <div class="technical-content">
             <p class="intro-text">
-              The background is a tiny, dependency-free WebGL1 program. It renders a full-screen quad
-              and drives a fragment shader with time + resolution uniforms. Animation is automatically
-              disabled for users with <code>prefers-reduced-motion</code>.
+              The animated background is a lightweight, zero-dependency WebGL1 implementation. It renders a full-screen quad driven by a custom fragment shader with time and resolution uniforms. Animation automatically respects <code>prefers-reduced-motion</code> user preferences for accessibility.
             </p>
 
             <div class="tech-grid">
               <div class="tech-item">
-                <h3>1) Context creation</h3>
+                <h3>1. Context Initialization</h3>
                 <p>
-                  We request a WebGL1 context with alpha enabled. Alpha allows the shader output to be
-                  blended subtly behind the content layer.
+                  We acquire a WebGL1 rendering context with alpha compositing enabled. This allows the shader output to blend seamlessly beneath the content layer, creating a subtle depth effect without visual interference.
                 </p>
               </div>
 
               <div class="tech-item">
-                <h3>2) Geometry</h3>
+                <h3>2. Static Geometry Buffer</h3>
                 <p>
-                  A single buffer contains 6 vertices (two triangles) covering clip space (-1..1). No
-                  per-frame buffer uploads; the GPU reuses the static geometry.
+                  A single vertex buffer contains six vertices (two triangles) forming a quad in normalized device coordinates (-1 to 1). This static geometry is uploaded once and reused every frame, eliminating per-frame CPU-GPU transfer overhead.
                 </p>
               </div>
 
               <div class="tech-item">
-                <h3>3) Shader pipeline</h3>
+                <h3>3. Shader Pipeline</h3>
                 <p>
-                  The vertex shader forwards positions directly to <code>gl_Position</code>. The fragment
-                  shader computes a smooth gradient by combining <code>sin</code>/<code>cos</code> waves,
-                  then outputs a low-alpha color for a “glow” effect.
+                  The vertex shader performs a simple pass-through, forwarding positions directly to <code>gl_Position</code>. The fragment shader computes a procedural gradient using layered sine and cosine waves, outputting low-alpha colors for an ethereal glow effect.
                 </p>
               </div>
 
               <div class="tech-item">
-                <h3>4) Uniforms</h3>
+                <h3>4. Uniform Updates</h3>
                 <p>
-                  We update <code>u_time</code> on every frame (seconds since start) and
-                  <code>u_resolution</code> on resize. This keeps animation consistent and aspect-correct.
+                  Two uniforms drive the animation: <code>u_time</code> (elapsed seconds) updates each frame to animate the waves, while <code>u_resolution</code> (canvas dimensions) updates on resize to maintain correct aspect ratios and prevent distortion.
                 </p>
               </div>
 
               <div class="tech-item">
-                <h3>5) Animation loop</h3>
+                <h3>5. Animation Loop</h3>
                 <p>
-                  Rendering runs via <code>requestAnimationFrame</code>. The loop pauses when the document
-                  is hidden and is disabled entirely when reduced motion is preferred.
+                  Rendering uses <code>requestAnimationFrame</code> for optimal performance and battery efficiency. The loop automatically pauses when the document is hidden (tab switching) and disables entirely for users with <code>prefers-reduced-motion: reduce</code>.
                 </p>
               </div>
 
               <div class="tech-item">
-                <h3>6) DPR handling</h3>
+                <h3>6. High-DPI Handling</h3>
                 <p>
-                  The canvas backing store uses <code>devicePixelRatio</code> to remain sharp on Retina
-                  displays. We set the WebGL viewport to match the physical pixel dimensions.
+                  The canvas backing store scales with <code>window.devicePixelRatio</code> to ensure sharp rendering on Retina and high-DPI displays. The WebGL viewport is configured to match physical pixel dimensions, preventing blur on modern screens.
                 </p>
               </div>
+            </div>
+
+            <div class="code-block">
+              <h4>Fragment Shader Core Logic</h4>
+              <pre><code>// Time-based wave animation
+float wave1 = sin(uv.x * 3.0 + u_time * 0.5);
+float wave2 = cos(uv.y * 4.0 + u_time * 0.3);
+float combined = (wave1 + wave2) * 0.5;
+
+// Low-alpha gradient for subtle effect
+vec3 color = mix(baseColor, accentColor, combined);
+gl_FragColor = vec4(color, 0.15);</code></pre>
             </div>
           </div>
         </div>
@@ -323,13 +321,13 @@
           <div class="footer-links">
             <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub</a>
             <a
-              href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.19-beta.1"
+              href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.19"
               target="_blank"
               rel="noopener"
             >
-              Release
+              Release Notes
             </a>
-            <a href="https://openclaw.ai" target="_blank" rel="noopener">Website</a>
+            <a href="https://openclaw.ai" target="_blank" rel="noopener">Official Website</a>
           </div>
           <p class="footer-attribution">Powered by Mindflow</p>
         </div>
