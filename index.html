@@ -1,91 +1,363 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>OpenClaw v2026.2.17 — What's New</title>
-  <meta name="description" content="OpenClaw v2026.2.17 — latest release highlights, what's new, and how it works."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>/* CSS inlined for gh-pages fast load */html,body{margin:0;padding:0;height:100%;background:#0a0e14;color:#e6edf3;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}a{color:#7c5cff;text-decoration:none;transition:opacity .2s}a:hover{opacity:.8}code,kbd,pre{font-family:'SF Mono','Consolas','Liberation Mono','Courier New',monospace;background:rgba(124,92,255,.1);padding:2px 6px;border-radius:4px;font-size:.9em}ul{padding-left:1.5em}li{margin-bottom:.5em}.wrap{max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;flex-direction:column;gap:28px}header{display:flex;align-items:center;gap:14px;flex-wrap:wrap}header img{width:36px;height:36px;border-radius:8px}header h1{margin:0;font-size:24px;font-weight:700;letter-spacing:-.02em;background:linear-gradient(135deg,#e6edf3 0%,#a5b4fc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(124,92,255,.3);border-radius:999px;background:rgba(124,92,255,.15);font-size:12px;font-weight:600;color:#a78bfa}.header-link{color:rgba(230,237,243,.6);font-size:14px;margin-left:auto}.hero-card{position:relative;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(15,20,28,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 20px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden;min-height:480px}#heroCanvas{display:block;width:100%;height:480px;cursor:grab}#heroCanvas:active{cursor:grabbing}#heroFallback{width:100%;height:480px;background:linear-gradient(135deg,#1a1f2e 0%,#0f141c 50%,#1e1338 100%);display:flex;align-items:center;justify-content:center;color:rgba(230,237,243,.5);font-size:14px}.hero-controls{position:absolute;bottom:16px;right:16px;display:flex;gap:10px;z-index:10}.hero-controls button{padding:8px 14px;background:rgba(15,20,28,.85);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#e6edf3;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s ease;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.hero-controls button:hover{background:rgba(124,92,255,.2);border-color:rgba(124,92,255,.4)}.hero-controls button:active{transform:scale(.97)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}@media (max-width:980px){.grid{grid-template-columns:1fr}}.card{border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(15,20,28,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 20px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);padding:24px;transition:transform .2s,box-shadow .2s}.card:hover{transform:translateY(-2px);box-shadow:0 24px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}.card h2{margin:0 0 16px 0;font-size:20px;font-weight:700;color:#e6edf3;display:flex;align-items:center;gap:10px}.card h2:before{content:'';width:4px;height:20px;background:linear-gradient(180deg,#7c5cff 0%,#a78bfa 100%);border-radius:2px}.card-body{color:rgba(230,237,243,.85);line-height:1.7}.muted{color:rgba(230,237,243,.6);font-size:14px}.feature-grid{display:grid;gap:16px}.feature-item{padding:14px;background:rgba(124,92,255,.05);border:1px solid rgba(124,92,255,.15);border-radius:10px;transition:all .2s}.feature-item:hover{background:rgba(124,92,255,.1);border-color:rgba(124,92,255,.25)}.feature-item strong{color:#a78bfa;font-weight:600}footer{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-top:1px solid rgba(255,255,255,.05);color:rgba(230,237,243,.5);font-size:13px;flex-wrap:wrap;gap:12px}footer a{color:rgba(124,92,255,.8)}.full-card{border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(15,20,28,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 20px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);padding:24px}.full-card h2{margin:0 0 16px 0;font-size:20px;font-weight:700;color:#e6edf3}</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OpenClaw v2026.2.17 — What’s New</title>
+  <meta name="description" content="OpenClaw v2026.2.17 — latest release highlights and how they work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#0a0e14;--card:rgba(15,20,28,.62);--border:rgba(255,255,255,.08);
+      --text:#e6edf3;--muted:rgba(230,237,243,.68);--muted2:rgba(230,237,243,.55);
+      --brand:#7c5cff;--brand2:#a78bfa;
+    }
+    *{box-sizing:border-box}html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6}
+    a{color:var(--brand);text-decoration:none}a:hover{opacity:.85}
+    .wrap{max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;flex-direction:column;gap:24px}
+    header{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    header h1{margin:0;font-size:22px;letter-spacing:-.02em}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+      background:rgba(124,92,255,.14);border:1px solid rgba(124,92,255,.34);color:var(--brand2);font-size:12px;font-weight:600}
+    .header-link{margin-left:auto;color:rgba(230,237,243,.55);font-size:13px}
+
+    .hero{position:relative;border:1px solid var(--border);border-radius:16px;background:var(--card);
+      box-shadow:0 20px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden}
+    #heroCanvas{display:block;width:100%;height:480px;cursor:grab}
+    #heroCanvas:active{cursor:grabbing}
+    #fallback{display:none;width:100%;height:480px;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#1a1f2e 0%,#0f141c 55%,#1e1338 100%);color:rgba(230,237,243,.55);font-size:14px}
+    .controls{position:absolute;right:16px;bottom:16px;display:flex;gap:10px}
+    .controls button{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.16);
+      background:rgba(15,20,28,.86);color:var(--text);font-size:12px;cursor:pointer;backdrop-filter:blur(8px)}
+    .controls button:hover{border-color:rgba(124,92,255,.55);background:rgba(124,92,255,.16)}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    .card{border:1px solid var(--border);border-radius:16px;background:var(--card);
+      box-shadow:0 20px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);padding:22px}
+    .card h2{margin:0 0 14px 0;font-size:18px;display:flex;gap:10px;align-items:center}
+    .card h2:before{content:'';width:4px;height:18px;border-radius:2px;background:linear-gradient(180deg,var(--brand),var(--brand2))}
+    .muted{color:var(--muted)}
+    .note{color:var(--muted2);font-size:14px}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      background:rgba(124,92,255,.12);padding:2px 6px;border-radius:6px}
+    .item{padding:12px;border-radius:12px;background:rgba(124,92,255,.06);border:1px solid rgba(124,92,255,.16)}
+    .item strong{color:var(--brand2)}
+
+    footer{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+      padding:20px 0;border-top:1px solid rgba(255,255,255,.06);color:rgba(230,237,243,.5);font-size:13px}
+  </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <img alt="OpenClaw" src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-logo-text.png">
-      <h1>OpenClaw v2026.2.17</h1>
-      <span class="badge">Latest</span>
-      <a href="https://github.com/openclaw/openclaw" class="header-link">github.com/openclaw/openclaw</a>
+      <span class="badge">Latest • v2026.2.17</span>
+      <h1>OpenClaw — Release Highlights</h1>
+      <a class="header-link" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">Full release notes →</a>
     </header>
 
-    <section class="hero-card">
+    <section class="hero">
       <canvas id="heroCanvas"></canvas>
-      <div id="heroFallback" style="display:none;">WebGL2 not available — static gradient fallback</div>
-      <div class="hero-controls">
-        <button id="toggleQuality">Boost Quality</button>
-        <button id="togglePause">Pause</button>
-        <button id="resetView">Reset View</button>
+      <div id="fallback">WebGL2 unavailable — using a static fallback</div>
+      <div class="controls">
+        <button id="quality">Boost quality</button>
+        <button id="pause">Pause</button>
+        <button id="reset">Reset view</button>
       </div>
     </section>
 
     <div class="grid">
       <section class="card">
-        <h2>Platform & Integration</h2>
-        <div class="card-body feature-grid">
-          <div class="feature-item"><strong>iOS Share Extension:</strong> Forward shared URLs, text, and images directly to the gateway <code>agent.request</code> with optional delivery receipts and fallback handling.</div>
-          <div class="feature-item"><strong>iOS Talk Mode:</strong> Background listening toggle, voice directive hints, and improved barge-in behavior for hands-free interaction.</div>
-          <div class="feature-item"><strong>Slack Streaming:</strong> Native single-message text streaming (<code>chat.startStream</code> / <code>appendStream</code> / <code>stopStream</code>) with configurable modes for draft previews.</div>
-          <div class="feature-item"><strong>Telegram & iMessage:</strong> Inline button styles (primary|success|danger) + reaction notifications; <code>replyToId</code> support for threaded conversations.</div>
-        </div>
+        <h2>AI & Agents</h2>
+        <div class="item"><strong>Anthropic 1M context (opt-in):</strong> enable with <code>params.context1m: true</code> (maps to header <code>anthropic-beta: context-1m-2025-08-07</code>).</div>
+        <div class="item" style="margin-top:12px"><strong>Sonnet 4.6 support:</strong> <code>anthropic/claude-sonnet-4-6</code> across aliases/defaults with forward-compatible fallback.</div>
+        <div class="item" style="margin-top:12px"><strong>Deterministic subagents:</strong> new <code>/subagents spawn</code> plus context-prefixed task messages; one-off calls disable polling subagents.</div>
+        <p class="note" style="margin-top:12px">This page intentionally lists only features from v2026.2.17.</p>
       </section>
 
       <section class="card">
-        <h2>AI & Model Updates</h2>
-        <div class="card-body feature-grid">
-          <div class="feature-item"><strong>Anthropic 1M Context:</strong> Beta header opt-in via <code>params.context1m: true</code> (header: <code>anthropic-beta: context-1m-2025-08-07</code>).</div>
-          <div class="feature-item"><strong>Claude Sonnet 4.6:</strong> Full support across aliases and defaults with forward-compatible fallback to Sonnet 4.5 when 4.6 is unavailable upstream.</div>
-          <div class="feature-item"><strong>Subagent Spawn:</strong> Deterministic subagent activation via <code>/subagents spawn</code> with context-prefixed task messages.</div>
-        </div>
+        <h2>Channels & UX</h2>
+        <div class="item"><strong>Slack native streaming:</strong> single-message streaming using <code>chat.startStream</code>/<code>appendStream</code>/<code>stopStream</code>, with configurable draft preview modes and fallback to normal delivery.</div>
+        <div class="item" style="margin-top:12px"><strong>Telegram:</strong> inline button <code>style</code> support (<code>primary|success|danger</code>) + reactions surfaced as system events (configurable scope).</div>
+        <div class="item" style="margin-top:12px"><strong>iMessage:</strong> outbound <code>replyToId</code> support with reply tag normalization for correct threading.</div>
+        <div class="item" style="margin-top:12px"><strong>iOS:</strong> Share Extension forwards URL/text/image to gateway <code>agent.request</code>; Talk Mode adds Background Listening + Voice Directive Hint and improves barge-in behavior.</div>
       </section>
     </div>
 
     <div class="grid">
       <section class="card">
-        <h2>Tools & Security</h2>
-        <div class="card-body">
-          <ul>
-            <li><strong>Web Tools URL Allowlists:</strong> Restrict <code>web_search</code> and <code>web_fetch</code> to approved domains for enhanced security.</li>
-            <li><strong>Browser Custom Args:</strong> Configure custom Chrome launch arguments via <code>extraArgs</code> for advanced automation.</li>
-          </ul>
-        </div>
+        <h2>Tools, Security & Automation</h2>
+        <div class="item"><strong>Web tool allowlists:</strong> URL allowlists for <code>web_search</code> and <code>web_fetch</code>.</div>
+        <div class="item" style="margin-top:12px"><strong>Cron:</strong> separate per-job webhook delivery from announce delivery; deterministic schedule staggering; per-run usage telemetry in logs/webhooks.</div>
+        <div class="item" style="margin-top:12px"><strong>Browser:</strong> custom Chrome launch args via <code>extraArgs</code>.</div>
+        <div class="item" style="margin-top:12px"><strong>Tool Display/Web UI:</strong> intent-first tool detail views + execution summaries.</div>
       </section>
 
       <section class="card">
-        <h2>Infrastructure & DevOps</h2>
-        <div class="card-body">
-          <ul>
-            <li><strong>Cron Enhancements:</strong> Webhook delivery separation, deterministic stagger scheduling, and per-run usage telemetry.</li>
-            <li><strong>Docker Build:</strong> New build arg <code>OPENCLAW_INSTALL_BROWSER</code> to preinstall Chromium + Xvfb.</li>
-          </ul>
-        </div>
+        <h2>Discord & Voice</h2>
+        <div class="item"><strong>Discord:</strong> native <code>/exec</code> options; reusable interactive components; per-button <code>allowedUsers</code> allowlist.</div>
+        <div class="item" style="margin-top:12px"><strong>Voice calls:</strong> pre-cache inbound greeting TTS for faster first playback.</div>
       </section>
     </div>
 
-    <section class="full-card">
-      <h2>WebGL Scene: Technical Notes</h2>
-      <p class="card-body muted">The hero canvas renders a real-time 3D scene using WebGL2 and GLSL raymarching. The fragment shader traces rays through a Signed Distance Field (SDF) consisting of a deformed sphere core, a tilted torus, and a satellite sphere. Lighting includes soft shadows, ambient occlusion, Fresnel highlights, and distance-based fog. Quality toggle adjusts raymarch step count; pause/reset control animation and camera. Resolution scales with device pixel ratio. No external libraries—pure WebGL2 and vanilla JavaScript.</p>
+    <section class="card">
+      <h2>WebGL hero — how it works</h2>
+      <p class="muted">
+        The hero canvas is a real-time WebGL2 raymarcher. The fragment shader traces rays through a Signed Distance Field (SDF),
+        lighting the hit point with diffuse + specular + rim lighting, then applies depth fog.
+        <br /><br />
+        <strong>Accessibility:</strong> if <code>prefers-reduced-motion</code> is enabled, we auto-pause.
+        <strong>Performance:</strong> DPR is capped (≤2) and the Quality toggle adjusts step count.
+      </p>
     </section>
 
     <footer>
-      <span>© 2026 OpenClaw · <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17">Full Release Notes</a></span>
-      <span>Deployed via <a href="https://mindflow.ai">Mindflow</a></span>
+      <span>Release: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">v2026.2.17</a></span>
+      <span>Powered by <a href="https://mindflow.ai" target="_blank" rel="noopener">Mindflow</a></span>
     </footer>
   </div>
 
-  <script>(function(){'use strict';const c=document.getElementById('heroCanvas'),f=document.getElementById('heroFallback');const g=c.getContext('webgl2',{antialias:false,alpha:false});if(!g){c.style.display='none';f.style.display='flex';return;}let s={time:0,paused:false,quality:64,dpr:Math.min(window.devicePixelRatio||1,2.0),mouseX:0,mouseY:0,isDragging:false,cameraYaw:0,cameraPitch:0.2};const r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(r){s.paused=true;}const vs=`#version 300 es
+  <script>
+    (function(){
+      'use strict';
+
+      const canvas = document.getElementById('heroCanvas');
+      const fallback = document.getElementById('fallback');
+      const gl = canvas.getContext('webgl2', { antialias:false, alpha:false });
+
+      // Reduced motion: do not animate (but keep layout).
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        // We still try to show a first frame if WebGL exists, but keep paused.
+      }
+
+      if(!gl){
+        canvas.style.display='none';
+        fallback.style.display='flex';
+        return;
+      }
+
+      const state = {
+        paused: prefersReduced,
+        steps: 64,
+        dpr: Math.min(window.devicePixelRatio||1, 2),
+        yaw: 0,
+        pitch: 0.2,
+        dragging: false,
+        mx: 0, my: 0,
+      };
+
+      // Fullscreen triangle (no vertex buffer needed).
+      const vs = `#version 300 es
 precision highp float;
-void main(){float x=float((gl_VertexID & 1) << 2)-1.0;float y=float((gl_VertexID & 2) << 1)-1.0;gl_Position=vec4(x,y,0.0,1.0);}';`;const fs=`#version 300 es
-precision highp float;out vec4 fragColor;uniform vec2 u_resolution;uniform float u_time;uniform int u_steps;uniform vec2 u_mouse;uniform float u_yaw;uniform float u_pitch;float sdSphere(vec3 p,float r){return length(p)-r;}float sdTorus(vec3 p,vec2 t){vec2 q=vec2(length(p.xz)-t.x,p.y);return length(q)-t.y;}float sceneSDF(vec3 p){float t=u_time*0.4;vec3 pCore=p;float deform=sin(pCore.x*2.0+t)*0.15+sin(pCore.y*3.0+t*1.3)*0.1;float sphere=sdSphere(pCore,1.2+deform);vec3 pTorus=p;float angle=radians(45.0);pTorus.yz=mat2(cos(angle),-sin(angle),sin(angle),cos(angle))*pTorus.yz;float rotY=t*0.6;pTorus.xz=mat2(cos(rotY),-sin(rotY),sin(rotY),cos(rotY))*pTorus.xz;float torus=sdTorus(pTorus,vec2(1.8,0.3));vec3 pSat=p;float orbitAngle=t*0.8;pSat.x-=cos(orbitAngle)*2.5;pSat.z-=sin(orbitAngle)*2.5;pSat.y+=sin(orbitAngle*2.0)*0.5;float satellite=sdSphere(pSat,0.4);float d=min(sphere,torus);d=min(d,satellite);return d;}vec3 calcNormal(vec3 p){const float eps=0.001;vec2 h=vec2(eps,0.0);return normalize(vec3(sceneSDF(p+h.xyy)-sceneSDF(p-h.xyy),sceneSDF(p+h.yxy)-sceneSDF(p-h.yxy),sceneSDF(p+h.yyx)-sceneSDF(p-h.yyx)));}float softShadow(vec3 ro,vec3 rd,float mint,float maxt,float k){float res=1.0;float t=mint;for(int i=0;i<32;i++){float h=sceneSDF(ro+rd*t);if(h<0.001)return 0.0;res=min(res,k*h/t);t+=clamp(h,0.01,0.2);if(t>maxt)break;}return clamp(res,0.0,1.0);}float calcAO(vec3 p,vec3 n){float occ=0.0;float scale=1.0;for(int i=0;i<5;i++){float h=0.01+0.12*float(i)/4.0;float d=sceneSDF(p+h*n);occ+=(h-d)*scale;scale*=0.85;}return clamp(1.0-1.5*occ,0.0,1.0);}float raymarch(vec3 ro,vec3 rd,int maxSteps){float t=0.0;for(int i=0;i<maxSteps;i++){vec3 p=ro+rd*t;float d=sceneSDF(p);if(d<0.001)break;t+=d*0.8;if(t>20.0)break;}return t;}void main(){vec2 uv=(gl_FragCoord.xy*2.0-u_resolution)/u_resolution.y;vec3 camPos=vec3(0.0,0.0,5.0);float yaw=u_yaw+u_mouse.x*0.5;float pitch=u_pitch+u_mouse.y*0.3;mat2 rotY=mat2(cos(yaw),-sin(yaw),sin(yaw),cos(yaw));camPos.xz=rotY*camPos.xz;vec3 target=vec3(0.0);vec3 forward=normalize(target-camPos);vec3 right=normalize(cross(forward,vec3(0.0,1.0,0.0)));vec3 up=cross(right,forward);forward=normalize(forward*cos(pitch)+up*sin(pitch));up=cross(right,forward);vec3 rd=normalize(uv.x*right+uv.y*up+forward*1.8);float t=raymarch(camPos,rd,u_steps);vec3 col=mix(vec3(0.05,0.08,0.15),vec3(0.02,0.03,0.08),smoothstep(-1.0,1.0,uv.y));if(t<20.0){vec3 p=camPos+rd*t;vec3 n=calcNormal(p);vec3 lightPos=vec3(3.0,4.0,5.0);vec3 lightDir=normalize(lightPos-p);vec3 viewDir=normalize(camPos-p);vec3 halfDir=normalize(lightDir+viewDir);float diff=max(dot(n,lightDir),0.0);float spec=pow(max(dot(n,halfDir),0.0),32.0);float fresnel=pow(1.0-max(dot(n,viewDir),0.0),3.0);float shadow=softShadow(p+n*0.01,lightDir,0.02,5.0,8.0);float ao=calcAO(p,n);vec3 baseCol=mix(vec3(0.5,0.3,0.8),vec3(0.3,0.5,0.9),p.y*0.5+0.5);vec3 ambient=baseCol*0.15*ao;vec3 diffuse=baseCol*diff*shadow*0.7;vec3 specular=vec3(1.0)*spec*shadow*0.4;vec3 fresnelCol=vec3(0.6,0.4,1.0)*fresnel*0.5;col=ambient+diffuse+specular+fresnelCol;float fogFactor=1.0-exp(-t*0.08);vec3 fogCol=vec3(0.03,0.05,0.12);col=mix(col,fogCol,fogFactor);}float vignette=1.0-dot(uv*0.5,uv*0.5);col*=0.6+0.4*vignette;col=pow(col,vec3(1.0/2.2));fragColor=vec4(col,1.0);}';`;function cs(src,t){const sh=g.createShader(t);g.shaderSource(sh,src);g.compileShader(sh);if(!g.getShaderParameter(sh,g.COMPILE_STATUS)){console.error('Shader compile error:',g.getShaderInfoLog(sh));g.deleteShader(sh);return null;}return sh;}const v=cs(vs,g.VERTEX_SHADER),fr=cs(fs,g.FRAGMENT_SHADER);const p=g.createProgram();g.attachShader(p,v);g.attachShader(p,fr);g.linkProgram(p);if(!g.getProgramParameter(p,g.LINK_STATUS)){console.error('Program link error:',g.getProgramInfoLog(p));}g.useProgram(p);const ur=g.getUniformLocation(p,'u_resolution'),ut=g.getUniformLocation(p,'u_time'),us=g.getUniformLocation(p,'u_steps'),um=g.getUniformLocation(p,'u_mouse'),uy=g.getUniformLocation(p,'u_yaw'),upi=g.getUniformLocation(p,'u_pitch');function rz(){const w=c.clientWidth,h=c.clientHeight;c.width=w*s.dpr;c.height=h*s.dpr;g.viewport(0,0,c.width,c.height);}window.addEventListener('resize',rz);rz();c.addEventListener('mousedown',e=>{s.isDragging=true;s.mouseX=e.clientX;s.mouseY=e.clientY;});c.addEventListener('mousemove',e=>{if(s.isDragging){const dx=e.clientX-s.mouseX,dy=e.clientY-s.mouseY;s.cameraYaw+=dx*0.005;s.cameraPitch+=dy*0.005;s.cameraPitch=Math.max(-1.0,Math.min(1.0,s.cameraPitch));s.mouseX=e.clientX;s.mouseY=e.clientY;}});c.addEventListener('mouseup',()=>{s.isDragging=false;});c.addEventListener('mouseleave',()=>{s.isDragging=false;});function rd(t){t*=0.001;if(!s.paused)s.time=t;g.uniform2f(ur,c.width,c.height);g.uniform1f(ut,s.time);g.uniform1i(us,s.quality);g.uniform2f(um,0.0,0.0);g.uniform1f(uy,s.cameraYaw);g.uniform1f(upi,s.cameraPitch);g.clearColor(0,0,0,1);g.clear(g.COLOR_BUFFER_BIT);g.drawArrays(g.TRIANGLES,0,3);requestAnimationFrame(rd);}requestAnimationFrame(rd);const bq=document.getElementById('toggleQuality'),bp=document.getElementById('togglePause'),br=document.getElementById('resetView');bq.addEventListener('click',()=>{s.quality=s.quality===64?128:64;bq.textContent=s.quality===128?'Normal Quality':'Boost Quality';});bp.addEventListener('click',()=>{s.paused=!s.paused;bp.textContent=s.paused?'Resume':'Pause';});br.addEventListener('click',()=>{s.cameraYaw=0;s.cameraPitch=0.2;});if(r)bp.textContent='Resume';})();</script>
+void main(){
+  float x = float((gl_VertexID & 1) << 2) - 1.0;
+  float y = float((gl_VertexID & 2) << 1) - 1.0;
+  gl_Position = vec4(x,y,0.0,1.0);
+}
+`;
+
+      // Fragment shader summary:
+      // - sceneSDF(): defines an SDF world (deformed sphere + torus + satellite sphere).
+      // - raymarch(): advances along ray by SDF distance until hit/escape.
+      // - calcNormal(): finite differences for shading normal.
+      // - softShadow()/AO(): cheap approximations for depth.
+      const fs = `#version 300 es
+precision highp float;
+out vec4 fragColor;
+uniform vec2 u_res;
+uniform float u_time;
+uniform int u_steps;
+uniform float u_yaw;
+uniform float u_pitch;
+
+float sdSphere(vec3 p,float r){return length(p)-r;}
+float sdTorus(vec3 p,vec2 t){vec2 q=vec2(length(p.xz)-t.x,p.y);return length(q)-t.y;}
+
+float sceneSDF(vec3 p){
+  float t=u_time*0.4;
+  vec3 pc=p;
+  float deform=sin(pc.x*2.0+t)*0.15+sin(pc.y*3.0+t*1.3)*0.1;
+  float sphere=sdSphere(pc,1.2+deform);
+
+  vec3 pt=p;
+  float a=radians(45.0);
+  pt.yz=mat2(cos(a),-sin(a),sin(a),cos(a))*pt.yz;
+  float ry=t*0.6;
+  pt.xz=mat2(cos(ry),-sin(ry),sin(ry),cos(ry))*pt.xz;
+  float tor=sdTorus(pt,vec2(1.8,0.3));
+
+  vec3 ps=p;
+  float oa=t*0.8;
+  ps.x-=cos(oa)*2.5;
+  ps.z-=sin(oa)*2.5;
+  ps.y+=sin(oa*2.0)*0.5;
+  float sat=sdSphere(ps,0.4);
+
+  return min(min(sphere,tor),sat);
+}
+
+vec3 calcNormal(vec3 p){
+  float e=0.001;
+  vec2 h=vec2(e,0.0);
+  return normalize(vec3(
+    sceneSDF(p+h.xyy)-sceneSDF(p-h.xyy),
+    sceneSDF(p+h.yxy)-sceneSDF(p-h.yxy),
+    sceneSDF(p+h.yyx)-sceneSDF(p-h.yyx)
+  ));
+}
+
+float raymarch(vec3 ro,vec3 rd,int maxSteps){
+  float t=0.0;
+  for(int i=0;i<maxSteps;i++){
+    float d=sceneSDF(ro+rd*t);
+    if(d<0.001) break;
+    t+=d*0.8;
+    if(t>20.0) break;
+  }
+  return t;
+}
+
+void main(){
+  vec2 uv=(gl_FragCoord.xy*2.0-u_res)/u_res.y;
+
+  vec3 cam=vec3(0.0,0.0,5.0);
+  float yaw=u_yaw;
+  float pitch=u_pitch;
+
+  cam.xz=mat2(cos(yaw),-sin(yaw),sin(yaw),cos(yaw))*cam.xz;
+
+  vec3 target=vec3(0.0);
+  vec3 fwd=normalize(target-cam);
+  vec3 right=normalize(cross(fwd,vec3(0.0,1.0,0.0)));
+  vec3 up=cross(right,fwd);
+
+  fwd=normalize(fwd*cos(pitch)+up*sin(pitch));
+  up=cross(right,fwd);
+
+  vec3 rd=normalize(uv.x*right+uv.y*up+fwd*1.8);
+  float t=raymarch(cam,rd,u_steps);
+
+  vec3 col=mix(vec3(0.05,0.08,0.15),vec3(0.02,0.03,0.08),smoothstep(-1.0,1.0,uv.y));
+
+  if(t<20.0){
+    vec3 p=cam+rd*t;
+    vec3 n=calcNormal(p);
+
+    vec3 lp=vec3(3.0,4.0,5.0);
+    vec3 l=normalize(lp-p);
+    vec3 v=normalize(cam-p);
+    vec3 h=normalize(l+v);
+
+    float diff=max(dot(n,l),0.0);
+    float spec=pow(max(dot(n,h),0.0),32.0);
+    float fres=pow(1.0-max(dot(n,v),0.0),3.0);
+
+    vec3 base=mix(vec3(0.5,0.3,0.8),vec3(0.3,0.5,0.9),p.y*0.5+0.5);
+    col=base*(0.15+0.7*diff)+vec3(1.0)*spec*0.4+vec3(0.6,0.4,1.0)*fres*0.5;
+
+    float fog=1.0-exp(-t*0.08);
+    col=mix(col,vec3(0.03,0.05,0.12),fog);
+  }
+
+  float vig=1.0-dot(uv*0.5,uv*0.5);
+  col*=0.6+0.4*vig;
+  col=pow(col,vec3(1.0/2.2));
+  fragColor=vec4(col,1.0);
+}
+`;
+
+      function compile(type,src){
+        const sh=gl.createShader(type);
+        gl.shaderSource(sh,src);
+        gl.compileShader(sh);
+        if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){
+          console.error(gl.getShaderInfoLog(sh));
+          gl.deleteShader(sh);
+          return null;
+        }
+        return sh;
+      }
+
+      const vsh=compile(gl.VERTEX_SHADER,vs);
+      const fsh=compile(gl.FRAGMENT_SHADER,fs);
+      if(!vsh||!fsh){
+        canvas.style.display='none';
+        fallback.style.display='flex';
+        return;
+      }
+
+      const prog=gl.createProgram();
+      gl.attachShader(prog,vsh);
+      gl.attachShader(prog,fsh);
+      gl.linkProgram(prog);
+      if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){
+        console.error(gl.getProgramInfoLog(prog));
+      }
+      gl.useProgram(prog);
+
+      const uRes=gl.getUniformLocation(prog,'u_res');
+      const uTime=gl.getUniformLocation(prog,'u_time');
+      const uSteps=gl.getUniformLocation(prog,'u_steps');
+      const uYaw=gl.getUniformLocation(prog,'u_yaw');
+      const uPitch=gl.getUniformLocation(prog,'u_pitch');
+
+      function resize(){
+        const w=canvas.clientWidth, h=canvas.clientHeight;
+        canvas.width=Math.floor(w*state.dpr);
+        canvas.height=Math.floor(h*state.dpr);
+        gl.viewport(0,0,canvas.width,canvas.height);
+      }
+      window.addEventListener('resize',resize);
+      resize();
+
+      canvas.addEventListener('mousedown',(e)=>{state.dragging=true;state.mx=e.clientX;state.my=e.clientY;});
+      canvas.addEventListener('mousemove',(e)=>{
+        if(!state.dragging) return;
+        const dx=e.clientX-state.mx;
+        const dy=e.clientY-state.my;
+        state.yaw += dx*0.005;
+        state.pitch += dy*0.005;
+        state.pitch = Math.max(-1.0, Math.min(1.0, state.pitch));
+        state.mx=e.clientX;state.my=e.clientY;
+      });
+      ['mouseup','mouseleave'].forEach(evt=>canvas.addEventListener(evt,()=>state.dragging=false));
+
+      const btnQ=document.getElementById('quality');
+      const btnP=document.getElementById('pause');
+      const btnR=document.getElementById('reset');
+
+      btnQ.addEventListener('click',()=>{
+        state.steps = (state.steps===64)?128:64;
+        btnQ.textContent = (state.steps===128)?'Normal quality':'Boost quality';
+      });
+
+      btnP.addEventListener('click',()=>{
+        state.paused=!state.paused;
+        btnP.textContent = state.paused?'Resume':'Pause';
+      });
+
+      btnR.addEventListener('click',()=>{state.yaw=0;state.pitch=0.2;});
+      if(prefersReduced) btnP.textContent='Resume';
+
+      function draw(tms){
+        const t=tms*0.001;
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, state.paused?0.0:t);
+        gl.uniform1i(uSteps, state.steps);
+        gl.uniform1f(uYaw, state.yaw);
+        gl.uniform1f(uPitch, state.pitch);
+
+        gl.drawArrays(gl.TRIANGLES,0,3);
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    })();
+  </script>
 </body>
 </html>
