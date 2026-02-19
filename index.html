@@ -1,289 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw - Personal AI Assistant</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw v2026.2.19-beta.1 — Release Highlights</title>
+  <meta
+    name="description"
+    content="OpenClaw v2026.2.19-beta.1: Apple Watch companion MVP, APNs wake + auto-reconnect for nodes.invoke, paired-device hygiene CLI flows, APNs push-test pipeline, and new security audit finding gateway.http.no_auth."
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-    <!-- WebGL Canvas for 3D Background -->
-    <canvas id="webgl-canvas"></canvas>
-    
-    <!-- Main Content -->
-    <header>
-        <nav>
-            <div class="logo">
-                <span class="logo-icon">🦞</span>
-                <span>OpenClaw</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#install">Install</a></li>
-                <li><a href="#docs">Docs</a></li>
-                <li><a href="https://github.com/openclaw/openclaw" target="_blank">GitHub</a></li>
-            </ul>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
+  <!--
+    WebGL animated background canvas
+    - Raw WebGL1 (no external deps)
+    - Disabled automatically for prefers-reduced-motion
+  -->
+  <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+
+  <div class="content-wrapper">
+    <header class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <p class="kicker">Latest prerelease</p>
+          <h1 class="hero-title">
+            <span class="brand">OpenClaw</span>
+            <span class="version">v2026.2.19-beta.1</span>
+          </h1>
+          <p class="hero-subtitle">
+            Release highlights: Apple Watch companion MVP, APNs wake + auto-reconnect, safer device pairing
+            hygiene, APNs test pipeline, and new security audit findings.
+          </p>
+
+          <div class="cta-group">
+            <a
+              class="btn btn-primary"
+              href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.19-beta.1"
+              target="_blank"
+              rel="noopener"
+            >
+              View Release Notes
+            </a>
+            <a
+              class="btn btn-secondary"
+              href="https://github.com/openclaw/openclaw"
+              target="_blank"
+              rel="noopener"
+            >
+              Repository
+            </a>
+          </div>
+
+          <p class="hero-meta">
+            Inspired by <a href="https://openclaw.ai" target="_blank" rel="noopener">openclaw.ai</a> •
+            This page intentionally focuses only on the <strong>v2026.2.19-beta.1</strong> change set.
+          </p>
+        </div>
+      </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="glitch" data-text="OpenClaw">🦞 OpenClaw</h1>
-                <p class="subtitle">EXFOLIATE! EXFOLIATE!</p>
-                <p class="tagline">
-                    Your personal AI assistant that runs on your own devices. Fast, local, and always-on. 
-                    Connect via WhatsApp, Telegram, Slack, Discord, Signal, iMessage & more.
+      <section class="section whats-new" id="whats-new">
+        <div class="container">
+          <h2 class="section-title">What’s new in v2026.2.19-beta.1</h2>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">⌚</div>
+              <h3>Apple Watch companion (MVP)</h3>
+              <p>
+                A new watchOS companion brings a watch inbox UI, notification relay handling, and gateway
+                command surfaces for watch status and send flows.
+              </p>
+              <ul class="feature-details">
+                <li>Inbox UI for quick triage</li>
+                <li>Relayed notifications</li>
+                <li>Gateway-backed “status” and “send” actions</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">📲</div>
+              <h3>APNs wake + auto-reconnect for <code>nodes.invoke</code></h3>
+              <p>
+                If an iOS node is disconnected because the app is backgrounded, the gateway now issues a
+                silent APNs wake <em>before</em> invoking the node, and can auto-reconnect the session on
+                wake. The goal is fewer invoke failures and more reliable device actions.
+              </p>
+              <ul class="feature-details">
+                <li>Wake-first strategy</li>
+                <li>Silent push auto-reconnect</li>
+                <li>Reduced background failure rate</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">🧹</div>
+              <h3>Paired-device hygiene flows</h3>
+              <p>
+                New cleanup primitives help you remove stale pairings and keep the device list accurate:
+                <code>device.pair.remove</code>, <code>openclaw devices remove</code>, and guarded bulk clears
+                via <code>openclaw devices clear --yes [--pending]</code>.
+              </p>
+              <ul class="feature-details">
+                <li>Remove a specific paired entry</li>
+                <li>CLI convenience commands</li>
+                <li>Optional pending-request rejection</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">🔔</div>
+              <h3>APNs registration + notification signing</h3>
+              <p>
+                iOS adds push registration and a notification-signing configuration for node delivery.
+                In parallel, the gateway adds a push-test pipeline to validate APNs delivery end-to-end.
+              </p>
+              <ul class="feature-details">
+                <li>Push registration primitives</li>
+                <li>Notification signing config</li>
+                <li>Gateway-side push test pipeline</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">🛡️</div>
+              <h3>Security/Audit: <code>gateway.http.no_auth</code></h3>
+              <p>
+                New audit findings detect when <code>gateway.auth.mode = "none"</code> leaves HTTP APIs
+                reachable. The audit includes loopback warnings and critical severity when remote
+                exposure is detected.
+              </p>
+              <ul class="feature-details">
+                <li>Actionable findings with severity</li>
+                <li>Loopback vs remote exposure detection</li>
+                <li>Docs coverage included</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">🌊</div>
+              <h3>Agents/Streaming reliability improvements</h3>
+              <p>
+                Streaming is more robust during reasoning: partial output stays active, native
+                <code>thinking_*</code> stream events are handled consistently, reasoning-end signals are
+                deduplicated, and stale mutating tool errors are cleared after successful retries.
+              </p>
+              <ul class="feature-details">
+                <li>More stable partial streaming</li>
+                <li>Consistent thinking events</li>
+                <li>Cleaner retry success behavior</li>
+              </ul>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">🔧</div>
+              <h3>Tooling + guidance hardening</h3>
+              <p>
+                The release hardens coding-agent skill guidance by removing shell command examples that
+                interpolate untrusted issue text. Additionally, <code>oxfmt</code> behavior is aligned
+                between local and CI.
+              </p>
+              <ul class="feature-details">
+                <li>Safer skill guidance patterns</li>
+                <li>Formatting parity (local vs CI)</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+          <h2 class="section-title">How it works (two new flows)</h2>
+
+          <div class="diagram-container">
+            <h3 class="diagram-title">APNs wake + auto-reconnect for <code>nodes.invoke</code></h3>
+            <div class="flow-diagram">
+              <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>Invoke request</h4>
+                  <p>The gateway needs to call a node action while the iOS app is backgrounded.</p>
+                </div>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>Silent push</h4>
+                  <p>Gateway sends an APNs wake to re-activate the client in the background.</p>
+                </div>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>Reconnect</h4>
+                  <p>On wake, iOS re-establishes the gateway session to accept commands.</p>
+                </div>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <h4>Invoke completes</h4>
+                  <p><code>nodes.invoke</code> is executed once the node is reachable again.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-container">
+            <h3 class="diagram-title">Apple Watch notification relay + commands</h3>
+            <div class="flow-diagram">
+              <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>Gateway event</h4>
+                  <p>Message/status update becomes available in the gateway.</p>
+                </div>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>iOS relay</h4>
+                  <p>iOS receives/handles the notification relay logic.</p>
+                </div>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>Watch inbox</h4>
+                  <p>Watch displays the inbox UI; user can act quickly.</p>
+                </div>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <h4>Gateway commands</h4>
+                  <p>Watch surfaces status/send actions backed by gateway command surfaces.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section webgl-technical" id="webgl">
+        <div class="container">
+          <h2 class="section-title">WebGL background (technical notes)</h2>
+
+          <div class="technical-content">
+            <p class="intro-text">
+              The background is a tiny, dependency-free WebGL1 program. It renders a full-screen quad
+              and drives a fragment shader with time + resolution uniforms. Animation is automatically
+              disabled for users with <code>prefers-reduced-motion</code>.
+            </p>
+
+            <div class="tech-grid">
+              <div class="tech-item">
+                <h3>1) Context creation</h3>
+                <p>
+                  We request a WebGL1 context with alpha enabled. Alpha allows the shader output to be
+                  blended subtly behind the content layer.
                 </p>
-                <div class="cta-buttons">
-                    <a href="#install" class="btn btn-primary">Get Started</a>
-                    <a href="https://github.com/openclaw/openclaw" class="btn btn-secondary" target="_blank">View on GitHub</a>
-                </div>
-            </div>
-        </section>
+              </div>
 
-        <section class="section features-section" id="features">
-            <h2 class="section-title">Latest Release Features</h2>
-            <div class="features-grid">
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🌐</span>
-                    <h3>Local-First Gateway</h3>
-                    <p>Single control plane for sessions, channels, tools, and events. Your data stays on your devices with full control and privacy.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">💬</span>
-                    <h3>Multi-Channel Inbox</h3>
-                    <p>Connect to WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, Microsoft Teams, Matrix, Zalo, WebChat, and more - all in one place.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🎙️</span>
-                    <h3>Voice Wake & Talk Mode</h3>
-                    <p>Always-on speech recognition for macOS, iOS, and Android. Use natural voice commands powered by ElevenLabs for seamless interaction.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🎨</span>
-                    <h3>Live Canvas</h3>
-                    <p>Agent-driven visual workspace with A2UI (Agent-to-UI) technology. Watch your AI assistant create and manipulate visual content in real-time.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🤖</span>
-                    <h3>Multi-Agent Routing</h3>
-                    <p>Route inbound channels and accounts to isolated agents with separate workspaces and per-agent sessions for organized task management.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🔧</span>
-                    <h3>First-Class Tools</h3>
-                    <p>Built-in browser automation, canvas control, cron jobs, session management, and platform-specific actions (Discord, Slack integrations).</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">💻</span>
-                    <h3>Companion Apps</h3>
-                    <p>Native macOS menu bar app, iOS & Android nodes for voice commands, camera access, screen recording, and location services.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🧩</span>
-                    <h3>Skills Platform</h3>
-                    <p>Extend functionality with bundled, managed, and workspace skills. Install gating + UI for seamless skill management and discovery.</p>
-                    <div class="card-glow"></div>
-                </div>
-                
-                <div class="feature-card" data-tilt>
-                    <span class="feature-icon">🔐</span>
-                    <h3>Security by Default</h3>
-                    <p>DM pairing policies, allowlist controls, Docker sandboxing for non-main sessions, and comprehensive security configurations.</p>
-                    <div class="card-glow"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="channels-section">
-            <div class="section">
-                <h2 class="section-title">Supported Channels</h2>
-                <p class="channels-subtitle">Connect OpenClaw to your favorite messaging platforms</p>
-                <div class="channels-grid">
-                    <div class="channel-badge">WhatsApp</div>
-                    <div class="channel-badge">Telegram</div>
-                    <div class="channel-badge">Slack</div>
-                    <div class="channel-badge">Discord</div>
-                    <div class="channel-badge">Google Chat</div>
-                    <div class="channel-badge">Signal</div>
-                    <div class="channel-badge">iMessage</div>
-                    <div class="channel-badge">BlueBubbles</div>
-                    <div class="channel-badge">Microsoft Teams</div>
-                    <div class="channel-badge">Matrix</div>
-                    <div class="channel-badge">Zalo</div>
-                    <div class="channel-badge">WebChat</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section install-wrapper" id="install">
-            <h2 class="section-title">Quick Installation</h2>
-            <div class="install-section">
-                <h3>Get Started in 3 Steps</h3>
-                
-                <p class="requirements"><strong>Requirements:</strong> Node ≥22</p>
-                
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-lang">bash</span>
-                        <button class="copy-btn" data-code="npm install -g openclaw@latest
-openclaw onboard --install-daemon
-openclaw gateway --port 18789 --verbose">Copy</button>
-                    </div>
-                    <pre><code># Install globally
-npm install -g openclaw@latest
-# or: pnpm add -g openclaw@latest
-
-# Run the onboarding wizard
-openclaw onboard --install-daemon
-
-# Start the gateway
-openclaw gateway --port 18789 --verbose</code></pre>
-                </div>
-                
-                <h4>From Source (Development)</h4>
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-lang">bash</span>
-                        <button class="copy-btn" data-code="git clone https://github.com/openclaw/openclaw.git
-cd openclaw
-pnpm install
-pnpm ui:build
-pnpm build
-pnpm openclaw onboard --install-daemon">Copy</button>
-                    </div>
-                    <pre><code>git clone https://github.com/openclaw/openclaw.git
-cd openclaw
-
-pnpm install
-pnpm ui:build
-pnpm build
-
-pnpm openclaw onboard --install-daemon</code></pre>
-                </div>
-                
-                <p class="install-note">
-                    <strong>Note:</strong> The wizard guides you through setting up the gateway, workspace, channels, and skills.
+              <div class="tech-item">
+                <h3>2) Geometry</h3>
+                <p>
+                  A single buffer contains 6 vertices (two triangles) covering clip space (-1..1). No
+                  per-frame buffer uploads; the GPU reuses the static geometry.
                 </p>
-            </div>
-        </section>
+              </div>
 
-        <section class="section architecture-section">
-            <h2 class="section-title">How It Works</h2>
-            <div class="architecture-diagram">
-                <div class="code-block">
-                    <pre><code>WhatsApp / Telegram / Slack / Discord / Google Chat / Signal / iMessage
-               │
-               ▼
-┌───────────────────────────────┐
-│            <span class="highlight">Gateway</span>            │
-│       (control plane)         │
-│     ws://127.0.0.1:18789      │
-└──────────────┬────────────────┘
-               │
-               ├─ Pi agent (RPC)
-               ├─ CLI (openclaw ...)
-               ├─ WebChat UI
-               ├─ macOS app
-               └─ iOS / Android nodes</code></pre>
-                </div>
-            </div>
-            
-            <div class="architecture-features">
-                <h3 class="subsection-title">Key Architectural Features</h3>
-                <div class="features-grid">
-                    <div class="feature-card" data-tilt>
-                        <h3>Gateway WebSocket Network</h3>
-                        <p>Single WS control plane for clients, tools, and events. Centralized management with distributed execution.</p>
-                        <div class="card-glow"></div>
-                    </div>
-                    <div class="feature-card" data-tilt>
-                        <h3>Browser Control</h3>
-                        <p>OpenClaw-managed Chrome/Chromium with CDP control for automated web interactions and data extraction.</p>
-                        <div class="card-glow"></div>
-                    </div>
-                    <div class="feature-card" data-tilt>
-                        <h3>Session Management</h3>
-                        <p>Main sessions for direct chats, group isolation, activation modes, queue modes, and intelligent reply-back systems.</p>
-                        <div class="card-glow"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
+              <div class="tech-item">
+                <h3>3) Shader pipeline</h3>
+                <p>
+                  The vertex shader forwards positions directly to <code>gl_Position</code>. The fragment
+                  shader computes a smooth gradient by combining <code>sin</code>/<code>cos</code> waves,
+                  then outputs a low-alpha color for a “glow” effect.
+                </p>
+              </div>
 
-        <section class="section docs-section" id="docs">
-            <h2 class="section-title">Documentation & Resources</h2>
-            <div class="features-grid">
-                <div class="feature-card" data-tilt>
-                    <h3>📚 Getting Started</h3>
-                    <p><a href="https://docs.openclaw.ai/start/getting-started" target="_blank">Complete beginner guide</a> with auth setup, pairing, and channel configuration.</p>
-                    <div class="card-glow"></div>
-                </div>
-                <div class="feature-card" data-tilt>
-                    <h3>🏗️ Architecture</h3>
-                    <p><a href="https://docs.openclaw.ai/concepts/architecture" target="_blank">Deep dive</a> into the gateway and protocol model.</p>
-                    <div class="card-glow"></div>
-                </div>
-                <div class="feature-card" data-tilt>
-                    <h3>⚙️ Configuration</h3>
-                    <p><a href="https://docs.openclaw.ai/gateway/configuration" target="_blank">Full reference</a> for all configuration keys and examples.</p>
-                    <div class="card-glow"></div>
-                </div>
-                <div class="feature-card" data-tilt>
-                    <h3>🔐 Security</h3>
-                    <p><a href="https://docs.openclaw.ai/gateway/security" target="_blank">Security guide</a> before exposing your instance.</p>
-                    <div class="card-glow"></div>
-                </div>
-                <div class="feature-card" data-tilt>
-                    <h3>💻 Platforms</h3>
-                    <p>Guides for <a href="https://docs.openclaw.ai/platforms/macos" target="_blank">macOS</a>, <a href="https://docs.openclaw.ai/platforms/windows" target="_blank">Windows</a>, <a href="https://docs.openclaw.ai/platforms/linux" target="_blank">Linux</a>, <a href="https://docs.openclaw.ai/platforms/ios" target="_blank">iOS</a>, and <a href="https://docs.openclaw.ai/platforms/android" target="_blank">Android</a>.</p>
-                    <div class="card-glow"></div>
-                </div>
-                <div class="feature-card" data-tilt>
-                    <h3>🐛 Troubleshooting</h3>
-                    <p><a href="https://docs.openclaw.ai/channels/troubleshooting" target="_blank">Debug common issues</a> and run the doctor command.</p>
-                    <div class="card-glow"></div>
-                </div>
+              <div class="tech-item">
+                <h3>4) Uniforms</h3>
+                <p>
+                  We update <code>u_time</code> on every frame (seconds since start) and
+                  <code>u_resolution</code> on resize. This keeps animation consistent and aspect-correct.
+                </p>
+              </div>
+
+              <div class="tech-item">
+                <h3>5) Animation loop</h3>
+                <p>
+                  Rendering runs via <code>requestAnimationFrame</code>. The loop pauses when the document
+                  is hidden and is disabled entirely when reduced motion is preferred.
+                </p>
+              </div>
+
+              <div class="tech-item">
+                <h3>6) DPR handling</h3>
+                <p>
+                  The canvas backing store uses <code>devicePixelRatio</code> to remain sharp on Retina
+                  displays. We set the WebGL viewport to match the physical pixel dimensions.
+                </p>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer>
+    <footer class="footer">
+      <div class="container">
         <div class="footer-content">
-            <p class="footer-logo">🦞 OpenClaw</p>
-            <p>Built for Molty, a space lobster AI assistant</p>
-            <p>by Peter Steinberger and the community</p>
-            <div class="social-links">
-                <a href="https://github.com/openclaw/openclaw" target="_blank" aria-label="GitHub">GitHub</a>
-                <a href="https://discord.gg/clawd" target="_blank" aria-label="Discord">Discord</a>
-                <a href="https://openclaw.ai" target="_blank" aria-label="Website">Website</a>
-                <a href="https://x.com/openclaw" target="_blank" aria-label="Twitter">Twitter</a>
-            </div>
-            <p class="license">MIT License • Open Source • Community Driven</p>
-            <p class="powered-by">Powered by Mindflow</p>
+          <div class="footer-links">
+            <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub</a>
+            <a
+              href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.19-beta.1"
+              target="_blank"
+              rel="noopener"
+            >
+              Release
+            </a>
+            <a href="https://openclaw.ai" target="_blank" rel="noopener">Website</a>
+          </div>
+          <p class="footer-attribution">Powered by Mindflow</p>
         </div>
+      </div>
     </footer>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
