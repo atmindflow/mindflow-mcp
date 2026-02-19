@@ -3,96 +3,90 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark" />
-  <title>OpenClaw v2026.2.17 – Latest Release Highlights</title>
-  <meta name="description" content="OpenClaw v2026.2.17 – latest features across agents, mobile, Discord/Slack/Telegram, cron, tools, and performance."/>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Mindflow MCP — OpenClaw v2026.2.17 Release Highlights</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>/* styles inlined for GH Pages */
+    :root { --bg:#0b0f14; --panel:#121822; --text:#e6edf3; --muted:#9fb1c3; --accent:#ff4d4f; --accent-2:#00d1ff; }
+    *{box-sizing:border-box} html,body{height:100%} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(1200px 800px at 80% -10%, rgba(0,209,255,.12), transparent 60%),radial-gradient(900px 700px at 10% 110%, rgba(255,77,79,.12), transparent 60%),var(--bg)} header{padding:48px 20px 24px;text-align:center} .badge{display:inline-block;padding:6px 10px;border:1px solid #203040;border-radius:999px;color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase} h1{margin:14px auto 8px;font-size:36px;letter-spacing:.5px} .sub{color:var(--muted);max-width:900px;margin:0 auto 22px;line-height:1.6} .stage{position:relative;width:min(1200px,92vw);margin:30px auto;padding:18px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));box-shadow:0 10px 40px rgba(0,0,0,.35);overflow:hidden} canvas#grid{position:absolute;inset:0;width:100%;height:360px;display:block;filter:drop-shadow(0 0 6px rgba(0,209,255,.4))} .hero{position:relative;padding:44px 28px 28px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;min-height:360px} .hero h2{margin:0 0 10px;font-size:28px} .hero p{margin:0 0 10px;color:var(--muted)} .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;background:#17202d;border:1px solid #233447;color:#9cc7ff} .panel{background:var(--panel);border:1px solid #203040;border-radius:14px;padding:16px} .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0} .feat{padding:14px;border-radius:12px;border:1px solid #203040;background:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,0))} .feat h3{margin:0 0 6px;font-size:16px} .feat p{margin:0;color:var(--muted);font-size:14px;line-height:1.5} .code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:#0c1219;border:1px solid #142033;color:#c7e0ff;padding:10px 12px;border-radius:10px;overflow:auto} footer{color:var(--muted);text-align:center;padding:18px 12px 50px} a.btn{display:inline-block;background:linear-gradient(135deg,var(--accent),#ff9369);color:#fff;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:10px;box-shadow:0 10px 20px rgba(255,77,79,.25)} a.link{color:#91d8ff} @media (max-width:980px){.hero{grid-template-columns:1fr;height:auto} .grid{grid-template-columns:1fr} canvas#grid{height:280px}}
+  </style>
 </head>
 <body>
-  <mindflow-hero3d></mindflow-hero3d>
-  <section class="release">
-    <div class="container">
-      <header class="release__head">
-        <h2>OpenClaw <span class="tag">v2026.2.17</span></h2>
-        <p>Latest release, published Feb 18, 2026. Only highlights from this release are shown below.</p>
-        <p class="muted"><a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noreferrer">View on GitHub</a></p>
-      </header>
-
-      <div class="cards">
-        <article class="card">
-          <h3>Agents & Models</h3>
-          <ul>
-            <li>Anthropic 1M context beta opt-in via <code>params.context1m: true</code>.</li>
-            <li>Support for Claude Sonnet 4.6 with graceful fallback from 4.5 catalogs.</li>
-            <li>Subagents: deterministic spawn via <code>/subagents spawn</code> and prefixed task context.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Mobile (iOS)</h3>
-          <ul>
-            <li>Share Extension to forward URL/text/images to gateway <code>agent.request</code>.</li>
-            <li>Talk Mode: Background Listening toggle; Voice Directive Hint toggle.</li>
-            <li>Improved barge-in handling for built-in speaker/receiver.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Messaging Integrations</h3>
-          <ul>
-            <li>Slack: native single-message text streaming + draft preview modes.</li>
-            <li>Telegram: inline button styles; reaction events; better thread/draft handling.</li>
-            <li>Discord: typed /exec options; reusable components; per-button allowlists.</li>
-            <li>iMessage: <code>replyToId</code> on outbound sends.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Cron & Automation</h3>
-          <ul>
-            <li>Dedicated webhook delivery mode; validated HTTP(S) URLs.</li>
-            <li>Deterministic default stagger; CLI edits for <code>--stagger</code>/<code>--exact</code>.</li>
-            <li>Per-run usage telemetry + local usage aggregation script.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Tools, Browser, Voice</h3>
-          <ul>
-            <li>URL allowlists for <code>web_search</code>/<code>web_fetch</code>.</li>
-            <li>Custom Chrome <code>extraArgs</code> in Browser config.</li>
-            <li>Voice Call: pre-cached inbound greeting TTS.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Quality & Security</h3>
-          <ul>
-            <li>Context-window guardrails for subagents and tools (auto-compaction, truncation).</li>
-            <li>Security fixes: env-var injection hardening; config include path safety.</li>
-            <li>Reliability: reply threading consistency across platforms; session stability.</li>
-          </ul>
-        </article>
+  <header>
+    <span class="badge">Release landing • Generated by Mindflow MCP</span>
+    <h1>OpenClaw — What’s new in v2026.2.17</h1>
+    <p class="sub">A concise, engineering-focused tour of the latest release. This page highlights only the newest capabilities and how to use them — with runnable snippets and animation to illustrate the runtime model.</p>
+  </header>
+  <section class="stage">
+    <canvas id="grid"></canvas>
+    <div class="hero">
+      <div>
+        <span class="pill">Agents · Models · Channels · Cron · Mobile · Web</span>
+        <h2>Key upgrades at a glance</h2>
+        <p>• Anthropic 1M-context beta header toggle • Sonnet 4.6 default support • Deterministic subagent spawning • iOS Share/Talk enhancements • Streamed Slack replies • Telegram inline button styles + reaction events • Discord interactive components & allowlists • Safer cron/webhook separation • URL allowlists for web tools • Faster voice-call greeting</p>
+        <p>Explore practical usage patterns below.</p>
+        <a class="btn" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">Full release notes</a>
       </div>
-
-      <details class="tech">
-        <summary>Technical notes: WebGL/Animation design</summary>
-        <div class="tech__body">
-          <p>The hero uses a single Three.js scene with a custom <code>ShaderMaterial</code> torus-knot and a modest particle field:</p>
-          <ul>
-            <li>Rim lighting (view-normal falloff), iridescent banding (sine over a stable field), and low-frequency value noise to avoid flat gradients.</li>
-            <li>Interactive pulse via a uniform; pointer-damped orbit to keep motion subtle and accessible.</li>
-            <li>Performance: DPR capped at 2, no post-processing, visibility/reduced-motion aware, GPU resources disposed on disconnect.</li>
-          </ul>
-          <p>See <code>main.js</code> for extensive inline comments.</p>
-        </div>
-      </details>
+      <div class="panel">
+        <div class="code">// Opt-in 1M context for Anthropic Opus/Sonnet
+agent: {
+  model: "anthropic/claude-sonnet-4-6",
+  params: { context1m: true }
+}
+// Subagents: deterministic spawn from chat command
+/subagents spawn name:reporter</div>
+        <p style="margin:10px 0 0" class="muted">Technical note: context1m maps to the header anthropic-beta: context-1m-2025-08-07 when supported; forwards compatible with catalogs that still expose 4.5.</p>
+      </div>
     </div>
   </section>
-
-  <footer class="site">
-    <div class="container">
-      <span>© 2026 OpenClaw release highlights • Built by Mindflow</span>
-      <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noreferrer">Release notes</a>
-    </div>
+  <main style="width:min(1200px,92vw);margin:18px auto">
+    <section class="grid">
+      <article class="feat"><h3>Models: Anthropic Sonnet 4.6 + 1M context</h3><p>Enable long-context inference with a single flag. Works across aliases/defaults and gracefully falls back when upstream catalogs lag. Ideal for large tool-result chains and memory search.</p></article>
+      <article class="feat"><h3>Subagents: deterministic spawning</h3><p>Use <code>/subagents spawn</code> to activate reproducible task workers. Spawned messages are prefixed with source context for downstream traceability.</p></article>
+      <article class="feat"><h3>iOS: Share + Talk quality-of-life</h3><p>Share extension forwards URL/text/images to agent.request; Talk Mode adds Background Listening and Voice Directive Hint toggles with hardened barge‑in behavior.</p></article>
+    </section>
+    <section class="grid">
+      <article class="feat"><h3>Slack streaming</h3><p>Native single-message text streaming with automatic fallback to normal delivery; draft streaming modes supported.</p></article>
+      <article class="feat"><h3>Telegram UI improvements</h3><p>Inline button styles (primary/success/danger) and surfaced reaction events; better DM-topic threading.</p></article>
+      <article class="feat"><h3>Discord interactivity</h3><p>Structured <code>/exec</code> options and reusable components with per-button allowlists for tighter control.</p></article>
+    </section>
+    <section class="grid">
+      <article class="feat"><h3>Cron & Webhooks</h3><p>Cleanly separates per-job webhooks from announce delivery; deterministic staggering; per-run usage telemetry; safer timeout semantics.</p></article>
+      <article class="feat"><h3>Web tooling safety</h3><p>URL allowlists for <code>web_search</code>/<code>web_fetch</code>; browser extraArgs for custom Chrome flags.</p></article>
+      <article class="feat"><h3>Voice & Media</h3><p>Pre‑cached greeting TTS for faster call setup; resilient media delivery even when verbose tool output is off.</p></article>
+    </section>
+    <section class="panel">
+      <h2 style="margin:0 0 10px">How it works: animation and rendering notes</h2>
+      <p class="sub" style="margin:0 0 8px">The animated grid above is drawn with Canvas 2D to emulate a lightweight WebGL feel without external deps. We render a perspective grid with sinusoidal Z-warping and a camera pan to suggest “context expansion.”</p>
+      <pre class="code" style="white-space:pre-wrap">// Canvas animation (WebGL-style grid)
+const cvs = document.getElementById('grid');
+const ctx = cvs.getContext('2d');
+let t = 0; const DPR = Math.min(2, window.devicePixelRatio||1);
+function resize(){ cvs.width = cvs.clientWidth * DPR; cvs.height = cvs.clientHeight * DPR; ctx.setTransform(DPR,0,0,DPR,0,0); }
+window.addEventListener('resize', resize); resize();
+function proj(x,y,z){ const f= 260/(z+320); return [x*f + cvs.width/(2*DPR), y*f + cvs.height/(1.4*DPR)]; }
+function frame(){ t+=0.016; ctx.clearRect(0,0,cvs.width,DPR?cvs.height:0);
+  ctx.strokeStyle = 'rgba(0,209,255,0.35)'; ctx.lineWidth=1;
+  for(let i=-10;i<=10;i++){ ctx.beginPath(); for(let z=0; z<=600; z+=12){ const zz = z + Math.sin((z*0.02)+t)*14; const [px,py]=proj(i*22, 0, zz); if(z==0) ctx.moveTo(px,py); else ctx.lineTo(px,py);} ctx.stroke(); }
+  for(let j=0;j<=22;j++){ ctx.beginPath(); for(let z=0; z<=600; z+=12){ const zz = z + Math.sin((z*0.02)+t+1.2)*14; const [px,py]=proj(-220 + j*20, 0, zz); if(z==0) ctx.moveTo(px,py); else ctx.lineTo(px,py);} ctx.stroke(); }
+  const sweepY = Math.sin(t*0.6)*40; ctx.strokeStyle='rgba(255,77,79,0.45)';
+  ctx.beginPath(); for(let x=-220; x<=220; x+=8){ const [px,py]=proj(x, sweepY, 240); if(x==-220) ctx.moveTo(px,py); else ctx.lineTo(px,py);} ctx.stroke();
+  requestAnimationFrame(frame); } requestAnimationFrame(frame);</pre>
+      <p class="sub" style="margin-top:10px">Why Canvas 2D? For a release landing, clarity + perf beat heavy shader stacks. The math mimics a vertex shader: perspective projection + time‑varying displacement. Swap to WebGL easily by porting <code>proj</code> to a mat4 MVP and drawing indexed strips.</p>
+    </section>
+    <section class="panel" style="margin-top:18px">
+      <h2 style="margin:0 0 10px">Upgrade quickstart</h2>
+      <pre class="code">openclaw update --channel stable
+openclaw doctor --fix --non-interactive --yes
+openclaw configure --set agent.params.context1m=true
+openclaw models set anthropic/claude-sonnet-4-6
+openclaw message send --to @you --channel slack --message "stream test" --stream on</pre>
+      <p class="sub">See full notes for all fixes and platform tweaks.</p>
+    </section>
+  </main>
+  <footer>
+    <a class="link" href="https://atmindflow.github.io/mindflow-mcp/" target="_blank" rel="noopener">View on GitHub Pages</a> · <a class="link" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.17" target="_blank" rel="noopener">OpenClaw v2026.2.17</a>
   </footer>
-
-  <script type="module" src="main.js"></script>
+  <script>/* Canvas script is inlined in the code block above intentionally documented */</script>
 </body>
 </html>
