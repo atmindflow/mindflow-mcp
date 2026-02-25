@@ -1,13 +1,718 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenClaw v2026.2.24 – Release Notes</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>GitHub Store — Release Notes 1.5.1</title>
+  <meta name="description" content="Official GitHub Store Release 1.5.1 notes. This page only describes changes introduced in 1.5.1." />
+  <style>
+  :root{
+    --bg0:#070A12;
+    --bg1:#0B1020;
+    --card:rgba(255,255,255,.06);
+    --card2:rgba(255,255,255,.09);
+    --text:#EAF0FF;
+    --muted:rgba(234,240,255,.72);
+    --line:rgba(234,240,255,.14);
+    --accent:#7C5CFF;
+    --accent2:#25D6FF;
+    --ok:#37D67A;
+    --warn:#FFCC66;
+    --shadow:0 20px 60px rgba(0,0,0,.55);
+    --radius:18px;
+    --max:1120px;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+  [data-theme="light"]{
+    --bg0:#F6F7FF;
+    --bg1:#EEF1FF;
+    --card:rgba(15,25,55,.06);
+    --card2:rgba(15,25,55,.10);
+    --text:#0B1020;
+    --muted:rgba(11,16,32,.72);
+    --line:rgba(11,16,32,.12);
+    --shadow:0 16px 40px rgba(10,18,40,.12);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(124,92,255,.35), transparent 55%),
+      radial-gradient(1000px 520px at 85% 0%, rgba(37,214,255,.22), transparent 60%),
+      radial-gradient(900px 520px at 70% 110%, rgba(55,214,122,.18), transparent 55%),
+      linear-gradient(180deg, var(--bg0), var(--bg1));
+    line-height:1.45;
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+  .wrap{max-width:var(--max); margin:0 auto; padding:20px}
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:saturate(1.2) blur(10px);
+    background:linear-gradient(180deg, rgba(0,0,0,.26), rgba(0,0,0,.04));
+    border-bottom:1px solid var(--line);
+  }
+  [data-theme="light"] header{background:linear-gradient(180deg, rgba(246,247,255,.75), rgba(246,247,255,.25))}
+  .nav{
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    padding:12px 0;
+  }
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none}
+  .logo{
+    width:34px; height:34px; border-radius:12px;
+    background:conic-gradient(from 240deg, var(--accent), var(--accent2), var(--ok), var(--accent));
+    box-shadow:0 10px 30px rgba(124,92,255,.25);
+  }
+  .brand strong{letter-spacing:.2px}
+  .brand small{display:block; color:var(--muted); font-size:12px; margin-top:1px}
+  .nav a.link{color:var(--muted); text-decoration:none; font-size:13px; padding:8px 10px; border-radius:999px}
+  .nav a.link:hover{background:var(--card)}
+  .nav-right{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+  .btn{
+    appearance:none; border:1px solid var(--line); background:var(--card);
+    color:var(--text); border-radius:999px; padding:9px 12px; font-weight:600;
+    text-decoration:none; font-size:13px; cursor:pointer;
+  }
+  .btn:hover{border-color:rgba(234,240,255,.26); background:var(--card2)}
+  .btn.primary{
+    border-color:transparent;
+    background:linear-gradient(135deg, rgba(124,92,255,.95), rgba(37,214,255,.80));
+    color:#06101F;
+  }
+  .btn.primary:hover{filter:saturate(1.05) brightness(1.03)}
+  .pill{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 10px; border-radius:999px;
+    background:rgba(0,0,0,.22); border:1px solid var(--line);
+    color:var(--muted); font-size:12px;
+  }
+  [data-theme="light"] .pill{background:rgba(255,255,255,.6)}
+  .dot{width:8px; height:8px; border-radius:99px; background:var(--ok); box-shadow:0 0 0 6px rgba(55,214,122,.12)}
+
+  main{padding:22px 0 34px}
+
+  .hero{
+    display:grid; grid-template-columns: 1.05fr .95fr; gap:18px;
+    align-items:stretch;
+    margin-top:12px;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  [data-theme="light"] .card{background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70))}
+
+  .hero-copy{padding:22px}
+  h1{margin:10px 0 10px; font-size:clamp(28px, 3.4vw, 44px); line-height:1.08; letter-spacing:-.02em}
+  .lead{color:var(--muted); font-size:15px; max-width:62ch}
+  .meta{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    margin-top:14px;
+  }
+  .kbd{font-family:var(--mono); font-size:12px; padding:4px 8px; border-radius:9px; background:var(--card); border:1px solid var(--line); color:var(--muted)}
+  .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+
+  .hero-3d{position:relative; overflow:hidden}
+  .hero-3d .inner{height:100%; min-height:280px; padding:14px}
+  canvas#gl{
+    width:100%; height:100%; display:block;
+    border-radius:calc(var(--radius) - 8px);
+    background:radial-gradient(700px 300px at 25% 30%, rgba(124,92,255,.25), transparent 60%),
+               radial-gradient(540px 260px at 70% 20%, rgba(37,214,255,.18), transparent 55%),
+               rgba(0,0,0,.18);
+    border:1px solid var(--line);
+  }
+  .gl-label{
+    position:absolute; left:16px; bottom:16px;
+    display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;
+    pointer-events:none;
+  }
+  .gl-label b{font-size:12px; letter-spacing:.2px}
+  .gl-label span{font-size:12px; color:var(--muted)}
+
+  section{margin-top:18px}
+  .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
+  .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+
+  .sec-head{padding:16px 18px 0}
+  .sec-head h2{margin:0; font-size:16px; letter-spacing:.2px}
+  .sec-head p{margin:6px 0 0; color:var(--muted); font-size:13px}
+
+  .summary{padding:14px 18px 18px}
+  .bullets{margin:0; padding-left:18px; color:var(--muted)}
+  .bullets li{margin:8px 0}
+  .tag{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 10px; border-radius:999px; border:1px solid var(--line);
+    background:var(--card);
+    color:var(--muted);
+    font-size:12px;
+  }
+  .tag i{width:10px; height:10px; border-radius:99px; display:inline-block; background:var(--accent2)}
+
+  details.accordion{border-top:1px solid var(--line)}
+  details.accordion:first-of-type{border-top:none}
+  details.accordion summary{
+    list-style:none; cursor:pointer;
+    padding:14px 18px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  details.accordion summary::-webkit-details-marker{display:none}
+  .sum-title{display:flex; flex-direction:column; gap:2px}
+  .sum-title strong{font-size:14px}
+  .sum-title em{font-style:normal; color:var(--muted); font-size:12px}
+  .chev{width:22px; height:22px; border-radius:999px; display:grid; place-items:center; border:1px solid var(--line); background:var(--card); color:var(--muted)}
+  details[open] .chev{transform:rotate(180deg)}
+  .acc-body{padding:0 18px 16px; color:var(--muted); font-size:13px}
+  .acc-body ul{margin:8px 0 0; padding-left:18px}
+  .acc-body li{margin:6px 0}
+
+  .lang{
+    padding:14px 18px 18px;
+  }
+  .lang-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+  .lang-pill{
+    border:1px solid var(--line);
+    background:linear-gradient(135deg, rgba(124,92,255,.18), rgba(37,214,255,.10));
+    padding:10px 12px;
+    border-radius:14px;
+    min-width:160px;
+  }
+  .lang-pill b{display:block; font-size:13px}
+  .lang-pill span{display:block; font-size:12px; color:var(--muted); margin-top:3px}
+
+  .downloads{padding:12px 18px 18px}
+  table{width:100%; border-collapse:collapse; font-size:13px}
+  th,td{padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--muted); font-weight:700; text-align:left}
+  td code{font-family:var(--mono); font-size:12px; color:var(--text); background:var(--card); padding:3px 6px; border:1px solid var(--line); border-radius:9px; white-space:nowrap}
+  .dl{display:flex; align-items:center; justify-content:space-between; gap:10px}
+
+  .foot{
+    margin-top:18px;
+    padding:16px 18px;
+    display:flex; flex-wrap:wrap; gap:10px;
+    align-items:center; justify-content:space-between;
+  }
+  .foot p{margin:0; color:var(--muted); font-size:13px}
+  .foot a{color:var(--text); text-decoration:none; border-bottom:1px dashed var(--line)}
+  .foot a:hover{border-bottom-color:rgba(234,240,255,.35)}
+  .mini{font-size:12px; color:var(--muted)}
+
+  @media (max-width: 900px){
+    .hero{grid-template-columns:1fr;}
+    .grid3{grid-template-columns:1fr}
+    .grid2{grid-template-columns:1fr}
+    .nav-right{gap:6px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{scroll-behavior:auto !important}
+    details[open] .chev{transform:none}
+  }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="main.js"></script>
+  <header>
+    <div class="wrap">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="#top">
+          <span class="logo" aria-hidden="true"></span>
+          <span>
+            <strong>GitHub Store</strong>
+            <small>Release notes microsite</small>
+          </span>
+        </a>
+        <div class="nav-right">
+          <a class="link" href="#whats-new">What’s new</a>
+          <a class="link" href="#localization">Localization</a>
+          <a class="link" href="#downloads">Downloads</a>
+          <button class="btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+          <a class="btn primary" href="https://github.com/rainxchzed/Github-Store/releases/tag/1.5.1" target="_blank" rel="noreferrer">View 1.5.1 on GitHub</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <div class="hero">
+      <section class="card hero-copy" aria-labelledby="hero-title">
+        <span class="pill"><span class="dot" aria-hidden="true"></span> Official Release Notes • v<span class="ver">1.5.1</span></span>
+        <h1 id="hero-title">GitHub Store <span style="color:var(--accent2)">Release 1.5.1</span></h1>
+        <p class="lead">
+          This page is the dedicated <b>release note microsite for version 1.5.1</b> of GitHub Store.
+          It <b>only describes changes introduced in this release</b>, not the full feature set of the app.
+        </p>
+        <div class="meta" aria-label="Release meta">
+          <span class="kbd">Release: 2026-01-06</span>
+          <span class="kbd">Kotlin Multiplatform</span>
+          <span class="kbd">Focus: fluid UX + reliability</span>
+        </div>
+        <div class="cta">
+          <a class="btn primary" href="#downloads">Download assets</a>
+          <a class="btn" href="#details">Explore changes</a>
+        </div>
+        <p class="mini" style="margin-top:14px">
+          Purpose: a fast, shareable landing page for teams/users to scan what’s new in <b>1.5.1</b> and grab the correct installers.
+        </p>
+      </section>
+
+      <aside class="card hero-3d" aria-label="3D preview">
+        <div class="inner">
+          <canvas id="gl" width="940" height="520" aria-label="3D accent scene"></canvas>
+          <div class="gl-label">
+            <b>3D Accent</b>
+            <span>Low‑poly orb • lightweight WebGL</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section id="whats-new" class="card" aria-labelledby="summary-title">
+      <div class="sec-head">
+        <h2 id="summary-title">What’s new in 1.5.1 (summary)</h2>
+        <p>High-level themes—every item below is <b>new or improved specifically in 1.5.1</b>.</p>
+      </div>
+      <div class="summary">
+        <ul class="bullets">
+          <li><b>Navigation:</b> a new <b>liquid bottom navigation bar</b> for a more fluid experience.</li>
+          <li><b>Favorites & Feedback:</b> quick actions now live on the <b>app details</b> screen.</li>
+          <li><b>Reliability & Sync:</b> smarter <b>data migration</b> + improved system sync (notably on Android).</li>
+          <li><b>Localization:</b> added <b>Korean, Bengali, Italian</b> + translation quality and tooling fixes.</li>
+          <li><b>UI/UX:</b> Home Composable refactor, search improvements, font/theme cleanup, and overall polish.</li>
+          <li><b>Authentication & Stability:</b> auth improvements and an Android update bug fix.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="details" class="grid2" aria-label="Detailed changes">
+      <div class="card">
+        <div class="sec-head">
+          <h2>Detailed changes</h2>
+          <p>Expandable notes with concise, user-focused impact.</p>
+        </div>
+        <details class="accordion" open>
+          <summary>
+            <span class="sum-title"><strong>Navigation</strong><em>NEW in 1.5.1</em></span>
+            <span class="chev" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="acc-body">
+            <p><span class="tag"><i style="background:var(--accent2)"></i> Liquid bottom bar</span></p>
+            <ul>
+              <li>Introduces a <b>liquid bottom navigation bar</b> for smoother motion and clearer tab focus.</li>
+              <li>Designed to feel more responsive without adding heavy UI overhead.</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>
+            <span class="sum-title"><strong>Favorites & Feedback</strong><em>NEW/IMPROVED in 1.5.1</em></span>
+            <span class="chev" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="acc-body">
+            <ul>
+              <li>New <b>Favorites</b> action on the <b>app details</b> screen for faster saving.</li>
+              <li>New <b>Feedback</b> action on the <b>app details</b> screen to reduce friction when reporting issues.</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>
+            <span class="sum-title"><strong>Reliability & Sync</strong><em>IMPROVED in 1.5.1</em></span>
+            <span class="chev" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="acc-body">
+            <ul>
+              <li>Smarter <b>data migration layer</b> to reduce edge-case failures across upgrades.</li>
+              <li>Improved <b>system sync</b> behavior—especially tuned for <b>Android</b> environments.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="sec-head">
+          <h2>UI/UX, theming & platform</h2>
+          <p>Refinement work that lands in 1.5.1.</p>
+        </div>
+        <details class="accordion" open>
+          <summary>
+            <span class="sum-title"><strong>Localization</strong><em>NEW/IMPROVED in 1.5.1</em></span>
+            <span class="chev" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="acc-body">
+            <ul>
+              <li>Added languages: <b>Korean</b>, <b>Bengali</b>, <b>Italian</b>.</li>
+              <li>Improved translations, localized READMEs and theme options.</li>
+              <li>Fixes: apostrophe escaping, consistent Japanese translation filename.</li>
+              <li>Thanks to community contributors for translation improvements.</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>
+            <span class="sum-title"><strong>UI/UX & Theming</strong><em>IMPROVED in 1.5.1</em></span>
+            <span class="chev" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="acc-body">
+            <ul>
+              <li><b>Home screen Composable</b> refactored into smaller components (cleaner structure, easier iteration).</li>
+              <li><b>Search</b> experience improvements for quicker discovery.</li>
+              <li><b>Font resources</b> and <b>theme cleanup</b> to reduce redundancy and improve consistency.</li>
+              <li>General UI/UX polish across the app—spacing, states, and micro-interactions.</li>
+            </ul>
+          </div>
+        </details>
+        <details class="accordion">
+          <summary>
+            <span class="sum-title"><strong>Authentication & Android stability</strong><em>IMPROVED in 1.5.1</em></span>
+            <span class="chev" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="acc-body">
+            <ul>
+              <li><b>Authentication improvements</b> for a smoother sign-in experience.</li>
+              <li>Android <b>update bug fix</b> to reduce upgrade-related failures.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="localization" class="card" aria-labelledby="loc-title">
+      <div class="sec-head">
+        <h2 id="loc-title">Localization spotlight (1.5.1)</h2>
+        <p>New languages plus translation quality and tooling fixes shipping in this release.</p>
+      </div>
+      <div class="lang">
+        <div class="lang-row" role="list">
+          <div class="lang-pill" role="listitem"><b>Korean</b><span>New language in 1.5.1</span></div>
+          <div class="lang-pill" role="listitem"><b>Bengali</b><span>New language in 1.5.1</span></div>
+          <div class="lang-pill" role="listitem"><b>Italian</b><span>New language in 1.5.1</span></div>
+        </div>
+        <p class="mini" style="margin-top:12px">Also in 1.5.1: improved translations, localized READMEs and theme options, apostrophe-escaping fix, and consistent Japanese translation filename—supported by community contributions.</p>
+      </div>
+    </section>
+
+    <section id="downloads" class="card" aria-labelledby="dl-title">
+      <div class="sec-head">
+        <h2 id="dl-title">Platform downloads (assets for 1.5.1)</h2>
+        <p>Buttons link to the official GitHub release page for version 1.5.1.</p>
+      </div>
+      <div class="downloads">
+        <table aria-label="Download matrix">
+          <thead>
+            <tr><th>Platform</th><th>Assets</th><th>Link</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Android</b></td>
+              <td class="dl"><span><code>Github.Store-1.5.1.apk</code></span></td>
+              <td><a class="btn" href="https://github.com/rainxchzed/Github-Store/releases/tag/1.5.1" target="_blank" rel="noreferrer">Download</a></td>
+            </tr>
+            <tr>
+              <td><b>Windows</b></td>
+              <td>
+                <div class="dl"><span><code>GitHub.Store-1.5.1.exe</code></span></div>
+                <div class="dl" style="margin-top:8px"><span><code>GitHub.Store-1.5.1.msi</code></span></div>
+              </td>
+              <td><a class="btn" href="https://github.com/rainxchzed/Github-Store/releases/tag/1.5.1" target="_blank" rel="noreferrer">Download</a></td>
+            </tr>
+            <tr>
+              <td><b>Linux</b></td>
+              <td>
+                <div class="dl"><span><code>Github.Store-1.5.1_amd64.deb</code></span></div>
+                <div class="dl" style="margin-top:8px"><span><code>Github.Store-1.5.1_x86_64.rpm</code></span></div>
+              </td>
+              <td><a class="btn" href="https://github.com/rainxchzed/Github-Store/releases/tag/1.5.1" target="_blank" rel="noreferrer">Download</a></td>
+            </tr>
+            <tr>
+              <td><b>macOS</b></td>
+              <td>
+                <div class="dl"><span><code>GitHub.Store-1.5.1_arm64.dmg</code></span></div>
+                <div class="dl" style="margin-top:8px"><span><code>GitHub.Store-1.5.1_arm64.pkg</code></span></div>
+                <div class="dl" style="margin-top:8px"><span><code>Github.Store-1.5.1_x64.dmg</code></span></div>
+                <div class="dl" style="margin-top:8px"><span><code>Github.Store-1.5.1_x64.pkg</code></span></div>
+              </td>
+              <td><a class="btn" href="https://github.com/rainxchzed/Github-Store/releases/tag/1.5.1" target="_blank" rel="noreferrer">Download</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="mini" style="margin:12px 0 0">Note: assets are aligned on the <b>1.5.1</b> release. Use the GitHub link above for checksums and release metadata.</p>
+      </div>
+    </section>
+
+    <footer class="card foot" aria-label="Footer">
+      <p>
+        <b>Call to action:</b>
+        <a href="https://github.com/rainxchzed/Github-Store" target="_blank" rel="noreferrer">Main repository</a>
+        •
+        <a href="https://github-store.org" target="_blank" rel="noreferrer">Main website</a>
+        •
+        <a href="#top">Back to top</a>
+      </p>
+      <p class="mini">Powered by Mindflow</p>
+    </footer>
+  </main>
+
+  <script>
+  (() => {
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+
+    // Theme: localStorage + OS fallback
+    const stored = localStorage.getItem('mf_theme');
+    if (stored) root.setAttribute('data-theme', stored);
+    else {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      root.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = cur === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('mf_theme', next);
+    });
+
+    // Smooth scroll (progressive enhancement)
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute('href');
+      const el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.pushState(null, '', id);
+    });
+
+    // Lightweight WebGL 3D: rotating low-poly orb (no external libs)
+    const canvas = document.getElementById('gl');
+    const gl = canvas.getContext('webgl', { antialias: true, alpha: true, preserveDrawingBuffer: false });
+    if (!gl) return;
+
+    const DPR = Math.min(2, window.devicePixelRatio || 1);
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      const w = Math.max(320, Math.floor(r.width * DPR));
+      const h = Math.max(220, Math.floor(r.height * DPR));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w; canvas.height = h;
+        gl.viewport(0, 0, w, h);
+      }
+    }
+
+    const vs = `
+      attribute vec3 aPos;
+      attribute vec3 aNor;
+      uniform mat4 uMVP;
+      uniform mat3 uN;
+      varying vec3 vN;
+      varying vec3 vP;
+      void main(){
+        vN = normalize(uN * aNor);
+        vP = aPos;
+        gl_Position = uMVP * vec4(aPos, 1.0);
+      }
+    `;
+
+    const fs = `
+      precision mediump float;
+      varying vec3 vN;
+      varying vec3 vP;
+      uniform vec3 uA;
+      uniform vec3 uB;
+      uniform float uT;
+      void main(){
+        vec3 n = normalize(vN);
+        vec3 l1 = normalize(vec3(0.6, 0.9, 0.7));
+        vec3 l2 = normalize(vec3(-0.8, 0.3, 0.2));
+        float d = max(0.0, dot(n, l1)) * 0.9 + max(0.0, dot(n, l2)) * 0.35;
+        float rim = pow(1.0 - max(0.0, dot(n, normalize(vec3(0.0,0.0,1.0)))), 2.2);
+        float bands = 0.5 + 0.5*sin((vP.y*6.0 + vP.x*3.0) + uT*0.9);
+        vec3 base = mix(uA, uB, bands);
+        vec3 col = base * (0.25 + d) + rim * 0.35;
+        float alpha = 0.95;
+        gl_FragColor = vec4(col, alpha);
+      }
+    `;
+
+    function compile(type, src){
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+      return s;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+
+    // Build a small icosphere-like mesh: start with octahedron, subdivide once (fast + small)
+    function norm(v){
+      const m = Math.hypot(v[0], v[1], v[2]) || 1;
+      return [v[0]/m, v[1]/m, v[2]/m];
+    }
+    function mid(a,b){ return norm([(a[0]+b[0])*0.5,(a[1]+b[1])*0.5,(a[2]+b[2])*0.5]); }
+
+    let V = [
+      [ 1,0,0],[-1,0,0],[0, 1,0],[0,-1,0],[0,0, 1],[0,0,-1]
+    ].map(norm);
+    let T = [
+      [0,2,4],[2,1,4],[1,3,4],[3,0,4],
+      [2,0,5],[1,2,5],[3,1,5],[0,3,5]
+    ];
+
+    // One subdivision
+    const newT = [];
+    const cache = new Map();
+    function key(i,j){ return i<j ? (i+'_'+j) : (j+'_'+i); }
+    function midpointIndex(i,j){
+      const k = key(i,j);
+      if (cache.has(k)) return cache.get(k);
+      const m = mid(V[i], V[j]);
+      const idx = V.length;
+      V.push(m);
+      cache.set(k, idx);
+      return idx;
+    }
+    for (const [a,b,c] of T){
+      const ab = midpointIndex(a,b);
+      const bc = midpointIndex(b,c);
+      const ca = midpointIndex(c,a);
+      newT.push([a,ab,ca],[b,bc,ab],[c,ca,bc],[ab,bc,ca]);
+    }
+    T = newT;
+
+    const positions = new Float32Array(T.length * 9);
+    const normals = new Float32Array(T.length * 9);
+    for (let i=0;i<T.length;i++){
+      const tri = T[i];
+      for (let j=0;j<3;j++){
+        const p = V[tri[j]];
+        const o = (i*9 + j*3);
+        positions[o]=p[0]; positions[o+1]=p[1]; positions[o+2]=p[2];
+        normals[o]=p[0]; normals[o+1]=p[1]; normals[o+2]=p[2];
+      }
+    }
+
+    function buf(attrName, data){
+      const b = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, b);
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(prog, attrName);
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 3, gl.FLOAT, false, 0, 0);
+      return b;
+    }
+    buf('aPos', positions);
+    buf('aNor', normals);
+
+    const uMVP = gl.getUniformLocation(prog, 'uMVP');
+    const uN = gl.getUniformLocation(prog, 'uN');
+    const uA = gl.getUniformLocation(prog, 'uA');
+    const uB = gl.getUniformLocation(prog, 'uB');
+    const uT = gl.getUniformLocation(prog, 'uT');
+
+    // Read CSS theme colors for accents
+    function cssVar(name){
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+    function hexToRGB(hex){
+      const h = hex.replace('#','');
+      const n = parseInt(h.length===3 ? h.split('').map(c=>c+c).join('') : h, 16);
+      return [(n>>16&255)/255, (n>>8&255)/255, (n&255)/255];
+    }
+    function applyAccent(){
+      gl.uniform3fv(uA, hexToRGB(cssVar('--accent') || '#7C5CFF'));
+      gl.uniform3fv(uB, hexToRGB(cssVar('--accent2') || '#25D6FF'));
+    }
+    applyAccent();
+
+    // Minimal matrix ops
+    function mul4(a,b){
+      const o = new Float32Array(16);
+      for(let r=0;r<4;r++) for(let c=0;c<4;c++){
+        o[c+r*4]=a[r*4]*b[c]+a[r*4+1]*b[c+4]+a[r*4+2]*b[c+8]+a[r*4+3]*b[c+12];
+      }
+      return o;
+    }
+    function rotY(t){
+      const c=Math.cos(t), s=Math.sin(t);
+      return new Float32Array([ c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]);
+    }
+    function rotX(t){
+      const c=Math.cos(t), s=Math.sin(t);
+      return new Float32Array([ 1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]);
+    }
+    function translate(z){
+      return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,z,1]);
+    }
+    function persp(fov, asp, n, f){
+      const t = 1/Math.tan(fov/2);
+      return new Float32Array([
+        t/asp,0,0,0,
+        0,t,0,0,
+        0,0,(f+n)/(n-f),-1,
+        0,0,(2*f*n)/(n-f),0
+      ]);
+    }
+
+    let raf = 0;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function frame(time){
+      resize();
+      const t = (time||0) * 0.001;
+      gl.enable(gl.DEPTH_TEST);
+      gl.clearColor(0,0,0,0);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      const asp = canvas.width / canvas.height;
+      const P = persp(0.9, asp, 0.1, 8.0);
+      const R = mul4(rotY(t*0.7), rotX(0.45 + t*0.35));
+      const M = mul4(translate(-2.6), R);
+      const MVP = mul4(P, M);
+
+      gl.uniformMatrix4fv(uMVP, false, MVP);
+      // Normal matrix for pure rotation is upper-left 3x3
+      gl.uniformMatrix3fv(uN, false, new Float32Array([
+        R[0],R[1],R[2],
+        R[4],R[5],R[6],
+        R[8],R[9],R[10]
+      ]));
+      gl.uniform1f(uT, t);
+      gl.drawArrays(gl.TRIANGLES, 0, positions.length/3);
+
+      if (!reduce) raf = requestAnimationFrame(frame);
+    }
+
+    // Re-apply accent colors after theme toggles
+    themeBtn.addEventListener('click', () => setTimeout(applyAccent, 0));
+
+    // Visibility-aware
+    const io = new IntersectionObserver((entries) => {
+      const on = entries.some(e => e.isIntersecting);
+      if (on && !raf && !reduce) raf = requestAnimationFrame(frame);
+      if (!on && raf) { cancelAnimationFrame(raf); raf = 0; }
+    }, { threshold: 0.12 });
+    io.observe(canvas);
+
+    // Initial render (also covers reduced motion)
+    requestAnimationFrame(frame);
+
+    window.addEventListener('resize', resize, { passive:true });
+  })();
+  </script>
 </body>
 </html>
