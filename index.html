@@ -1,1 +1,589 @@
-<!-- TODO: replace with full HTML content from Code Generation Agent result -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>La Suite Meet — Release 1.8.0 (Security Hardening & Stability)</title>
+  <meta name="description" content="Release note microsite for La Suite Meet v1.8.0 — security hardening and stability improvements, with upcoming work preview." />
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:#475569;
+      --line:rgba(15,23,42,.10);
+      --shadow:0 10px 30px rgba(2,6,23,.08);
+      --accent:#1d4ed8;      /* trustworthy public-service blue */
+      --accent2:#0ea5e9;     /* softer cyan */
+      --ok:#16a34a;
+      --warn:#b45309;
+      --radius:16px;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--ink);
+      background:
+        radial-gradient(900px 420px at 20% -10%, rgba(29,78,216,.12), transparent 55%),
+        radial-gradient(720px 360px at 90% 10%, rgba(14,165,233,.14), transparent 55%),
+        linear-gradient(180deg, #fbfcff 0%, var(--bg) 100%);
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(120%) blur(10px);
+      background:rgba(246,247,251,.72);
+      border-bottom:1px solid var(--line);
+    }
+    .container{max-width:1040px;margin:0 auto;padding:16px 20px}
+    .topbar .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .badge{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:12px;letter-spacing:.02em;
+      color:var(--muted);
+      padding:8px 10px;border:1px solid var(--line);
+      border-radius:999px;background:rgba(255,255,255,.72);
+    }
+    .dot{width:10px;height:10px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 0 0 3px rgba(29,78,216,.12)}
+    .navlinks{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+    .navlinks a{font-size:13px;color:var(--muted)}
+
+    header.hero{padding:28px 0 10px}
+    .heroGrid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;align-items:stretch}
+    .heroCard{
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--line);
+      border-radius:calc(var(--radius) + 2px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .heroMain{padding:24px 22px}
+    h1{margin:0 0 10px;font-size:30px;line-height:1.15;letter-spacing:-.02em}
+    .tagline{margin:0 0 14px;color:var(--muted);font-size:15px;line-height:1.6}
+    .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.9);
+      color:var(--muted);
+    }
+    .pill strong{color:var(--ink)}
+    .pill .k{font-family:var(--mono);font-size:11px;color:rgba(71,85,105,.92)}
+
+    .heroAside{position:relative;min-height:210px}
+    .canvasWrap{position:relative;height:100%}
+    canvas#gl{
+      width:100%;height:100%;display:block;
+      background:
+        radial-gradient(520px 240px at 50% 35%, rgba(29,78,216,.14), transparent 62%),
+        radial-gradient(420px 220px at 65% 60%, rgba(14,165,233,.18), transparent 64%),
+        linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.60));
+    }
+    .canvasLabel{
+      position:absolute;left:12px;bottom:12px;right:12px;
+      display:flex;justify-content:space-between;align-items:flex-end;gap:10px;
+      color:rgba(15,23,42,.72);
+      font-size:12px;
+    }
+    .canvasLabel .mini{
+      padding:8px 10px;border-radius:12px;
+      background:rgba(255,255,255,.78);
+      border:1px solid var(--line);
+    }
+
+    main{padding:10px 0 26px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+
+    .card{
+      background:rgba(255,255,255,.86);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:0 8px 22px rgba(2,6,23,.06);
+      overflow:hidden;
+    }
+    .cardHeader{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .cardHeader h2{margin:0;font-size:16px;letter-spacing:-.01em}
+    .cardHeader p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+    .cardBody{padding:14px 18px 16px}
+
+    .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    .sectionTitle{display:flex;align-items:center;gap:10px}
+    .icon{
+      width:28px;height:28px;border-radius:10px;
+      background:linear-gradient(135deg, rgba(29,78,216,.16), rgba(14,165,233,.14));
+      border:1px solid rgba(29,78,216,.18);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-weight:700;color:rgba(29,78,216,.92);
+      flex:0 0 auto;
+    }
+
+    .list{margin:0;padding:0 0 0 18px}
+    .list li{margin:8px 0;color:var(--ink);font-size:13px;line-height:1.55}
+    .sub{display:block;margin-top:4px;color:var(--muted);font-size:12.5px;line-height:1.55}
+
+    .raw{
+      margin-top:10px;
+      border:1px dashed rgba(15,23,42,.20);
+      background:rgba(248,250,252,.75);
+      border-radius:12px;
+      padding:12px 12px;
+      font-family:var(--mono);
+      font-size:12px;
+      overflow:auto;
+      white-space:pre;
+      color:rgba(15,23,42,.86);
+    }
+
+    .callout{
+      display:flex;gap:12px;align-items:flex-start;
+      padding:12px 12px;border-radius:14px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.72));
+    }
+    .callout strong{display:block;margin-bottom:2px}
+    .hint{color:var(--muted);font-size:13px;line-height:1.55}
+
+    .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 11px;border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.92);
+      color:var(--ink);
+      font-size:13px;
+    }
+    .btn:hover{border-color:rgba(29,78,216,.30)}
+
+    footer{
+      padding:18px 0 30px;
+      color:var(--muted);
+      font-size:12.5px;
+    }
+    footer .foot{
+      display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+      border-top:1px solid var(--line);
+      padding-top:14px;
+    }
+    .powered{font-weight:600;color:rgba(15,23,42,.72)}
+
+    @media (max-width: 860px){
+      .heroGrid{grid-template-columns:1fr}
+      .heroAside{min-height:220px}
+      .twoCol{grid-template-columns:1fr}
+      .navlinks{justify-content:flex-start}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      canvas#gl{background:linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.60))}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div class="row">
+        <div class="badge" aria-label="Mindflow MCP x La Suite Meet">
+          <span class="dot" aria-hidden="true"></span>
+          <span><strong>Mindflow MCP</strong> × <strong>La Suite Meet</strong></span>
+        </div>
+        <nav class="navlinks" aria-label="Page navigation">
+          <a href="#purpose">Purpose</a>
+          <a href="#whatsnew">What’s new</a>
+          <a href="#comingnext">Coming next</a>
+          <a href="#links">Links</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <div class="heroGrid">
+        <section class="heroCard" aria-label="Hero">
+          <div class="heroMain">
+            <h1>La Suite Meet — Release 1.8.0</h1>
+            <p class="tagline">
+              Secure, self-hostable video meetings for public-service grade collaboration.
+              <br />
+              <strong>Release 1.8.0 – Security Hardening &amp; Stability</strong>
+            </p>
+            <div class="pillRow" role="list">
+              <div class="pill" role="listitem"><span class="k">Prod instance</span> <strong><a href="https://visio.numerique.gouv.fr/" target="_blank" rel="noreferrer">visio.numerique.gouv.fr</a></strong></div>
+              <div class="pill" role="listitem"><span class="k">Scope</span> <strong>Latest release note only</strong></div>
+              <div class="pill" role="listitem"><span class="k">Theme</span> <strong>Defense-in-depth images</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="heroCard heroAside" aria-label="3D security orb">
+          <div class="canvasWrap">
+            <canvas id="gl" aria-label="Decorative 3D element"></canvas>
+            <div class="canvasLabel" aria-hidden="true">
+              <div class="mini"><strong>3D status orb</strong><br/>Lightweight WebGL (no framework)</div>
+              <div class="mini"><span style="color:rgba(22,163,74,.95);font-weight:700">Hardened</span><br/><span style="font-family:var(--mono)">v1.8.0</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="grid">
+
+        <section class="card" id="purpose">
+          <div class="cardHeader">
+            <div>
+              <div class="sectionTitle"><span class="icon">i</span><div>
+                <h2>What this page is</h2>
+                <p>This page is the release note for version <strong>1.8.0</strong> of <strong>La Suite Meet</strong>. It highlights what changed, what was fixed, and why it matters for operators and users.</p>
+              </div></div>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="callout">
+              <div class="icon" aria-hidden="true">✓</div>
+              <div>
+                <strong>Content purpose</strong>
+                <div class="hint">
+                  A concise, operator-friendly announcement: security posture improvements in container images and concrete vulnerability remediation, plus a transparent preview of upcoming work from the changelog.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="whatsnew">
+          <div class="cardHeader">
+            <div>
+              <div class="sectionTitle"><span class="icon">1.8</span><div>
+                <h2>What’s new in 1.8.0</h2>
+                <p>Exact release bullets are preserved verbatim. Each item includes a short explanation of impact.</p>
+              </div></div>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="twoCol">
+              <div>
+                <h3 style="margin:0 0 8px;font-size:13.5px;color:rgba(15,23,42,.86)">Changed</h3>
+                <ul class="list">
+                  <li>🔐️(agents) uninstall pip from the agents image
+                    <span class="sub">Reduces attack surface and prevents accidental runtime package installs inside the container. Builds become more reproducible and least-privilege by default.</span>
+                  </li>
+                  <li>🔐️(summary) switch to Alpine base image
+                    <span class="sub">Alpine images are typically smaller, which can reduce CVE exposure and speed up pulls/rollouts while keeping the runtime focused on essentials.</span>
+                  </li>
+                  <li>🔐️(backend) uninstall pip in the production image
+                    <span class="sub">Hardens production by removing package managers that are unnecessary at runtime, limiting tampering paths if a container is ever compromised.</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 style="margin:0 0 8px;font-size:13.5px;color:rgba(15,23,42,.86)">Fixed</h3>
+                <ul class="list">
+                  <li>🔐️(agents) upgrade OpenSSL to address CVE-2025-15467
+                    <span class="sub">Improves cryptographic safety for agent-side operations by incorporating an OpenSSL update that mitigates a known vulnerability.</span>
+                  </li>
+                  <li>📌(agents) pin protobuf to 6.33.5 to fix CVE-2026-0994
+                    <span class="sub">Locks protobuf to a vetted version to avoid vulnerable ranges—reducing supply-chain risk and keeping serialization stable across deployments.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="raw" aria-label="Raw release bullets">LATEST RELEASE (v1.8.0):
+
+### Changed
+- 🔐️(agents) uninstall pip from the agents image
+- 🔐️(summary) switch to Alpine base image
+- 🔐️(backend) uninstall pip in the production image
+
+### Fixed
+- 🔐️(agents) upgrade OpenSSL to address CVE-2025-15467
+- 📌(agents) pin protobuf to 6.33.5 to fix CVE-2026-0994</div>
+          </div>
+        </section>
+
+        <section class="card" id="comingnext">
+          <div class="cardHeader">
+            <div>
+              <div class="sectionTitle"><span class="icon">↗</span><div>
+                <h2>Coming next (Unreleased changes)</h2>
+                <p><strong>Not part of 1.8.0.</strong> These items are upcoming work from the changelog “Unreleased” section—shared here for planning and transparency.</p>
+              </div></div>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="callout">
+              <div class="icon" aria-hidden="true">!</div>
+              <div>
+                <strong>Narrative summary</strong>
+                <div class="hint">
+                  Expect broader platform support (arm64 images), improved transcription context localization, frontend UI/accessibility refinements (popover reactions, focus rings, shortcut settings), backend dependency updates, and a fix for German language preference updates.
+                </div>
+              </div>
+            </div>
+
+            <div class="raw" aria-label="Raw unreleased bullets">## [Unreleased]
+
+### Added
+
+- 👷(docker) add arm64 platform support for image builds
+- ✨(summary) add localization support for transcription context text
+
+### Changed
+
+- ♻️(frontend) replace custom reactions toolbar with react aria popover #985
+- 🔐️(frontend) uninstall curl from the frontend production image #987
+- 💄(frontend) add focus ring to reaction emoji buttons
+- ✨(frontend) introduce a shortcut settings tab #975
+- 🚚(frontend) rename "wellknown" directory to "well-known" #1009
+- 🌐(frontend) localize SR modifier labels #1010
+- ⬆️(backend) update python dependencies #1011
+- ♿️(a11y) fix focus ring on tab container components
+
+### Fixed
+
+- 🤹(frontend) fix German language preference update #1021</div>
+          </div>
+        </section>
+
+        <section class="card" id="links">
+          <div class="cardHeader">
+            <div>
+              <div class="sectionTitle"><span class="icon">↪</span><div>
+                <h2>Source links (official repo)</h2>
+                <p>For full technical detail, review the upstream release and compare view.</p>
+              </div></div>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="links">
+              <a class="btn" href="https://github.com/suitenumerique/meet" target="_blank" rel="noreferrer">GitHub: suitenumerique/meet</a>
+              <a class="btn" href="https://github.com/suitenumerique/meet/releases/tag/v1.8.0" target="_blank" rel="noreferrer">Release: v1.8.0</a>
+              <a class="btn" href="https://github.com/suitenumerique/meet/compare/v1.7.0...v1.8.0" target="_blank" rel="noreferrer">Changelog compare: v1.7.0…v1.8.0</a>
+            </div>
+            <p class="hint" style="margin:10px 0 0">
+              Note: links point to upstream GitHub. If tag names differ, use the repository’s Releases and Compare UI to locate the exact range.
+            </p>
+          </div>
+        </section>
+
+      </div>
+
+      <footer>
+        <div class="foot">
+          <div>
+            This microsite was generated automatically from the official La Suite Meet GitHub repository by Mindflow MCP and is informational only.
+          </div>
+          <div class="powered">Powered by Mindflow</div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // Lightweight WebGL 3D element (no external libs): a rotating, shaded icosahedron.
+    // Designed to be subtle and performant.
+    (() => {
+      const canvas = document.getElementById('gl');
+      if (!canvas) return;
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      /** @type {WebGLRenderingContext | null} */
+      const gl = canvas.getContext('webgl', { antialias: true, alpha: true, powerPreference: 'high-performance' });
+      if (!gl) return;
+
+      const DPR_CAP = 1.5;
+      function resize() {
+        const dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
+        const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+        const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w; canvas.height = h;
+          gl.viewport(0, 0, w, h);
+        }
+        return { w, h };
+      }
+
+      // Minimal mat4 utils
+      const Mat4 = {
+        ident: () => new Float32Array([1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0,1]),
+        mul: (a,b) => {
+          const o = new Float32Array(16);
+          for (let r=0;r<4;r++) for (let c=0;c<4;c++) {
+            o[r*4+c] = a[r*4+0]*b[0*4+c] + a[r*4+1]*b[1*4+c] + a[r*4+2]*b[2*4+c] + a[r*4+3]*b[3*4+c];
+          }
+          return o;
+        },
+        rotY: (t) => new Float32Array([ Math.cos(t),0,Math.sin(t),0,  0,1,0,0,  -Math.sin(t),0,Math.cos(t),0,  0,0,0,1]),
+        rotX: (t) => new Float32Array([ 1,0,0,0,  0,Math.cos(t),-Math.sin(t),0,  0,Math.sin(t),Math.cos(t),0,  0,0,0,1]),
+        translate: (x,y,z) => new Float32Array([1,0,0,0,  0,1,0,0,  0,0,1,0,  x,y,z,1]),
+        perspective: (fovy, aspect, near, far) => {
+          const f = 1 / Math.tan(fovy/2);
+          const nf = 1/(near-far);
+          return new Float32Array([
+            f/aspect,0,0,0,
+            0,f,0,0,
+            0,0,(far+near)*nf,-1,
+            0,0,(2*far*near)*nf,0
+          ]);
+        }
+      };
+
+      // Icosahedron (20 faces). Vertices normalized; we expand to flat-shaded triangles with per-face normals.
+      const X = 0.5257311121191336;
+      const Z = 0.8506508083520399;
+      const v = [
+        [-X,0,Z],[X,0,Z],[-X,0,-Z],[X,0,-Z],
+        [0,Z,X],[0,Z,-X],[0,-Z,X],[0,-Z,-X],
+        [Z,X,0],[-Z,X,0],[Z,-X,0],[-Z,-X,0]
+      ];
+      const idx = [
+        [0,4,1],[0,9,4],[9,5,4],[4,5,8],[4,8,1],
+        [8,10,1],[8,3,10],[5,3,8],[5,2,3],[2,7,3],
+        [7,10,3],[7,6,10],[7,11,6],[11,0,6],[0,1,6],
+        [6,1,10],[9,0,11],[9,11,2],[9,2,5],[7,2,11]
+      ];
+
+      function norm(a){
+        const l = Math.hypot(a[0],a[1],a[2]) || 1;
+        return [a[0]/l,a[1]/l,a[2]/l];
+      }
+      function sub(a,b){ return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]; }
+      function cross(a,b){ return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]; }
+
+      const pos = [];
+      const nor = [];
+      for (const f of idx){
+        const a = v[f[0]], b = v[f[1]], c = v[f[2]];
+        const n = norm(cross(sub(b,a), sub(c,a)));
+        // Slightly inflate for a softer look
+        const inflate = 1.04;
+        for (const p of [a,b,c]){
+          const pn = norm(p);
+          pos.push(pn[0]*inflate, pn[1]*inflate, pn[2]*inflate);
+          nor.push(n[0],n[1],n[2]);
+        }
+      }
+
+      const vertSrc = `
+        attribute vec3 aPos;
+        attribute vec3 aNor;
+        uniform mat4 uMVP;
+        uniform mat4 uM;
+        varying vec3 vN;
+        varying vec3 vP;
+        void main(){
+          vec4 wp = uM * vec4(aPos, 1.0);
+          vP = wp.xyz;
+          vN = mat3(uM) * aNor;
+          gl_Position = uMVP * vec4(aPos, 1.0);
+        }
+      `;
+      const fragSrc = `
+        precision mediump float;
+        varying vec3 vN;
+        varying vec3 vP;
+        void main(){
+          vec3 N = normalize(vN);
+          vec3 L = normalize(vec3(0.6, 0.9, 0.7));
+          float diff = max(dot(N, L), 0.0);
+          float rim = pow(1.0 - max(dot(N, normalize(-vP)), 0.0), 2.0);
+          vec3 base = mix(vec3(0.08,0.22,0.65), vec3(0.06,0.62,0.88), 0.55);
+          vec3 col = base * (0.35 + 0.75*diff) + vec3(0.35,0.55,1.0)*0.18*rim;
+          // Subtle glassy highlight
+          col += vec3(1.0) * 0.08 * pow(max(dot(reflect(-L, N), normalize(-vP)), 0.0), 16.0);
+          gl_FragColor = vec4(col, 0.92);
+        }
+      `;
+
+      function compile(type, src){
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          gl.deleteShader(s);
+          return null;
+        }
+        return s;
+      }
+      const vs = compile(gl.VERTEX_SHADER, vertSrc);
+      const fs = compile(gl.FRAGMENT_SHADER, fragSrc);
+      if (!vs || !fs) return;
+
+      const prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fs);
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+      gl.useProgram(prog);
+
+      const bufPos = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, bufPos);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pos), gl.STATIC_DRAW);
+      const aPos = gl.getAttribLocation(prog, 'aPos');
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 0, 0);
+
+      const bufNor = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, bufNor);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nor), gl.STATIC_DRAW);
+      const aNor = gl.getAttribLocation(prog, 'aNor');
+      gl.enableVertexAttribArray(aNor);
+      gl.vertexAttribPointer(aNor, 3, gl.FLOAT, false, 0, 0);
+
+      const uMVP = gl.getUniformLocation(prog, 'uMVP');
+      const uM = gl.getUniformLocation(prog, 'uM');
+
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthFunc(gl.LEQUAL);
+      gl.clearColor(0,0,0,0);
+
+      let t0 = performance.now();
+      function frame(now){
+        resize();
+        const dt = Math.min(0.05, (now - t0) / 1000);
+        t0 = now;
+
+        const { w, h } = { w: canvas.width, h: canvas.height };
+        const aspect = Math.max(0.6, Math.min(1.8, w / Math.max(1, h)));
+        const P = Mat4.perspective(0.9, aspect, 0.1, 20.0);
+
+        const time = now * 0.001;
+        const M = Mat4.mul(
+          Mat4.translate(0, 0, -3.2),
+          Mat4.mul(Mat4.rotY(time * 0.75), Mat4.rotX(time * 0.55))
+        );
+        const MVP = Mat4.mul(P, M);
+
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.uniformMatrix4fv(uM, false, M);
+        gl.uniformMatrix4fv(uMVP, false, MVP);
+        gl.drawArrays(gl.TRIANGLES, 0, pos.length / 3);
+
+        // Keep it subtle: if the tab is in the background, browser will throttle anyway.
+        requestAnimationFrame(frame);
+      }
+
+      // Resize on container changes
+      const ro = 'ResizeObserver' in window ? new ResizeObserver(() => resize()) : null;
+      if (ro) ro.observe(canvas);
+      window.addEventListener('resize', resize, { passive: true });
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
