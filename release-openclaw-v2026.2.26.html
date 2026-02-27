@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Release notes for openclaw v2026.2.26 (latest) — covers only this release’s features</title>
+  <meta name="description" content="Release notes for openclaw v2026.2.26 (latest). This page explicitly covers only what’s new in this release." />
+  <style>
+:root{
+  --bg0:#0b1220;
+  --bg1:#0e1730;
+  --card:#ffffff;
+  --paper:#f6f7fb;
+  --ink:#0b1020;
+  --muted:#55607a;
+  --line:rgba(12,18,32,.10);
+  --shadow:0 14px 40px rgba(11,18,32,.16);
+  --a:#5fe1ff;      /* cyan */
+  --b:#7c5cff;      /* violet */
+  --c:#22c55e;      /* green */
+  --radius:16px;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--bg0) 0%, #0b1326 26%, var(--paper) 26.5%, var(--paper) 100%);
+}
+a{color:inherit}
+.skip{
+  position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden
+}
+.skip:focus{left:12px;top:12px;width:auto;height:auto;background:#fff;padding:10px 12px;border-radius:10px;z-index:20}
+
+.wrap{width:min(1080px,calc(100% - 40px));margin:0 auto}
+
+.top{position:relative}
+.top__inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0;color:#eaf0ff
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand__mark{
+  width:36px;height:36px;border-radius:10px;
+  background:radial-gradient(120% 120% at 20% 10%, rgba(95,225,255,.95), rgba(124,92,255,.92) 55%, rgba(34,197,94,.80) 100%);
+  box-shadow:0 12px 30px rgba(0,0,0,.35)
+}
+.brand__name{font-weight:700;letter-spacing:.2px}
+.brand__meta{font-size:12px;color:rgba(234,240,255,.72)}
+
+.nav{display:flex;gap:16px;flex-wrap:wrap}
+.nav a{
+  text-decoration:none;
+  font-size:13px;
+  color:rgba(234,240,255,.82);
+  padding:8px 10px;border-radius:10px;
+  border:1px solid rgba(234,240,255,.10)
+}
+.nav a:hover{border-color:rgba(95,225,255,.38);color:#fff}
+
+.hero{padding:8px 0 0}
+.hero__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:stretch}
+@media (max-width: 900px){.hero__grid{grid-template-columns:1fr;gap:18px}}
+
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 12px;border-radius:999px;
+  background:rgba(234,240,255,.08);
+  border:1px solid rgba(234,240,255,.14);
+  color:#eaf0ff;font-size:13px
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--a);box-shadow:0 0 0 6px rgba(95,225,255,.10)}
+
+h1{color:#f4f7ff;margin:12px 0 10px;line-height:1.08;font-size:38px;letter-spacing:-.4px}
+@media (max-width: 520px){h1{font-size:32px}}
+.lede{color:rgba(234,240,255,.88);font-size:16px;line-height:1.45;margin:0 0 10px}
+.intro{color:rgba(234,240,255,.74);font-size:14px;line-height:1.55;margin:0 0 16px;max-width:70ch}
+
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 12px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;cursor:pointer;
+  padding:10px 12px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(135deg, rgba(95,225,255,.20), rgba(124,92,255,.18));
+  color:#ffffff;font-weight:650;font-size:14px
+}
+.btn:hover{border-color:rgba(95,225,255,.45)}
+.btn--ghost{background:transparent;color:rgba(234,240,255,.88)}
+
+.purpose{
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(234,240,255,.12);
+  color:rgba(234,240,255,.80);
+  font-size:13px;line-height:1.45
+}
+
+.hero__visual{display:flex;align-items:stretch}
+.visual__frame{
+  position:relative;
+  width:100%;
+  border-radius:var(--radius);
+  overflow:hidden;
+  border:1px solid rgba(234,240,255,.12);
+  background:radial-gradient(120% 120% at 15% 10%, rgba(95,225,255,.18), rgba(124,92,255,.12) 40%, rgba(0,0,0,.22) 100%);
+  box-shadow:0 18px 70px rgba(0,0,0,.35)
+}
+#gl{display:block;width:100%;height:100%;min-height:320px}
+@media (max-width: 900px){#gl{min-height:260px}}
+.visual__overlay{position:absolute;left:14px;right:14px;bottom:14px;display:grid;gap:8px}
+.chip{
+  justify-self:start;
+  padding:7px 10px;border-radius:999px;
+  font-size:12px;color:rgba(234,240,255,.88);
+  background:rgba(12,18,32,.55);
+  border:1px solid rgba(234,240,255,.12)
+}
+.meter{height:8px;border-radius:999px;background:rgba(234,240,255,.12);overflow:hidden;border:1px solid rgba(234,240,255,.10)}
+.meter__bar{display:block;height:100%;width:42%;background:linear-gradient(90deg,var(--a),var(--b));opacity:.85}
+.hint{font-size:11px;color:rgba(234,240,255,.62)}
+
+.sectionTitle{margin:28px 0 14px;color:#0c1430;font-size:18px;letter-spacing:-.2px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width: 980px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (max-width: 620px){.cards{grid-template-columns:1fr}}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px 14px 12px;
+  box-shadow:0 1px 0 rgba(0,0,0,.02)
+}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+.card ul{margin:0;padding-left:18px;color:#1a2442;font-size:13px;line-height:1.55}
+.card li{margin:4px 0}
+
+.stack{display:grid;gap:10px;margin:10px 0 24px}
+.panel{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden
+}
+.panel__head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:linear-gradient(180deg,#fff,#fbfbfe)}
+.panel__head h3{margin:0;font-size:15px}
+.panel__toggle{
+  border-radius:12px;padding:8px 10px;
+  background:#fff;border:1px solid rgba(12,18,32,.12);
+  font-size:13px;cursor:pointer;color:#172047
+}
+.panel__toggle:hover{border-color:rgba(95,225,255,.55)}
+.panel__body{padding:0 14px 12px}
+.panel__body p{margin:10px 0 8px;color:var(--muted);font-size:13px;line-height:1.55}
+.panel__body ul{margin:0;padding-left:18px;font-size:13px;line-height:1.55}
+
+.credits{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.credits p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+
+.footer{padding:22px 0 34px}
+.footer__inner{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fineprint{color:rgba(12,18,32,.60);font-size:12px}
+
+.mono{font-family:var(--mono)}
+.srOnly{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+@media (prefers-reduced-motion: reduce){
+  html:focus-within{scroll-behavior:auto}
+}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="top">
+    <div class="wrap top__inner">
+      <div class="brand" aria-label="openclaw release notes">
+        <div class="brand__mark" aria-hidden="true"></div>
+        <div class="brand__text">
+          <div class="brand__name">openclaw</div>
+          <div class="brand__meta">Latest release landing page</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Page">
+        <a href="#highlights">Highlights</a>
+        <a href="#sections">Sections</a>
+        <a href="#credits">Credits</a>
+      </nav>
+    </div>
+
+    <div class="hero">
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <div class="badge" role="note"><span class="dot" aria-hidden="true"></span><span class="mono">v2026.2.26</span> · Latest</div>
+          <h1>Release notes for <span class="mono">openclaw v2026.2.26</span></h1>
+          <p class="lede">This page covers <strong>only</strong> what’s new in the latest release tag <span class="mono">v2026.2.26</span>—no earlier releases are referenced here.</p>
+          <p class="intro">openclaw is a developer-first runtime + CLI for agents, channels, and device/node capabilities. This release focuses on <strong>reliability</strong>, <strong>security hardening</strong>, <strong>agent runtimes</strong>, and a fully-fledged <strong>secrets workflow</strong>.</p>
+
+          <div class="cta">
+            <a class="btn" href="https://github.com/openclaw/openclaw/releases/tag/v2026.2.26" target="_blank" rel="noreferrer">View full GitHub release</a>
+            <button class="btn btn--ghost" id="toggleMotion" type="button" aria-pressed="false">Reduce motion</button>
+          </div>
+
+          <div class="purpose" role="note">
+            <strong>Purpose:</strong> a product-quality landing page summarizing the scope, highlights, and reliability/security improvements shipping <em>only</em> in <span class="mono">v2026.2.26</span>.
+          </div>
+        </div>
+
+        <div class="hero__visual" aria-label="3D release visual">
+          <div class="visual__frame">
+            <canvas id="gl" width="640" height="420" aria-label="3D badge" role="img"></canvas>
+            <div class="visual__overlay" aria-hidden="true">
+              <div class="chip"><span class="mono">openclaw</span> · release signal</div>
+              <div class="meter"><span class="meter__bar" id="fpsBar"></span></div>
+              <div class="hint">Lightweight WebGL (no deps). Auto-pauses when off-screen.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap" id="highlights">
+        <h2 class="sectionTitle">Headline features (shipping in <span class="mono">v2026.2.26</span>)</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>External Secrets Management</h3>
+            <p>A complete <span class="mono">openclaw secrets</span> workflow with stronger safety rails and runtime activation.</p>
+            <ul>
+              <li><span class="mono">audit</span>, <span class="mono">configure</span>, <span class="mono">apply</span>, <span class="mono">reload</span> end-to-end flow</li>
+              <li>Runtime snapshot activation + stricter target-path validation</li>
+              <li>Safer migration scrubbing + ref-only auth-profile support</li>
+              <li>Dedicated documentation for secrets lifecycle</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>ACP / Thread-Bound Agents</h3>
+            <p>ACP agents are now first-class runtimes for thread sessions with improved dispatch, lifecycle, and cleanup.</p>
+            <ul>
+              <li>Integrated <span class="mono">acp</span> spawn/send dispatch and backend bridging</li>
+              <li>Lifecycle controls + startup reconciliation</li>
+              <li>Runtime cleanup + coalesced replies in threads</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Agents Routing & CLI Bindings</h3>
+            <p>Account-scoped route management via new bindings commands, with identity and plugin-aware resolution.</p>
+            <ul>
+              <li><span class="mono">openclaw agents bindings</span>, <span class="mono">bind</span>, <span class="mono">unbind</span></li>
+              <li>Upgrades channel-only bindings; role-aware identity handling</li>
+              <li>Plugin-resolved account IDs + optional prompts in <span class="mono">channels add</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>OpenAI Codex WebSocket Transport</h3>
+            <p><span class="mono">openai-codex</span> becomes WebSocket-first by default with an automatic SSE fallback.</p>
+            <ul>
+              <li>Default <span class="mono">transport: &quot;auto&quot;</span> (WS first, SSE fallback)</li>
+              <li>Per-model/runtime transport overrides preserved</li>
+              <li>Added tests + docs around transport selection</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Plugin-Based Onboarding Flows</h3>
+            <p>Channel plugins can own interactive onboarding while keeping a dependable fallback path.</p>
+            <ul>
+              <li>Optional <span class="mono">configureInteractive</span> hook for guided setup</li>
+              <li><span class="mono">configureWhenConfigured</span> for post-config flows</li>
+              <li>Generic fallback remains available</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Android Device Nodes</h3>
+            <p>New Android device capability expands node control and inspection tooling.</p>
+            <ul>
+              <li><span class="mono">device.status</span> and <span class="mono">device.info</span></li>
+              <li><span class="mono">notifications.list</span> support</li>
+              <li><span class="mono">nodes notifications_list</span> tooling for active notifications</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <div class="wrap" id="sections">
+        <h2 class="sectionTitle">Additional sections (explicitly scoped to <span class="mono">v2026.2.26</span>)</h2>
+
+        <div class="stack">
+          <section class="panel">
+            <header class="panel__head">
+              <h3>Auth &amp; Onboarding Improvements</h3>
+              <button class="panel__toggle" type="button" data-toggle aria-expanded="true">Collapse</button>
+            </header>
+            <div class="panel__body">
+              <p>Authentication and onboarding flows in <span class="mono">v2026.2.26</span> were tuned for safer defaults and smoother plugin-driven configuration.</p>
+              <ul>
+                <li>Ref-only auth-profile support for safer secret references</li>
+                <li>Plugin-owned interactive onboarding hooks with reliable fallback</li>
+                <li>Reduced ambiguity in account/channel association prompts</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel__head">
+              <h3>Typing Indicator &amp; UX Reliability</h3>
+              <button class="panel__toggle" type="button" data-toggle aria-expanded="true">Collapse</button>
+            </header>
+            <div class="panel__body">
+              <p>This release improves responsiveness in threaded interactions so users get clearer feedback when agents are working.</p>
+              <ul>
+                <li>More predictable thread-bound agent lifecycle behavior</li>
+                <li>Coalesced replies to reduce UI noise in fast streams</li>
+                <li>Cleaner startup reconciliation to prevent “stuck” states</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel__head">
+              <h3>Queueing &amp; Delivery Reliability</h3>
+              <button class="panel__toggle" type="button" data-toggle aria-expanded="true">Collapse</button>
+            </header>
+            <div class="panel__body">
+              <p><span class="mono">v2026.2.26</span> reinforces delivery paths so dispatch, bridging, and runtime cleanup behave consistently under load.</p>
+              <ul>
+                <li>Backend bridging improvements for ACP dispatch paths</li>
+                <li>Lifecycle controls + runtime cleanup to prevent accumulation</li>
+                <li>Better transport selection behavior with WS-first default</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel__head">
+              <h3>Multi-Channel &amp; Platform Fixes</h3>
+              <button class="panel__toggle" type="button" data-toggle aria-expanded="true">Collapse</button>
+            </header>
+            <div class="panel__body">
+              <p>Routing and platform capabilities get sharper edges in <span class="mono">v2026.2.26</span>, especially around account-scoped bindings and Android nodes.</p>
+              <ul>
+                <li>New CLI bindings commands to manage account-scoped routes</li>
+                <li>Upgrades for channel-only bindings + role-aware identity handling</li>
+                <li>Android device + notifications inspection tooling</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel__head">
+              <h3>Security Hardening Highlights</h3>
+              <button class="panel__toggle" type="button" data-toggle aria-expanded="true">Collapse</button>
+            </header>
+            <div class="panel__body">
+              <p>Security in <span class="mono">v2026.2.26</span> is anchored by stronger secrets validation and safer migration behavior.</p>
+              <ul>
+                <li>Stricter <span class="mono">secrets apply</span> target-path validation</li>
+                <li>Safer migration scrubbing to avoid lingering sensitive material</li>
+                <li>Runtime snapshot activation to reduce configuration drift</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel__head">
+              <h3>Developer Experience &amp; Tooling</h3>
+              <button class="panel__toggle" type="button" data-toggle aria-expanded="true">Collapse</button>
+            </header>
+            <div class="panel__body">
+              <p><span class="mono">v2026.2.26</span> adds clearer CLI surfaces and better docs/tests around transports and secrets.</p>
+              <ul>
+                <li>Docs for the full <span class="mono">openclaw secrets</span> workflow</li>
+                <li>Tests + docs around WS/SSE transport selection</li>
+                <li>New <span class="mono">nodes notifications_list</span> for Android debugging</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="wrap" id="credits">
+        <section class="credits">
+          <h2 class="sectionTitle">Credits</h2>
+          <p>Thanks to the openclaw community contributors who shipped fixes, tests, docs, and platform improvements in <span class="mono">v2026.2.26</span>.</p>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <div class="wrap footer__inner">
+          <div class="fineprint">Powered by Mindflow</div>
+          <div class="fineprint">Designed for GitHub Pages drop-in use · <span class="mono">release-openclaw-v2026.2.26.html</span></div>
+        </div>
+      </footer>
+    </div>
+  </header>
+
+  <main id="content" class="srOnly" aria-hidden="true">Content is presented above in the release note layout.</main>
+
+  <script>
+(() => {
+  'use strict';
+
+  // Smooth-ish anchor scroll (minimal; respects reduced motion)
+  const prefersReduced = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.style.scrollBehavior = prefersReduced() ? 'auto' : 'smooth';
+
+  // Section collapsers
+  document.querySelectorAll('[data-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panel = btn.closest('.panel');
+      const body = panel && panel.querySelector('.panel__body');
+      if (!body) return;
+      const isHidden = body.style.display === 'none';
+      body.style.display = isHidden ? '' : 'none';
+      btn.setAttribute('aria-expanded', String(isHidden));
+      btn.textContent = isHidden ? 'Collapse' : 'Expand';
+    });
+  });
+
+  // Motion toggle (also pauses 3D)
+  let motionOff = false;
+  const motionBtn = document.getElementById('toggleMotion');
+  if (motionBtn) {
+    motionBtn.addEventListener('click', () => {
+      motionOff = !motionOff;
+      motionBtn.setAttribute('aria-pressed', String(motionOff));
+      motionBtn.textContent = motionOff ? 'Enable motion' : 'Reduce motion';
+    });
+  }
+
+  // Lightweight WebGL: rotating low-poly octahedron with subtle gradient lighting.
+  const canvas = document.getElementById('gl');
+  const fpsBar = document.getElementById('fpsBar');
+  if (!canvas) return;
+
+  /** @type {WebGLRenderingContext|null} */
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: true, depth: true, powerPreference: 'low-power' });
+  if (!gl) {
+    // Fallback: keep canvas but avoid errors; show a static hint via background.
+    canvas.style.background = 'radial-gradient(120% 120% at 20% 10%, rgba(95,225,255,.22), rgba(124,92,255,.16) 55%, rgba(0,0,0,.22) 100%)';
+    return;
+  }
+
+  const DPR = Math.min(2, window.devicePixelRatio || 1);
+  function resize() {
+    const w = Math.max(2, Math.floor(canvas.clientWidth * DPR));
+    const h = Math.max(2, Math.floor(canvas.clientHeight * DPR));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+  }
+
+  // Shaders
+  const vsSrc = `
+    attribute vec3 aPos;
+    attribute vec3 aNor;
+    uniform mat4 uMVP;
+    uniform mat3 uN;
+    varying vec3 vN;
+    varying vec3 vP;
+    void main(){
+      vN = normalize(uN * aNor);
+      vP = aPos;
+      gl_Position = uMVP * vec4(aPos, 1.0);
+    }
+  `;
+  const fsSrc = `
+    precision mediump float;
+    varying vec3 vN;
+    varying vec3 vP;
+    void main(){
+      vec3 n = normalize(vN);
+      vec3 l1 = normalize(vec3(0.7, 0.9, 0.3));
+      vec3 l2 = normalize(vec3(-0.5, 0.2, 0.9));
+      float d1 = max(0.0, dot(n, l1));
+      float d2 = max(0.0, dot(n, l2));
+      vec3 baseA = vec3(0.37, 0.88, 1.0);  // cyan-ish
+      vec3 baseB = vec3(0.49, 0.36, 1.0);  // violet-ish
+      float t = clamp((vP.y + 1.0) * 0.5, 0.0, 1.0);
+      vec3 base = mix(baseB, baseA, t);
+      vec3 col = base * (0.18 + 0.78 * d1) + vec3(0.10, 0.12, 0.18) * d2;
+      float rim = pow(1.0 - max(0.0, dot(n, normalize(vec3(0.0, 0.0, 1.0)))), 2.0);
+      col += vec3(0.05, 0.10, 0.12) * rim;
+      gl_FragColor = vec4(col, 0.92);
+    }
+  `;
+
+  function compile(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      gl.deleteShader(s);
+      return null;
+    }
+    return s;
+  }
+
+  const vs = compile(gl.VERTEX_SHADER, vsSrc);
+  const fs = compile(gl.FRAGMENT_SHADER, fsSrc);
+  if (!vs || !fs) return;
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  const aNor = gl.getAttribLocation(prog, 'aNor');
+  const uMVP = gl.getUniformLocation(prog, 'uMVP');
+  const uN = gl.getUniformLocation(prog, 'uN');
+
+  // Octahedron geometry (8 triangles)
+  const P = [
+     1,0,0,  -1,0,0,   0,1,0,   0,-1,0,  0,0,1,  0,0,-1
+  ];
+  const idx = [
+    0,2,4,  2,1,4,  1,3,4,  3,0,4,
+    2,0,5,  1,2,5,  3,1,5,  0,3,5
+  ];
+  const verts = [];
+  const nors = [];
+  for (let i=0;i<idx.length;i+=3){
+    const ia = idx[i]*3, ib = idx[i+1]*3, ic = idx[i+2]*3;
+    const ax=P[ia], ay=P[ia+1], az=P[ia+2];
+    const bx=P[ib], by=P[ib+1], bz=P[ib+2];
+    const cx=P[ic], cy=P[ic+1], cz=P[ic+2];
+    // face normal
+    const abx=bx-ax, aby=by-ay, abz=bz-az;
+    const acx=cx-ax, acy=cy-ay, acz=cz-az;
+    let nx=aby*acz-abz*acy;
+    let ny=abz*acx-abx*acz;
+    let nz=abx*acy-aby*acx;
+    const nl = Math.hypot(nx,ny,nz) || 1;
+    nx/=nl; ny/=nl; nz/=nl;
+    verts.push(ax,ay,az, bx,by,bz, cx,cy,cz);
+    nors.push(nx,ny,nz, nx,ny,nz, nx,ny,nz);
+  }
+
+  function bufData(loc, data, size) {
+    const b = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
+  }
+  bufData(aPos, verts, 3);
+  bufData(aNor, nors, 3);
+
+  gl.enable(gl.DEPTH_TEST);
+  gl.clearColor(0,0,0,0);
+
+  // Minimal matrix helpers
+  const M = {
+    mul4(a,b){
+      const o = new Float32Array(16);
+      for (let r=0;r<4;r++) for (let c=0;c<4;c++) {
+        o[c*4+r] = a[0*4+r]*b[c*4+0] + a[1*4+r]*b[c*4+1] + a[2*4+r]*b[c*4+2] + a[3*4+r]*b[c*4+3];
+      }
+      return o;
+    },
+    perspective(fovy, asp, n, f){
+      const t = 1/Math.tan(fovy/2);
+      const o = new Float32Array(16);
+      o[0]=t/asp; o[5]=t; o[10]=(f+n)/(n-f); o[11]=-1; o[14]=(2*f*n)/(n-f);
+      return o;
+    },
+    rotY(a){
+      const c=Math.cos(a), s=Math.sin(a);
+      const o=new Float32Array(16);
+      o[0]=c; o[2]=s; o[5]=1; o[8]=-s; o[10]=c; o[15]=1;
+      return o;
+    },
+    rotX(a){
+      const c=Math.cos(a), s=Math.sin(a);
+      const o=new Float32Array(16);
+      o[0]=1; o[5]=c; o[6]=-s; o[9]=s; o[10]=c; o[15]=1;
+      return o;
+    },
+    translate(z){
+      const o=new Float32Array(16);
+      o[0]=1; o[5]=1; o[10]=1; o[15]=1; o[14]=z;
+      return o;
+    }
+  };
+
+  // Observe visibility to pause rendering when off-screen
+  let visible = true;
+  const io = new IntersectionObserver((entries) => {
+    visible = entries.some(e => e.isIntersecting);
+  }, { threshold: 0.01 });
+  io.observe(canvas);
+
+  let lastT = performance.now();
+  let fpsSm = 60;
+
+  function frame(t) {
+    resize();
+
+    const dt = Math.max(0.001, (t - lastT) / 1000);
+    lastT = t;
+    const fps = 1 / dt;
+    fpsSm = fpsSm * 0.9 + fps * 0.1;
+    if (fpsBar) fpsBar.style.width = `${Math.max(18, Math.min(100, (fpsSm/60)*100))}%`;
+
+    const reduce = prefersReduced() || motionOff;
+    if (visible && !reduce) {
+      const asp = canvas.width / canvas.height;
+      const Pm = M.perspective(0.85, asp, 0.1, 20);
+      const Ry = M.rotY(t * 0.00055);
+      const Rx = M.rotX(0.55 + Math.sin(t*0.00025)*0.12);
+      const Tm = M.translate(-3.2);
+      const MV = M.mul4(Tm, M.mul4(Ry, Rx));
+      const MVP = M.mul4(Pm, MV);
+
+      // Normal matrix (approx for rotation-only): take upper-left 3x3 of rotations
+      const n = new Float32Array([MV[0],MV[1],MV[2], MV[4],MV[5],MV[6], MV[8],MV[9],MV[10]]);
+
+      gl.uniformMatrix4fv(uMVP, false, MVP);
+      gl.uniformMatrix3fv(uN, false, n);
+
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, 0, verts.length / 3);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // First paint uses static frame if reduced motion
+  resize();
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  requestAnimationFrame(frame);
+})();
+  </script>
+</body>
+</html>
