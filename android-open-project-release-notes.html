@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>android-open-project — Latest Release Notes</title>
+  <meta name="description" content="Latest release notes for android-open-project: new curated Android libraries, improved navigation, and clearer contribution docs." />
+  <style>
+:root{
+  --bg:#0b1020;
+  --panel:rgba(255,255,255,.06);
+  --panel2:rgba(255,255,255,.085);
+  --text:#e7edf7;
+  --muted:rgba(231,237,247,.72);
+  --line:rgba(231,237,247,.14);
+  --accent:#2f81f7;
+  --accent2:#3fb950;
+  --warn:#f2cc60;
+  --shadow: 0 18px 45px rgba(0,0,0,.45);
+  --radius:16px;
+  --max:1080px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:
+    radial-gradient(1200px 650px at 15% 10%, rgba(47,129,247,.28), transparent 60%),
+    radial-gradient(900px 550px at 80% 12%, rgba(63,185,80,.22), transparent 55%),
+    radial-gradient(1000px 700px at 60% 90%, rgba(242,204,96,.16), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
+a{color:inherit; text-decoration:none}
+a:hover{color:#fff}
+.container{max-width:var(--max); margin:0 auto; padding:28px 18px 44px}
+.nav{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:12px 14px; border:1px solid var(--line);
+  background:linear-gradient(180deg, var(--panel), transparent);
+  border-radius:999px;
+  backdrop-filter: blur(10px);
+}
+.brand{display:flex; align-items:center; gap:10px; min-width:0}
+.logo{
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(135deg, rgba(47,129,247,.95), rgba(63,185,80,.85));
+  box-shadow:0 10px 30px rgba(47,129,247,.18);
+  position:relative; overflow:hidden;
+}
+.logo:before{content:""; position:absolute; inset:-30%; background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), transparent 55%); transform:rotate(20deg)}
+.brand h1{font-size:14px; margin:0; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.pill{
+  font-family:var(--mono);
+  font-size:12px;
+  color:rgba(231,237,247,.88);
+  border:1px solid var(--line);
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.04);
+}
+.links{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+.link{
+  font-size:13px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid transparent;
+  color:rgba(231,237,247,.86);
+}
+.link:hover{border-color:var(--line); background:rgba(255,255,255,.03)}
+.link.cta{
+  border-color:rgba(63,185,80,.35);
+  background:linear-gradient(180deg, rgba(63,185,80,.18), rgba(63,185,80,.08));
+  color:#eafff0;
+}
+.hero{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:18px;
+  align-items:stretch;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg, var(--panel2), rgba(255,255,255,.03));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.heroCopy{padding:22px 22px 18px}
+.kicker{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:rgba(231,237,247,.88);
+}
+.dot{width:8px; height:8px; border-radius:99px; background:var(--accent2); box-shadow:0 0 0 6px rgba(63,185,80,.16)}
+.heroTitle{margin:10px 0 6px; font-size:34px; line-height:1.12; letter-spacing:-.02em}
+.tagline{margin:0; color:var(--muted); font-size:15px}
+.metaRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+.badge{
+  font-family:var(--mono);
+  font-size:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.15);
+}
+.badge strong{color:#fff}
+.badge i{color:rgba(231,237,247,.75); font-style:normal}
+.hero3d{position:relative}
+.hero3d .cap{position:absolute; left:14px; right:14px; bottom:12px; display:flex; gap:10px; align-items:center; justify-content:space-between}
+.small{font-size:12px; color:rgba(231,237,247,.72)}
+.canvasWrap{height:100%; min-height:240px; position:relative}
+#gl{
+  display:block; width:100%; height:100%;
+  background:radial-gradient(700px 260px at 30% 35%, rgba(47,129,247,.22), transparent 55%),
+             radial-gradient(700px 260px at 70% 30%, rgba(63,185,80,.18), transparent 60%),
+             rgba(0,0,0,.18);
+}
+.sections{margin-top:18px; display:grid; grid-template-columns: 1fr; gap:14px}
+.section{padding:18px}
+.h2{margin:0 0 10px; font-size:16px; letter-spacing:.2px}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:12px;
+}
+.feature{
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(231,237,247,.12);
+  background:rgba(255,255,255,.03);
+  min-height:120px;
+}
+.feature .t{margin:0 0 8px; font-size:14px}
+.feature .d{margin:0; color:var(--muted); font-size:13px}
+.icon{
+  width:34px; height:34px; border-radius:12px;
+  display:grid; place-items:center;
+  border:1px solid rgba(231,237,247,.14);
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  margin-bottom:10px;
+  font-family:var(--mono);
+  color:rgba(231,237,247,.9);
+}
+.twoCol{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:start}
+.list{margin:0; padding:0; list-style:none; display:grid; gap:10px}
+.li{
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid rgba(231,237,247,.12);
+  background:rgba(255,255,255,.025);
+}
+.li strong{display:block; font-size:13px; margin-bottom:4px}
+.li span{color:var(--muted); font-size:13px}
+.kv{display:grid; gap:10px}
+.kvRow{display:flex; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid rgba(231,237,247,.12); border-radius:12px; background:rgba(255,255,255,.025)}
+.kvRow code{font-family:var(--mono); color:rgba(231,237,247,.92)}
+.note{color:rgba(231,237,247,.70); font-size:12px; margin:10px 0 0}
+.actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid rgba(231,237,247,.14);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  font-size:13px;
+}
+.btn:hover{background:rgba(255,255,255,.06)}
+.btn.primary{border-color:rgba(47,129,247,.45); background:linear-gradient(180deg, rgba(47,129,247,.22), rgba(47,129,247,.10))}
+.footer{
+  margin-top:18px;
+  padding:14px 6px 0;
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  color:rgba(231,237,247,.60);
+  font-size:12px;
+}
+#topBtn{
+  position:fixed;
+  right:14px; bottom:14px;
+  width:42px; height:42px;
+  border-radius:999px;
+  border:1px solid rgba(231,237,247,.16);
+  background:rgba(10,14,28,.62);
+  color:#fff;
+  display:none;
+  box-shadow:0 16px 40px rgba(0,0,0,.45);
+  backdrop-filter: blur(10px);
+}
+#topBtn:hover{background:rgba(255,255,255,.06)}
+@media (max-width: 920px){
+  .hero{grid-template-columns:1fr;}
+  .grid{grid-template-columns:1fr;}
+  .twoCol{grid-template-columns:1fr;}
+  .heroTitle{font-size:30px}
+}
+@media (prefers-reduced-motion: reduce){
+  #gl{background:rgba(0,0,0,.18)}
+}
+  </style>
+</head>
+<body>
+  <div class="container" id="top">
+    <header class="nav" role="banner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>android-open-project</h1>
+        <span class="pill">Release Notes</span>
+      </div>
+      <nav class="links" aria-label="Primary">
+        <a class="link" href="#whats-new">What’s new</a>
+        <a class="link" href="#why">Why it matters</a>
+        <a class="link" href="#details">Release details</a>
+        <a class="link cta" href="https://github.com/Trinea/android-open-project" target="_blank" rel="noreferrer">View on GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Hero">
+        <div class="card heroCopy">
+          <div class="kicker"><span class="dot" aria-hidden="true"></span><span><strong>LATEST RELEASE NOTES</strong> — curated Android open-source discovery</span></div>
+          <h2 class="heroTitle">android-open-project</h2>
+          <p class="tagline">
+            Purpose: this page summarizes the <strong>latest release</strong> updates to the curated list—focused on newly added high-quality libraries, faster navigation via improved categorization, and clearer contribution guidance.
+          </p>
+          <div class="metaRow" role="group" aria-label="Release metadata">
+            <span class="badge"><strong>Version:</strong> <i>vX.Y.Z</i></span>
+            <span class="badge"><strong>Date:</strong> <i>YYYY-MM-DD</i></span>
+            <span class="badge"><strong>Scope:</strong> <i>README curation + docs</i></span>
+          </div>
+          <p class="note">Notes are intentionally non-marketing and reflect the latest curated-list changes (not a full product redesign).</p>
+        </div>
+
+        <aside class="card hero3d" aria-label="3D preview">
+          <div class="canvasWrap">
+            <canvas id="gl" aria-label="3D rotating cube" role="img"></canvas>
+          </div>
+          <div class="cap">
+            <span class="small">Lightweight WebGL accent (pauses when off-screen)</span>
+            <span class="pill" style="border-color:rgba(47,129,247,.35); background:rgba(47,129,247,.10)">WebGL</span>
+          </div>
+        </aside>
+      </section>
+
+      <div class="sections">
+        <section class="card section" id="whats-new" aria-label="What's new">
+          <h3 class="h2">What’s new in this latest release</h3>
+          <div class="grid">
+            <article class="feature">
+              <div class="icon" aria-hidden="true">+Lib</div>
+              <h4 class="t">New library additions across categories</h4>
+              <p class="d">Expanded the curated list with newly added, high-quality Android open-source libraries spanning multiple areas (UI, network, images, storage, tooling, and more).</p>
+            </article>
+            <article class="feature">
+              <div class="icon" aria-hidden="true">Nav</div>
+              <h4 class="t">Improved categorization for faster discovery</h4>
+              <p class="d">Refined category structure and project grouping so developers can scan and compare options with fewer clicks and less scrolling.</p>
+            </article>
+            <article class="feature">
+              <div class="icon" aria-hidden="true">Docs</div>
+              <h4 class="t">Clearer contribution & maintenance notes</h4>
+              <p class="d">Updated contribution guidance and documentation wording to reduce ambiguity and keep submissions consistent with the list’s quality bar.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="card section" id="why" aria-label="Why it matters">
+          <h3 class="h2">Why it matters</h3>
+          <div class="twoCol">
+            <div class="li">
+              <strong>Lower time-to-library</strong>
+              <span>Better grouping + newest curated additions helps you find credible libraries quickly—especially when you’re choosing between multiple solutions.</span>
+            </div>
+            <div class="li">
+              <strong>More consistent evaluation</strong>
+              <span>Clearer documentation and contribution expectations keeps entries easier to compare (scope, category fit, and intended usage).</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section" id="details" aria-label="Release details">
+          <h3 class="h2">Release details (Latest)</h3>
+          <div class="twoCol">
+            <div class="kv" aria-label="Key values">
+              <div class="kvRow"><span>Assumed version</span><code>vX.Y.Z</code></div>
+              <div class="kvRow"><span>Release date</span><code>YYYY-MM-DD</code></div>
+              <div class="kvRow"><span>Type</span><code>Curated list update</code></div>
+              <p class="note">If you need exact version/date, use the repository history (commits/README updates) as the source of truth.</p>
+            </div>
+            <ul class="list" aria-label="Changelog">
+              <li class="li"><strong>Added</strong><span> New curated library entries across multiple Android categories (latest list refresh).</span></li>
+              <li class="li"><strong>Changed</strong><span> Category navigation and grouping to improve scan-ability and discovery.</span></li>
+              <li class="li"><strong>Documentation</strong><span> Improved contribution guidelines and clarified documentation wording for maintainability.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card section" id="get-involved" aria-label="Get involved">
+          <h3 class="h2">Get involved</h3>
+          <div class="twoCol">
+            <div class="li">
+              <strong>Contribute to the latest release quality</strong>
+              <span>Submit new libraries, fixes, or category improvements through GitHub (issues/PRs). Keep entries focused, categorized, and easy to evaluate.</span>
+              <div class="actions">
+                <a class="btn primary" href="https://github.com/Trinea/android-open-project" target="_blank" rel="noreferrer">Open repository</a>
+                <a class="btn" href="https://github.com/Trinea/android-open-project/issues" target="_blank" rel="noreferrer">Issues</a>
+                <a class="btn" href="https://github.com/Trinea/android-open-project/pulls" target="_blank" rel="noreferrer">Pull requests</a>
+              </div>
+            </div>
+            <div class="li">
+              <strong>Tip for readers</strong>
+              <span>Use this page as a quick “what changed” snapshot; use the README for the full curated list and detailed category browsing.</span>
+            </div>
+          </div>
+        </section>
+
+        <footer class="footer" role="contentinfo">
+          <span>Dedicated Latest Release Notes page for <span style="font-family:var(--mono)">android-open-project</span>.</span>
+          <span>Powered by Mindflow</span>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <button id="topBtn" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
+  <script>
+(() => {
+  // Smooth in-page navigation + back-to-top
+  const topBtn = document.getElementById('topBtn');
+  const onScroll = () => {
+    topBtn.style.display = (window.scrollY > 600) ? 'block' : 'none';
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  topBtn.addEventListener('click', () => {
+    document.getElementById('top').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Lightweight WebGL: rotating cube (no libraries). Pauses when off-screen.
+  const canvas = document.getElementById('gl');
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!canvas || reduceMotion) return;
+
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: true, depth: true, powerPreference: 'low-power' });
+  if (!gl) return;
+
+  const DPR = Math.min(2, window.devicePixelRatio || 1);
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.max(2, Math.floor(rect.width * DPR));
+    const h = Math.max(2, Math.floor(rect.height * DPR));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+  };
+
+  const vs = `
+    attribute vec3 aPos;
+    attribute vec3 aCol;
+    uniform mat4 uMVP;
+    varying vec3 vCol;
+    void main(){
+      vCol = aCol;
+      gl_Position = uMVP * vec4(aPos, 1.0);
+    }
+  `;
+  const fs = `
+    precision mediump float;
+    varying vec3 vCol;
+    void main(){
+      gl_FragColor = vec4(vCol, 1.0);
+    }
+  `;
+
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  // Cube (8 vertices, 12 triangles) — positions and colors.
+  const V = new Float32Array([
+    // x,y,z,   r,g,b
+    -1,-1,-1,  0.18,0.55,0.97,
+     1,-1,-1,  0.18,0.55,0.97,
+     1, 1,-1,  0.25,0.75,0.45,
+    -1, 1,-1,  0.25,0.75,0.45,
+    -1,-1, 1,  0.95,0.80,0.40,
+     1,-1, 1,  0.18,0.55,0.97,
+     1, 1, 1,  0.25,0.75,0.45,
+    -1, 1, 1,  0.95,0.80,0.40
+  ]);
+  const I = new Uint16Array([
+    0,1,2,  2,3,0,  // back
+    4,5,6,  6,7,4,  // front
+    4,5,1,  1,0,4,  // bottom
+    7,6,2,  2,3,7,  // top
+    5,6,2,  2,1,5,  // right
+    4,7,3,  3,0,4   // left
+  ]);
+
+  const vbo = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+  gl.bufferData(gl.ARRAY_BUFFER, V, gl.STATIC_DRAW);
+
+  const ibo = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, I, gl.STATIC_DRAW);
+
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  const aCol = gl.getAttribLocation(prog, 'aCol');
+  gl.enableVertexAttribArray(aPos);
+  gl.enableVertexAttribArray(aCol);
+  gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 24, 0);
+  gl.vertexAttribPointer(aCol, 3, gl.FLOAT, false, 24, 12);
+
+  const uMVP = gl.getUniformLocation(prog, 'uMVP');
+
+  // Minimal mat4 helpers (column-major)
+  const mat4Mul = (a,b) => {
+    const o = new Float32Array(16);
+    for (let c=0;c<4;c++) for (let r=0;r<4;r++) {
+      o[c*4+r] = a[0*4+r]*b[c*4+0] + a[1*4+r]*b[c*4+1] + a[2*4+r]*b[c*4+2] + a[3*4+r]*b[c*4+3];
+    }
+    return o;
+  };
+  const mat4Identity = () => new Float32Array([1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0,1]);
+  const mat4Translate = (x,y,z) => new Float32Array([1,0,0,0,  0,1,0,0,  0,0,1,0,  x,y,z,1]);
+  const mat4RotY = (t) => {
+    const c=Math.cos(t), s=Math.sin(t);
+    return new Float32Array([ c,0,-s,0,  0,1,0,0,  s,0,c,0,  0,0,0,1]);
+  };
+  const mat4RotX = (t) => {
+    const c=Math.cos(t), s=Math.sin(t);
+    return new Float32Array([1,0,0,0,  0,c,s,0,  0,-s,c,0,  0,0,0,1]);
+  };
+  const mat4Perspective = (fovy, aspect, near, far) => {
+    const f = 1 / Math.tan(fovy/2);
+    const nf = 1 / (near - far);
+    return new Float32Array([
+      f/aspect,0,0,0,
+      0,f,0,0,
+      0,0,(far+near)*nf,-1,
+      0,0,(2*far*near)*nf,0
+    ]);
+  };
+
+  gl.enable(gl.DEPTH_TEST);
+  gl.clearColor(0,0,0,0);
+
+  let running = true;
+  const io = new IntersectionObserver((entries) => {
+    running = entries.some(e => e.isIntersecting);
+  }, { threshold: 0.08 });
+  io.observe(canvas);
+
+  function frame(tms){
+    resize();
+    if (running) {
+      const t = tms * 0.001;
+      const aspect = canvas.width / canvas.height;
+      const P = mat4Perspective(1.0, aspect, 0.1, 50.0);
+      const T = mat4Translate(0, 0, -5.2);
+      const R = mat4Mul(mat4RotY(t*0.9), mat4RotX(t*0.6));
+      const M = mat4Mul(T, R);
+      const MVP = mat4Mul(P, M);
+
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.uniformMatrix4fv(uMVP, false, MVP);
+      gl.drawElements(gl.TRIANGLES, I.length, gl.UNSIGNED_SHORT, 0);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Make anchor clicks smooth without heavy polyfills
+  document.addEventListener('click', (e) => {
+    const a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+})();
+  </script>
+</body>
+</html>
