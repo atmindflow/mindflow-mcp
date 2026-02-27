@@ -1,1 +1,1 @@
-// JS content truncated for transport; use full JS from generator. */
+// TODO: Replace with exact JS content from Code Generation Agent
