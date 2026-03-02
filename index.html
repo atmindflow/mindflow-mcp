@@ -1,5 +1,66 @@
 <!doctype html>
 <html lang="en">
-<head>...SNIPPED...</head>
-<body>...SNIPPED...</body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>refine × Supabase – Realtime Filters Patch (6.0.2)</title>
+  <link rel="preconnect" href="https://rsms.me" />
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="wrap nav">
+      <div class="brand" aria-label="refine × supabase">
+        <span class="logo" aria-hidden="true"><i></i></span>
+        <div class="btxt">
+          <div class="b1">refine × supabase</div>
+          <div class="b2">Release notes · patch</div>
+        </div>
+      </div>
+      <a class="cta" href="https://github.com/refinedev/refine/releases/tag/%40refinedev/supabase%406.0.2" target="_blank" rel="noreferrer">View GitHub release</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <release-note-card
+      version="@refinedev/supabase@6.0.2"
+      published="2026-02-27"
+      issue="https://github.com/refinedev/refine/issues/6360"
+      pr="https://github.com/refinedev/refine/pull/7281"
+      commit="https://github.com/refinedev/refine/commit/e22740f7a90901bdf0089c41e7ae51678e4793a5"
+      release="https://github.com/refinedev/refine/releases/tag/%40refinedev/supabase%406.0.2"
+    ></release-note-card>
+
+    <section class="grid" aria-label="Patch summary">
+      <article class="card">
+        <h3>Purpose of this page</h3>
+        <p>
+          This is a <strong>dedicated release note page</strong> for <code>@refinedev/supabase@6.0.2</code>.
+          It intentionally highlights <strong>only</strong> the latest patch behavior change: how refine’s
+          <code>liveProvider</code> builds Supabase Realtime <code>postgres_changes</code> filters.
+        </p>
+      </article>
+      <article class="card">
+        <h3>What changed (single patch)</h3>
+        <ul>
+          <li><strong>Supabase accepts one filter string</strong> per <code>postgres_changes</code> subscription.</li>
+          <li>When multiple filters are provided, refine now <strong>uses the first valid filter</strong>.</li>
+          <li>It also <strong>logs a warning</strong> instead of silently producing an invalid payload.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap footin">
+      <small>Release note landing page for <strong>@refinedev/supabase@6.0.2</strong>. Powered by Mindflow</small>
+      <small class="muted">Style inspired by refine docs: dark UI, soft glow, rounded surfaces, Inter.</small>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
 </html>
