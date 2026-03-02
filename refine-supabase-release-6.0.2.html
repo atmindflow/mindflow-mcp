@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>refine · Supabase Realtime Patch &mdash; @refinedev/supabase@6.0.2</title>
+  <meta name="description" content="Release note landing page for @refinedev/supabase@6.0.2, highlighting the realtime subscriptions multi-filter handling fix from PR #7281 only." />
+  <style>
+  :root{
+  --mf-bg:#070A12;
+  --mf-surface:rgba(255,255,255,.06);
+  --mf-border:rgba(255,255,255,.10);
+  --mf-text:rgba(255,255,255,.92);
+  --mf-dim:rgba(255,255,255,.72);
+  --mf-muted:rgba(255,255,255,.58);
+  --mf-a:#7C5CFF;
+  --mf-b:#38BDF8;
+  --mf-c:#22C55E;
+  --mf-shadow:0 18px 60px rgba(0,0,0,.45);
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:#020617;
+}
+
+.mf-shell{
+  position:relative;
+  max-width:1080px;
+  width:100%;
+  overflow:hidden;
+  border:1px solid var(--mf-border);
+  border-radius:18px;
+  background:radial-gradient(1200px 700px at 10% -10%, rgba(124,92,255,.25), transparent 55%),
+             radial-gradient(900px 600px at 85% 10%, rgba(56,189,248,.18), transparent 55%),
+             linear-gradient(180deg, rgba(255,255,255,.04), transparent 40%),
+             var(--mf-bg);
+  box-shadow:var(--mf-shadow);
+  padding:22px;
+  color:var(--mf-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+.mf-bg{position:absolute;inset:0;pointer-events:none;}
+.mf-grid{
+  position:absolute;inset:-2px;
+  background:
+    linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:56px 56px;
+  opacity:.18;
+  mask-image:radial-gradient(420px 260px at 40% 20%, #000 35%, transparent 75%);
+}
+.mf-blob{position:absolute;filter:blur(26px);opacity:.65;transform:translate3d(0,0,0);}
+.mf-blob--a{width:280px;height:280px;left:-60px;top:-80px;background:radial-gradient(circle at 30% 30%, rgba(124,92,255,.9), transparent 60%);} 
+.mf-blob--b{width:320px;height:320px;right:-90px;top:-70px;background:radial-gradient(circle at 40% 40%, rgba(56,189,248,.75), transparent 62%);} 
+
+.mf-hero{position:relative;z-index:1;max-width:980px;}
+.mf-kicker{
+  margin:0 0 10px;
+  font-size:12px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--mf-muted);
+}
+.mf-title{margin:0 0 10px;font-size:28px;line-height:1.15;letter-spacing:-.02em;}
+.mf-subtitle{margin:0;max-width:78ch;color:var(--mf-dim);font-size:14px;line-height:1.6;}
+
+.mf-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.mf-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 10px;
+  border:1px solid var(--mf-border);
+  background:rgba(255,255,255,.04);
+  border-radius:999px;
+  color:var(--mf-dim);
+  font-size:12px;
+}
+
+.mf-cards{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:18px;}
+.mf-card{
+  grid-column:span 12;
+  border:1px solid var(--mf-border);
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border-radius:16px;
+  padding:14px 14px 12px;
+}
+.mf-cardTitle{margin:0 0 8px;font-size:14px;letter-spacing:-.01em;}
+.mf-cardText{margin:0;color:var(--mf-dim);font-size:13px;line-height:1.6;}
+.mf-bullets{margin:10px 0 0;padding:0 0 0 18px;color:var(--mf-dim);font-size:13px;line-height:1.55;}
+.mf-bullets li{margin:4px 0;}
+.mf-muted{color:var(--mf-muted);}
+
+.mf-card--code{background:linear-gradient(180deg, rgba(124,92,255,.10), rgba(255,255,255,.03));}
+.mf-codeHead{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mf-code{margin:10px 0 8px;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.35);overflow:auto;font-size:12px;color:rgba(255,255,255,.9);
+}
+.mf-code code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;}
+
+.mf-btn{
+  appearance:none;border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  color:rgba(255,255,255,.9);
+  border-radius:10px;
+  padding:7px 10px;
+  font-size:12px;
+  cursor:pointer;
+}
+.mf-btn:hover{border-color:rgba(255,255,255,.22);transform:translateY(-1px);} 
+.mf-btn:active{transform:translateY(0);} 
+
+.mf-footer{position:relative;z-index:1;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.mf-footNote{font-size:12px;color:var(--mf-muted);} 
+.mf-footLink{font-size:12px;color:var(--mf-b);text-decoration:none;}
+.mf-footLink:hover{text-decoration:underline;}
+
+@media (min-width:840px){
+  .mf-shell{padding:26px;}
+  .mf-title{font-size:34px;}
+  .mf-card:nth-child(1){grid-column:span 5;}
+  .mf-card:nth-child(2){grid-column:span 4;}
+  .mf-card:nth-child(3){grid-column:span 3;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mf-btn:hover{transform:none;}
+}
+  </style>
+</head>
+<body>
+  <section class="mf-shell" aria-label="Release notes for @refinedev/supabase@6.0.2">
+    <div class="mf-bg" aria-hidden="true">
+      <div class="mf-blob mf-blob--a"></div>
+      <div class="mf-blob mf-blob--b"></div>
+      <div class="mf-grid"></div>
+    </div>
+
+    <header class="mf-hero">
+      <p class="mf-kicker">Release Note · @refinedev/supabase@6.0.2</p>
+      <h1 class="mf-title">Supabase Realtime: safer multi-filter subscriptions</h1>
+      <p class="mf-subtitle">
+        This page is a <strong>dedicated release note landing experience</strong> for the
+        <code>@refinedev/supabase@6.0.2</code> patch release. It is intentionally focused on
+        <strong>one single change</strong>: the fix for handling Supabase Realtime subscriptions when
+        multiple filters are provided.
+      </p>
+
+      <div class="mf-meta" role="list">
+        <span class="mf-chip" role="listitem">Patch: 6.0.2</span>
+        <span class="mf-chip" role="listitem">Scope: Supabase liveProvider</span>
+        <span class="mf-chip" role="listitem">Source PR: <a class="mf-footLink" href="https://github.com/refinedev/refine/pull/7281" target="_blank" rel="noreferrer">#7281</a></span>
+      </div>
+    </header>
+
+    <div class="mf-cards">
+      <article class="mf-card">
+        <h2 class="mf-cardTitle">What changed in this release</h2>
+        <p class="mf-cardText">
+          Supabase Realtime <code>postgres_changes</code> subscriptions accept a single
+          <code>filter</code> string. Prior to <code>@refinedev/supabase@6.0.2</code>, providing
+          multiple filters could generate an invalid realtime subscription payload.
+        </p>
+        <p class="mf-cardText" style="margin-top:8px;">
+          <strong>In this patch</strong>, the Supabase <code>liveProvider</code> now:
+        </p>
+        <ul class="mf-bullets">
+          <li>Uses only the <strong>first valid filter</strong> when multiple filters are passed.</li>
+          <li>Logs a clear warning instead of silently generating an invalid subscription.</li>
+        </ul>
+      </article>
+
+      <article class="mf-card">
+        <h2 class="mf-cardTitle">Why this single fix matters</h2>
+        <p class="mf-cardText">
+          The entire goal of this patch is to make Supabase Realtime integrations in refine
+          <strong>more reliable and predictable</strong> when complex filtering is involved.
+        </p>
+        <ul class="mf-bullets">
+          <li>Prevents broken or missing realtime updates caused by malformed subscriptions.</li>
+          <li>Makes debugging easier by surfacing a warning instead of failing silently.</li>
+          <li>Improves confidence when using multiple filters in production dashboards and apps.</li>
+        </ul>
+      </article>
+
+      <article class="mf-card mf-card--code">
+        <div class="mf-codeHead">
+          <h2 class="mf-cardTitle">How to think about filters now</h2>
+        </div>
+        <pre class="mf-code" aria-label="Filter example"><code id="mfFilter">// Supabase Realtime accepts a single filter string
+filter: "project_id=eq.42"</code></pre>
+        <p class="mf-cardText mf-muted">
+          When you pass multiple filters to the Supabase <code>liveProvider</code>,
+          <strong>only the first valid filter will be used</strong> in
+          <code>@refinedev/supabase@6.0.2</code>. Additional filters are ignored for the
+          subscription itself, and a warning is logged so you can adjust your configuration.
+        </p>
+      </article>
+    </div>
+
+    <footer class="mf-footer">
+      <span class="mf-footNote">
+        This page is the official landing view for the
+        <strong>@refinedev/supabase@6.0.2</strong> patch release and highlights
+        <strong>only</strong> the realtime multi-filter subscription handling fix.
+      </span>
+      <a class="mf-footLink" href="https://github.com/refinedev/refine/releases/tag/%40refinedev/supabase%406.0.2" target="_blank" rel="noreferrer">
+        View original release on GitHub
+      </a>
+    </footer>
+  </section>
+</body>
+</html>
